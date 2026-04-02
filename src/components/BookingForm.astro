@@ -1,0 +1,464 @@
+---
+import { featuredMasseuses, massageGrid } from '../data/site';
+import { upcomingNightShifts, nightSlots } from '../lib/nights';
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/t';
+import { massageTitle } from '../i18n/massages';
+
+type Props = {
+  lang: Lang;
+  defaultMasseuseSlug?: string;
+  compact?: boolean;
+};
+
+const { lang, defaultMasseuseSlug = '', compact = false } = Astro.props;
+const locale = lang === 'cs' ? 'cs-CZ' : 'en-GB';
+const nights = upcomingNightShifts(16, locale);
+const demoTpl = t(lang, 'book.demoStatus');
+const masseusePickerJson = JSON.stringify(
+  featuredMasseuses.map((m) => ({ slug: m.slug, name: m.name, image: m.image })),
+);
+const selectHostLabel = t(lang, 'book.selectHost');
+---
+
+<form
+  id="booking-form"
+  class:list={[
+    'card-cyber neon-border space-y-6',
+    compact ? 'p-5 md:p-6' : 'p-6 md:p-8',
+  ]}
+  data-default-masseuse={defaultMasseuseSlug}
+>
+  <div class:list={['flex flex-wrap items-end justify-between gap-4', compact && 'hidden']}>
+    <div>
+      <h2 class="font-display text-lg md:text-xl font-bold uppercase tracking-[0.15em] text-gradient-neon">
+        {t(lang, 'book.nightReservation')}
+      </h2>
+      <p class="mt-1 text-sm text-stone-400">
+        {t(lang, 'book.nightSub')}
+      </p>
+    </div>
+    <span
+      class="inline-flex items-center gap-2 rounded border border-amber-500/40 bg-amber-500/10 px-3 py-1 font-display text-[10px] font-bold uppercase tracking-wider text-amber-300"
+    >
+      <span class="size-1.5 animate-pulse rounded-full bg-amber-400 shadow-[0_0_8px_#ff9e00]" />
+      {t(lang, 'book.liveBadge')}
+    </span>
+  </div>
+  {
+    compact && (
+      <h2 class="font-display text-base font-bold uppercase tracking-[0.15em] text-gradient-neon">
+        {t(lang, 'book.quickReserve')}
+      </h2>
+    )
+  }
+
+  <div class="grid gap-5 md:grid-cols-2">
+    <div class="block space-y-2">
+      <span
+        class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90"
+        id="book-masseuse-label"
+      >
+        {t(lang, 'book.host')}
+      </span>
+      <select
+        name="masseuse"
+        id="book-masseuse"
+        class="sr-only"
+        tabindex="-1"
+        aria-hidden="true"
+        required
+      >
+        <option value="">{selectHostLabel}</option>
+        {featuredMasseuses.map((m) => (
+          <option value={m.slug} selected={m.slug === defaultMasseuseSlug}>
+            {m.name}
+          </option>
+        ))}
+      </select>
+      <div id="book-masseuse-picker" class="relative z-20"></div>
+    </div>
+
+    <label class="block space-y-2">
+      <span class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90">
+        {t(lang, 'book.service')}
+      </span>
+      <select
+        name="service"
+        id="book-service"
+        class="w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-sm text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500"
+        required
+      >
+        <option value="">{t(lang, 'book.selectRitual')}</option>
+        {massageGrid.map((s) => (
+          <option value={s.slug}>{massageTitle(lang, s.slug)}</option>
+        ))}
+      </select>
+    </label>
+
+    <label class="block space-y-2">
+      <span class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90">
+        {t(lang, 'book.nightDate')}
+      </span>
+      <select
+        name="date"
+        id="book-date"
+        class="w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-sm text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500"
+        required
+      >
+        <option value="">{t(lang, 'book.pickDate')}</option>
+        {nights.map((n) => (
+          <option value={n.value}>
+            {n.label} {t(lang, 'book.nightShiftSuffix')}
+          </option>
+        ))}
+      </select>
+    </label>
+
+    <label class="block space-y-2">
+      <span class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90">
+        {t(lang, 'book.arrival')}
+      </span>
+      <select
+        name="time"
+        id="book-time"
+        class="w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-sm text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500"
+        required
+      >
+        <option value="">{t(lang, 'book.time')}</option>
+        {nightSlots.map((time) => (
+          <option value={time}>{time}</option>
+        ))}
+      </select>
+    </label>
+  </div>
+
+  <div class="grid gap-5 md:grid-cols-2">
+    <label class="block space-y-2 md:col-span-1">
+      <span class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90">
+        {t(lang, 'book.yourName')}
+      </span>
+      <input
+        type="text"
+        name="name"
+        autocomplete="name"
+        class="w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-sm text-stone-100 outline-none focus:border-fuchsia-500"
+        required
+      />
+    </label>
+    <label class="block space-y-2 md:col-span-1">
+      <span class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90">
+        {t(lang, 'book.phone')}
+      </span>
+      <input
+        type="tel"
+        name="phone"
+        autocomplete="tel"
+        class="w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-sm text-stone-100 outline-none focus:border-fuchsia-500"
+        required
+      />
+    </label>
+    <label class="block space-y-2 md:col-span-2">
+      <span class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90">
+        {t(lang, 'book.note')}
+      </span>
+      <textarea
+        name="note"
+        rows={3}
+        class="w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-sm text-stone-100 outline-none focus:border-fuchsia-500 resize-y min-h-[88px]"
+        placeholder={t(lang, 'book.notePh')}
+      />
+    </label>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-4">
+    <button type="submit" class="btn-neon-primary">{t(lang, 'book.submit')}</button>
+    <p id="booking-status" class="hidden text-sm text-cyan-300" role="status"></p>
+  </div>
+  <p class:list={['text-[11px] leading-relaxed text-stone-500', compact && 'hidden']}>
+    {t(lang, 'book.demoNote')}
+  </p>
+</form>
+
+<script is:inline define:vars={{ demoTpl, masseusePickerJson, selectHostLabel }}>
+  const MASSEUSES = JSON.parse(masseusePickerJson);
+
+  function mountMasseusePicker() {
+    var root = document.getElementById('book-masseuse-picker');
+    var hidden = document.getElementById('book-masseuse');
+    if (!root || !hidden || !(hidden instanceof HTMLSelectElement)) return;
+
+    var ph = selectHostLabel;
+    var triggerId = 'book-masseuse-trigger';
+    var listId = 'book-masseuse-listbox';
+
+    function bySlug(slug) {
+      return MASSEUSES.find(function (m) {
+        return m.slug === slug;
+      });
+    }
+
+    function setNative(val) {
+      hidden.value = val;
+      hidden.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    function closeList() {
+      list.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function openList() {
+      list.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+
+    function syncTrigger() {
+      var v = hidden.value;
+      var m = bySlug(v);
+      var imgWrap = trigger.querySelector('[data-thumb-wrap]');
+      var img = trigger.querySelector('[data-thumb]');
+      var label = trigger.querySelector('[data-label]');
+      var chev = trigger.querySelector('[data-chev]');
+      if (!imgWrap || !img || !label || !chev) return;
+      if (m) {
+        imgWrap.classList.remove('hidden');
+        img.src = m.image;
+        img.alt = '';
+        label.textContent = m.name;
+      } else {
+        imgWrap.classList.add('hidden');
+        img.removeAttribute('src');
+        label.textContent = ph;
+      }
+      Array.prototype.forEach.call(list.querySelectorAll('[role="option"]'), function (opt) {
+        var sel = opt.getAttribute('data-slug') === v;
+        opt.setAttribute('aria-selected', sel ? 'true' : 'false');
+        opt.classList.toggle('bg-cyan-500/15', sel);
+        opt.classList.toggle('border-cyan-500/30', sel);
+      });
+    }
+
+    root.innerHTML =
+      '' +
+      '<button type="button" id="' +
+      triggerId +
+      '" class="book-ms-trigger flex w-full min-h-[3rem] items-center gap-3 rounded-lg border border-cyan-500/30 bg-black/50 px-3 py-2.5 text-left text-sm text-stone-100 outline-none hover:border-cyan-500/45 focus-visible:border-fuchsia-500 focus-visible:ring-1 focus-visible:ring-fuchsia-500 touch-manipulation" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="book-masseuse-label ' +
+      triggerId +
+      '" aria-controls="' +
+      listId +
+      '">' +
+      '<span data-thumb-wrap class="relative hidden size-11 shrink-0 overflow-hidden rounded-lg border border-white/15 bg-black/40">' +
+      '<img data-thumb alt="" class="size-full object-cover object-top" width="44" height="44" loading="lazy" decoding="async" />' +
+      '</span>' +
+      '<span data-label class="min-w-0 flex-1 truncate font-medium text-stone-200">' +
+      ph +
+      '</span>' +
+      '<span data-chev class="shrink-0 text-stone-500" aria-hidden="true">▾</span>' +
+      '</button>' +
+      '<ul id="' +
+      listId +
+      '" role="listbox" tabindex="-1" hidden class="absolute left-0 right-0 top-full z-30 mt-1 max-h-[min(22rem,calc(100vh-8rem))] overflow-y-auto overscroll-contain rounded-xl border border-cyan-500/25 bg-[#0a0a0c]/98 py-1 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.9)] backdrop-blur-xl ring-1 ring-white/[0.06]"></ul>';
+
+    var trigger = document.getElementById(triggerId);
+    var list = document.getElementById(listId);
+    if (!trigger || !list) return;
+
+    var optHtml = MASSEUSES.map(function (m) {
+      return (
+        '<li role="option" tabindex="-1" data-slug="' +
+        m.slug +
+        '" class="flex cursor-pointer items-center gap-3 px-2 py-2 text-sm text-stone-200 transition-colors hover:bg-white/[0.05] focus:bg-white/[0.06] focus:outline-none border border-transparent rounded-lg mx-1 touch-manipulation">' +
+        '<span class="size-11 shrink-0 overflow-hidden rounded-lg border border-white/12 bg-black/50"><img src="' +
+        m.image +
+        '" alt="" class="size-full object-cover object-top" width="44" height="44" loading="lazy"/></span>' +
+        '<span class="min-w-0 flex-1 font-medium">' +
+        m.name +
+        '</span>' +
+        '</li>'
+      );
+    }).join('');
+    list.innerHTML = optHtml;
+
+    syncTrigger();
+
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (list.hidden) openList();
+      else closeList();
+    });
+
+    list.addEventListener('click', function (e) {
+      var li = e.target && e.target.closest && e.target.closest('[role="option"]');
+      if (!li || !list.contains(li)) return;
+      var slug = li.getAttribute('data-slug') || '';
+      setNative(slug);
+      closeList();
+      trigger.focus();
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!root.contains(e.target)) closeList();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (list.hidden) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeList();
+        trigger.focus();
+      }
+    });
+
+    trigger.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (list.hidden) openList();
+        else closeList();
+      }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (list.hidden) openList();
+        var opts = Array.prototype.slice.call(list.querySelectorAll('[role="option"]'));
+        if (!opts.length) return;
+        var i;
+        if (e.key === 'ArrowDown') {
+          i = opts.findIndex(function (o) {
+            return o === document.activeElement;
+          });
+          if (i < 0) i = -1;
+          var next = opts[Math.min(opts.length - 1, i + 1)];
+          next.focus();
+        } else {
+          i = opts.findIndex(function (o) {
+            return o === document.activeElement;
+          });
+          if (i < 0) i = 1;
+          var prev = opts[Math.max(0, i - 1)];
+          prev.focus();
+        }
+      }
+    });
+
+    Array.prototype.forEach.call(list.querySelectorAll('[role="option"]'), function (opt) {
+      opt.addEventListener('keydown', function (e) {
+        var opts = Array.prototype.slice.call(list.querySelectorAll('[role="option"]'));
+        var i = opts.indexOf(opt);
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          var slug = opt.getAttribute('data-slug') || '';
+          setNative(slug);
+          closeList();
+          trigger.focus();
+        }
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeList();
+          trigger.focus();
+        }
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (i < opts.length - 1) opts[i + 1].focus();
+        }
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (i > 0) opts[i - 1].focus();
+          else trigger.focus();
+        }
+      });
+    });
+  }
+
+  const form = document.getElementById('booking-form');
+  const statusEl = document.getElementById('booking-status');
+  const defaultSlug = form?.getAttribute('data-default-masseuse')?.trim();
+
+  mountMasseusePicker();
+
+  /** Sync visible picker when hidden <select> value changes (SSR default, ?host=, programmatic). */
+  form?.querySelector('#book-masseuse')?.addEventListener('change', function syncPickerFromSelect() {
+    var trigger = document.getElementById('book-masseuse-trigger');
+    var hidden = document.getElementById('book-masseuse');
+    if (!trigger || !hidden) return;
+    var v = hidden.value;
+    var m = MASSEUSES.find(function (x) {
+      return x.slug === v;
+    });
+    var imgWrap = trigger.querySelector('[data-thumb-wrap]');
+    var img = trigger.querySelector('[data-thumb]');
+    var label = trigger.querySelector('[data-label]');
+    if (!imgWrap || !img || !label) return;
+    if (m) {
+      imgWrap.classList.remove('hidden');
+      img.src = m.image;
+      label.textContent = m.name;
+    } else {
+      imgWrap.classList.add('hidden');
+      img.removeAttribute('src');
+      label.textContent = selectHostLabel;
+    }
+    var list = document.getElementById('book-masseuse-listbox');
+    if (list) {
+      Array.prototype.forEach.call(list.querySelectorAll('[role="option"]'), function (opt) {
+        var sel = opt.getAttribute('data-slug') === v;
+        opt.setAttribute('aria-selected', sel ? 'true' : 'false');
+        opt.classList.toggle('bg-cyan-500/15', sel);
+        opt.classList.toggle('border-cyan-500/30', sel);
+      });
+    }
+  });
+
+  const params = new URLSearchParams(window.location.search);
+  const qHost = params.get('host');
+
+  if (form && defaultSlug) {
+    const sel = form.querySelector('#book-masseuse');
+    if (sel instanceof HTMLSelectElement) {
+      sel.value = defaultSlug;
+      sel.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+  if (form && qHost) {
+    const sel = form.querySelector('#book-masseuse');
+    if (sel instanceof HTMLSelectElement) {
+      const opt = Array.from(sel.options).find((o) => o.value === qHost);
+      if (opt) {
+        sel.value = qHost;
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+  }
+
+  const qDate = params.get('date');
+  if (form && qDate) {
+    const sel = form.querySelector('#book-date');
+    if (sel instanceof HTMLSelectElement) {
+      const opt = Array.from(sel.options).find((o) => o.value === qDate);
+      if (opt) sel.value = qDate;
+    }
+  }
+
+  const qService = params.get('service');
+  if (form && qService) {
+    const sel = form.querySelector('#book-service');
+    if (sel) {
+      const opt = Array.from(sel.options).find((o) => o.value === qService);
+      if (opt) sel.value = qService;
+    }
+  }
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!statusEl || !form) return;
+    const fd = new FormData(form);
+    const host = fd.get('masseuse');
+    const svc = fd.get('service');
+    statusEl.classList.remove('hidden');
+    statusEl.textContent = demoTpl
+      .replace('{host}', String(host ?? ''))
+      .replace('{service}', String(svc ?? ''));
+    statusEl.classList.add('animate-pulse');
+    setTimeout(() => statusEl.classList.remove('animate-pulse'), 2000);
+  });
+</script>

@@ -1,0 +1,242 @@
+---
+import { featuredMasseuses } from '../data/site';
+import { getMasseuseDetail } from '../data/masseuseDetails';
+import { pathBook, pathMasseuse } from '../i18n/paths';
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/t';
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+
+const locale = lang === 'cs' ? 'cs-CZ' : 'en-GB';
+
+const payload = {
+  bookBase: pathBook(lang),
+  locale,
+  labels: {
+    today: t(lang, 'scheduleGrid.today'),
+    salonClosed: t(lang, 'scheduleGrid.salonClosed'),
+    dayOff: t(lang, 'scheduleGrid.dayOff'),
+    shiftShort: t(lang, 'scheduleGrid.shiftShort'),
+    shiftHours: t(lang, 'scheduleGrid.shiftHours'),
+    bookSlot: t(lang, 'scheduleGrid.bookSlot'),
+    profile: t(lang, 'scheduleGrid.profile'),
+  },
+  hosts: featuredMasseuses.map((m) => {
+    const d = getMasseuseDetail(m.slug);
+    const open = d?.schedule.map((x) => x.open) ?? [false, false, false, false, false, false, false];
+    return {
+      slug: m.slug,
+      name: m.name,
+      image: m.image,
+      profileHref: pathMasseuse(lang, m.slug),
+      openByWeekday: open,
+    };
+  }),
+};
+
+const payloadJson = JSON.stringify(payload);
+---
+
+<div
+  class="rounded-2xl border border-cyan-500/15 bg-black/30 overflow-hidden shadow-[0_24px_80px_-40px_rgba(0,0,0,0.9)]"
+  data-masseuse-schedule-root
+>
+  <div class="overflow-x-auto scrollbar-thin" style="scrollbar-width: thin">
+    <table class="w-full min-w-[56rem] text-left border-collapse">
+      <thead>
+        <tr class="border-b border-white/[0.08] bg-black/40">
+          <th
+            class="sticky left-0 z-20 w-[10.5rem] min-w-[10.5rem] bg-void/95 backdrop-blur-md px-3 py-3 text-[10px] font-display uppercase tracking-[0.2em] text-stone-500 border-r border-white/[0.06]"
+          >
+          </th>
+          <th colspan="7" class="px-2 py-3">
+            <div class="grid grid-cols-7 gap-1.5" id="msch-head-cells"></div>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="msch-body" class="divide-y divide-white/[0.06]"></tbody>
+    </table>
+  </div>
+</div>
+
+<script is:inline define:vars={{ payloadJson }}>
+  (function () {
+    var payload = JSON.parse(payloadJson);
+    var L = payload.labels;
+    var hosts = payload.hosts;
+    var bookBase = payload.bookBase;
+    var locale = payload.locale;
+
+    function isoLocal(d) {
+      var y = d.getFullYear();
+      var m = String(d.getMonth() + 1).padStart(2, '0');
+      var day = String(d.getDate()).padStart(2, '0');
+      return y + '-' + m + '-' + day;
+    }
+
+    function dayIndex(d) {
+      var w = d.getDay();
+      return w === 0 ? 6 : w - 1;
+    }
+
+    function salonNight(w) {
+      return w === 4 || w === 5 || w === 6;
+    }
+
+    function cellKind(d, openByWeekday) {
+      var w = d.getDay();
+      if (!salonNight(w)) return 'salonClosed';
+      if (!openByWeekday[dayIndex(d)]) return 'off';
+      return 'shift';
+    }
+
+    var headEl = document.getElementById('msch-head-cells');
+    var bodyEl = document.getElementById('msch-body');
+    if (!headEl || !bodyEl) return;
+
+    var anchor = new Date();
+    anchor.setHours(12, 0, 0, 0);
+    var todayIso = isoLocal(anchor);
+    var days = [];
+    for (var i = 0; i < 7; i++) {
+      var x = new Date(anchor);
+      x.setDate(anchor.getDate() + i);
+      days.push(x);
+    }
+
+    headEl.innerHTML = days
+      .map(function (d) {
+        var wd = d.toLocaleDateString(locale, { weekday: 'short' });
+        var dm = d.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
+        var todayMark = isoLocal(d) === todayIso ? '<span class="text-fuchsia-400">' + L.today + '</span>' : '';
+        return (
+          '<div class="rounded-lg border border-white/[0.08] bg-black/50 px-2 py-2 text-center">' +
+          '<div class="font-display text-[10px] font-bold uppercase tracking-wider text-stone-300">' +
+          wd +
+          '</div>' +
+          '<div class="text-[11px] text-stone-500 mt-0.5">' +
+          dm +
+          '</div>' +
+          (todayMark ? '<div class="text-[9px] mt-1 uppercase tracking-wider">' + todayMark + '</div>' : '') +
+          '</div>'
+        );
+      })
+      .join('');
+
+    function barHtml(kind) {
+      if (kind === 'shift') {
+        return (
+          '<div class="mt-2 h-1.5 rounded-full bg-stone-800/90 overflow-hidden">' +
+          '<div class="h-full w-[58%] rounded-full bg-gradient-to-r from-emerald-500/90 via-cyan-500 to-fuchsia-500/80"></div>' +
+          '</div>'
+        );
+      }
+      if (kind === 'off') {
+        return (
+          '<div class="mt-2 h-1.5 rounded-full bg-stone-800/80">' +
+          '<div class="h-full w-full rounded-full bg-stone-600/50"></div>' +
+          '</div>'
+        );
+      }
+      return (
+        '<div class="mt-2 h-1.5 rounded-full bg-stone-900">' +
+        '<div class="h-full w-full rounded-full bg-stone-800/60"></div>' +
+        '</div>'
+      );
+    }
+
+    function cellInner(kind, bookUrl, name, dateStr) {
+      var title = '';
+      var sub = '';
+      var accent = '';
+      if (kind === 'salonClosed') {
+        title = L.salonClosed;
+        sub = '';
+        accent = 'text-stone-600';
+      } else if (kind === 'off') {
+        title = L.dayOff;
+        sub = '';
+        accent = 'text-rose-400/70';
+      } else {
+        title = L.shiftShort;
+        sub = L.shiftHours;
+        accent = 'text-cyan-200/95';
+      }
+
+      var inner =
+        '<div class="text-[11px] font-semibold ' +
+        accent +
+        ' leading-tight">' +
+        title +
+        '</div>' +
+        (sub
+          ? '<div class="text-[10px] text-stone-500 mt-1 leading-tight">' + sub + '</div>'
+          : '') +
+        barHtml(kind) +
+        (kind === 'shift'
+          ? '<div class="mt-2 font-display text-[9px] uppercase tracking-[0.15em] text-fuchsia-400/90">' +
+            L.bookSlot +
+            ' →</div>'
+          : '');
+
+      if (kind === 'shift' && bookUrl) {
+        return (
+          '<a href="' +
+          bookUrl +
+          '" class="block min-h-[6.5rem] rounded-xl border border-white/[0.08] bg-black/35 p-3 transition-all hover:border-cyan-500/45 hover:bg-cyan-500/[0.06] hover:shadow-[0_0_20px_rgba(0,240,255,0.12)] touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500/50" title="' +
+          name +
+          ' · ' +
+          dateStr +
+          '">' +
+          inner +
+          '</a>'
+        );
+      }
+      return (
+        '<div class="min-h-[6.5rem] rounded-xl border border-white/[0.05] bg-black/20 p-3 opacity-75">' + inner + '</div>'
+      );
+    }
+
+    bodyEl.innerHTML = hosts
+      .map(function (h) {
+        var cells = days
+          .map(function (d) {
+            var kind = cellKind(d, h.openByWeekday);
+            var iso = isoLocal(d);
+            var url = kind === 'shift' ? bookBase + '?host=' + encodeURIComponent(h.slug) + '&date=' + iso : '';
+            return (
+              '<td class="p-1.5 align-top w-[1%]">' + cellInner(kind, url, h.name, iso) + '</td>'
+            );
+          })
+          .join('');
+
+        return (
+          '<tr class="hover:bg-white/[0.02]">' +
+          '<th scope="row" class="sticky left-0 z-10 w-[10.5rem] min-w-[10.5rem] bg-void/95 backdrop-blur-md border-r border-white/[0.06] p-2 text-left align-top">' +
+          '<a href="' +
+          h.profileHref +
+          '" class="flex items-center gap-2.5 rounded-xl p-1.5 -m-1.5 hover:bg-white/[0.04] transition-colors touch-manipulation group/row">' +
+          '<span class="relative size-12 shrink-0 overflow-hidden rounded-lg border border-white/10">' +
+          '<img src="' +
+          h.image +
+          '" alt="" class="size-full object-cover object-top" width="48" height="64" loading="lazy" />' +
+          '</span>' +
+          '<span class="min-w-0">' +
+          '<span class="font-display text-xs font-bold uppercase tracking-wide text-white group-hover/row:text-cyan-200 transition-colors block truncate">' +
+          h.name +
+          '</span>' +
+          '<span class="text-[9px] uppercase tracking-wider text-stone-600">' +
+          L.profile +
+          '</span>' +
+          '</span>' +
+          '</a>' +
+          '</th>' +
+          cells +
+          '</tr>'
+        );
+      })
+      .join('');
+  })();
+</script>

@@ -1,0 +1,81 @@
+---
+import { contact } from '../data/site';
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/t';
+import { pathBook } from '../i18n/paths';
+import GoogleRatingBanner from './GoogleRatingBanner.astro';
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+---
+
+<footer
+  class="relative z-10 mt-20 border-t border-cyan-500/20 bg-abyss/90 text-stone-400 shadow-[0_-12px_40px_rgba(0,0,0,0.35)]"
+>
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-fuchsia-500/50 to-transparent" />
+  <div class="max-w-7xl mx-auto px-4 py-14">
+    <div class="mb-10 flex justify-center">
+      <GoogleRatingBanner lang={lang} variant="footer" />
+    </div>
+    <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+      <div>
+        <h2 class="font-display text-xs font-bold uppercase tracking-[0.25em] text-cyan-400 mb-4">
+          {t(lang, 'meta.brand')}
+        </h2>
+        <p class="leading-relaxed text-sm">
+          {t(lang, 'footer.address')}{' '}
+          <a
+            href={contact.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-fuchsia-400 hover:text-fuchsia-300 underline-offset-2"
+          >
+            {contact.addressLine}
+          </a>
+          <br />
+          {t(lang, 'footer.tel')}{' '}
+          <a href={`tel:${contact.phoneTel}`} class="text-cyan-400 hover:text-cyan-300">
+            {contact.phoneDisplay}
+          </a>
+          <br />
+          {t(lang, 'footer.email')}{' '}
+          <a href={`mailto:${contact.email}`} class="text-cyan-400/90 hover:text-cyan-300 break-all">
+            {contact.email}
+          </a>
+        </p>
+      </div>
+      <div class="lg:col-span-1">
+        <h3 class="font-display text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-400/90 mb-3">
+          {t(lang, 'footer.nightAccess')}
+        </h3>
+        <p class="text-sm text-stone-500 leading-relaxed">
+          {t(lang, 'footer.nightAccessBody')}
+        </p>
+        <a href={pathBook(lang)} class="btn-neon-ghost mt-4 inline-flex">
+          {t(lang, 'footer.reserveSlot')}
+        </a>
+      </div>
+      <div class="flex md:justify-end lg:justify-end items-start gap-3">
+        <a
+          href={contact.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center size-12 rounded-lg border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10 hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] transition-all"
+          aria-label="Instagram"
+        >
+          <svg class="size-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a5.5 5.5 0 1 1 0 11.001 5.5 5.5 0 0 1 0-11zm0 2a3.5 3.5 0 1 0 .001 7.001A3.5 3.5 0 0 0 12 9.5zM17.5 6.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+            />
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-12 pt-8 border-t border-white/5 font-display text-[10px] uppercase tracking-widest text-stone-600"
+    >
+      © {t(lang, 'meta.brand')} · {t(lang, 'footer.copyright')}
+    </div>
+  </div>
+</footer>

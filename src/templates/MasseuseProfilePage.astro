@@ -1,0 +1,311 @@
+---
+import WpContent from '../components/WpContent.astro';
+import NightSchedule from '../components/NightSchedule.astro';
+import MasseuseServices from '../components/MasseuseServices.astro';
+import BookingForm from '../components/BookingForm.astro';
+import MasseuseStatsBar from '../components/MasseuseStatsBar.astro';
+import { contact } from '../data/site';
+import type { MasseuseDetail } from '../data/masseuseDetails';
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/t';
+
+type Featured = { name: string; slug: string; image: string };
+
+type Props = {
+  lang: Lang;
+  slug: string;
+  m: Featured | undefined;
+  /** Local full-size gallery paths (same order as source site). */
+  photos: readonly string[];
+  detail: MasseuseDetail | undefined;
+  page: { title: string; html: string } | null;
+  bookHref: string;
+  masseusesIndexHref: string;
+  massagesIndexHref: string;
+};
+
+const { lang, slug, m, photos, detail, page, bookHref, masseusesIndexHref, massagesIndexHref } = Astro.props;
+
+const name = m?.name ?? t(lang, 'masseuses.fallbackName');
+const reserveLabel = t(lang, 'masseuses.profileReserve').replace('{name}', name);
+
+function htmlToPlain(html: string): string {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+const bioPlain = page ? htmlToPlain(page.html) : '';
+const hasBio = bioPlain.length > 24;
+const pageLoaded = page !== null;
+
+const softPanel =
+  'rounded-2xl border border-white/[0.07] bg-black/20 p-4 sm:p-5 backdrop-blur-md shadow-[0_20px_60px_-28px_rgba(0,0,0,0.75)]';
+const softPanelSchedule =
+  'rounded-2xl border border-white/[0.07] bg-black/25 p-3 sm:p-3.5 backdrop-blur-md shadow-[0_16px_48px_-24px_rgba(0,0,0,0.72)]';
+---
+
+<article
+  class="pb-24 md:pb-10 bg-[radial-gradient(ellipse_90%_50%_at_50%_-8%,rgba(191,95,255,0.07),transparent_58%)]"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-5 sm:pt-8">
+    <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
+      <nav
+        class="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-black/35 px-3.5 py-2 text-[10px] font-display uppercase tracking-[0.2em] text-stone-500 backdrop-blur-md max-w-full"
+        aria-label="Breadcrumb"
+      >
+        <a href={masseusesIndexHref} class="hover:text-cyan-400 transition-colors touch-manipulation shrink-0">
+          {t(lang, 'masseuses.breadcrumbHosts')}
+        </a>
+        <span class="text-stone-700 select-none" aria-hidden="true">·</span>
+        <span class="text-stone-300 truncate min-w-0">{name}</span>
+      </nav>
+      <a
+        href={masseusesIndexHref}
+        class="btn-neon-ghost w-fit min-h-10 px-4 text-[10px] font-display uppercase tracking-[0.18em] touch-manipulation border-white/12 text-stone-300 hover:text-cyan-200"
+      >
+        {t(lang, 'masseuses.back')}
+      </a>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+    <div
+      class="grid gap-8 lg:gap-10 xl:gap-12 items-start lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]"
+    >
+      <aside class="space-y-5 lg:sticky lg:top-32 self-start">
+        {
+          m ? (
+            <div class="max-w-md mx-auto lg:mx-0">
+              <div class="relative">
+                <div
+                  class="pointer-events-none absolute -inset-px rounded-[1.65rem] bg-gradient-to-br from-cyan-500/25 via-transparent to-fuchsia-500/20 opacity-70 blur-[2px]"
+                  aria-hidden="true"
+                />
+                <div class="relative overflow-hidden rounded-3xl border border-white/10 shadow-[0_28px_90px_-24px_rgba(0,0,0,0.92)] ring-1 ring-white/[0.04]">
+                  <img
+                    id="host-main-photo"
+                    src={m.image}
+                    alt={name}
+                    width="560"
+                    height="720"
+                    class="aspect-[3/4] w-full object-cover object-top transition-opacity duration-300"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+              {
+                photos.length > 1 && (
+                  <div class="mt-4">
+                    <p class="text-[10px] font-display font-semibold uppercase tracking-[0.25em] text-stone-600 mb-2 lg:text-left text-center">
+                      {t(lang, 'masseuses.photoGallery')}
+                    </p>
+                    <ul
+                      class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory scrollbar-thin touch-pan-x"
+                      role="list"
+                      style="scrollbar-width: thin;"
+                    >
+                      {photos.map((src, i) => (
+                        <li class="snap-center shrink-0">
+                          <button
+                            type="button"
+                            class="host-photo-thumb block rounded-xl overflow-hidden border border-white/10 ring-2 ring-transparent transition-all hover:border-cyan-500/40 focus:outline-none focus-visible:ring-cyan-500/50 data-[active]:border-cyan-500/50 data-[active]:ring-cyan-500/30 touch-manipulation"
+                            data-host-thumb
+                            data-src={src}
+                            data-active={src === m.image ? true : undefined}
+                            aria-label={`${name} — ${t(lang, 'masseuses.photoGallery')} ${i + 1}`}
+                            aria-pressed={src === m.image ? 'true' : 'false'}
+                          >
+                            <img
+                              src={src}
+                              alt=""
+                              width="80"
+                              height="100"
+                              class="h-24 w-[4.75rem] sm:h-28 sm:w-[5.25rem] object-cover object-top"
+                              loading="lazy"
+                            />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+              }
+              <div class="mt-6 text-center lg:text-left space-y-2">
+                <p class="text-[10px] font-display font-semibold uppercase tracking-[0.32em] text-fuchsia-400/85">
+                  {t(lang, 'masseuses.detailEyebrow')}
+                </p>
+                <h1 class="font-display text-3xl sm:text-4xl font-semibold text-white tracking-tight [text-wrap:balance]">
+                  {name}
+                </h1>
+                {detail && <p class="text-sm sm:text-base text-stone-400 leading-relaxed">{detail.vibe}</p>}
+                <p class="text-xs text-stone-600 leading-relaxed pt-1">{t(lang, 'masseuses.metaLine')}</p>
+                {
+                  detail?.stats && (
+                    <div class="mt-5 pt-5 border-t border-white/[0.08]">
+                      <MasseuseStatsBar lang={lang} stats={detail.stats} />
+                    </div>
+                  )
+                }
+              </div>
+            </div>
+          ) : (
+            <div class="rounded-3xl border border-white/10 bg-surface/40 p-8 text-center">
+              <h1 class="font-display text-3xl font-semibold text-white">{name}</h1>
+            </div>
+          )
+        }
+
+        <div class="flex flex-wrap gap-2 lg:hidden">
+          <a
+            href={bookHref}
+            class="btn-neon-primary flex-1 min-w-[min(100%,10rem)] min-h-12 justify-center text-xs touch-manipulation"
+          >
+            {t(lang, 'masseuses.reserve')}
+          </a>
+          <a
+            href={`tel:${contact.phoneTel}`}
+            class="btn-neon-ghost min-h-12 px-5 touch-manipulation border-cyan-500/30 text-cyan-200"
+          >
+            {t(lang, 'masseuses.ctaCall')}
+          </a>
+        </div>
+
+        {
+          detail && (
+            <>
+              <NightSchedule
+                schedule={detail.schedule}
+                lang={lang}
+                class={softPanelSchedule}
+                compact
+              />
+              <MasseuseServices services={detail.services} lang={lang} class={softPanel} />
+            </>
+          )
+        }
+
+        <div class="hidden lg:flex flex-col gap-2.5 pt-1">
+          <a href={bookHref} class="btn-neon-primary justify-center min-h-11 touch-manipulation text-xs">
+            {reserveLabel}
+          </a>
+          <a
+            href={`tel:${contact.phoneTel}`}
+            class="btn-neon-ghost justify-center min-h-11 touch-manipulation border-white/15 text-stone-200 text-xs"
+          >
+            {contact.phoneDisplay}
+          </a>
+          <a
+            href={massagesIndexHref}
+            class="text-center text-[10px] font-display uppercase tracking-[0.2em] text-stone-500 hover:text-cyan-400/90 py-1.5 touch-manipulation"
+          >
+            {t(lang, 'masseuses.allServices')}
+          </a>
+        </div>
+      </aside>
+
+      <div class="min-w-0 flex flex-col gap-8 lg:gap-10">
+        <div class="min-w-0 space-y-5">
+          {
+            hasBio ? (
+              <section
+                class="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-br from-white/[0.03] via-black/25 to-black/40"
+                aria-labelledby="host-bio-heading"
+              >
+                <div
+                  class="pointer-events-none absolute start-0 top-4 bottom-4 w-px bg-gradient-to-b from-cyan-500/35 via-fuchsia-500/25 to-transparent"
+                  aria-hidden="true"
+                />
+                <div class="ps-5 sm:ps-7 pe-4 sm:pe-7 py-6 sm:py-9 md:py-10">
+                  <h2
+                    id="host-bio-heading"
+                    class="font-display text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.26em] text-stone-500 mb-5"
+                  >
+                    {t(lang, 'masseuses.bioTitle')}
+                  </h2>
+                  <WpContent html={page!.html} class="prose-wp prose-wp--detail prose-wp--profile max-w-none" />
+                </div>
+              </section>
+            ) : (
+              <section
+                class="rounded-2xl border border-white/[0.06] bg-black/25 px-4 py-4 sm:px-6 sm:py-6 min-h-[12rem] sm:min-h-[14rem] flex flex-col justify-center"
+                aria-labelledby="host-bio-heading"
+              >
+                <h2
+                  id="host-bio-heading"
+                  class="font-display text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.26em] text-stone-500 mb-2"
+                >
+                  {t(lang, 'masseuses.bioTitle')}
+                </h2>
+                {
+                  pageLoaded ? (
+                    <p class="text-sm text-stone-400 leading-relaxed">{t(lang, 'masseuses.bioPlaceholder')}</p>
+                  ) : (
+                    <p class="text-sm text-stone-500">{t(lang, 'masseuses.profileSyncing')}</p>
+                  )
+                }
+              </section>
+            )
+          }
+        </div>
+
+        <div id="night-booking" class="scroll-mt-28 sm:scroll-mt-32 w-full">
+          <div
+            class="rounded-3xl border border-cyan-500/15 bg-gradient-to-b from-cyan-500/[0.04] via-black/30 to-black/40 p-1 shadow-[0_0_48px_-20px_rgba(0,240,255,0.18)] ring-1 ring-white/[0.04]"
+          >
+            <BookingForm lang={lang} defaultMasseuseSlug={slug} />
+          </div>
+        </div>
+
+        <p class="text-center lg:text-start">
+          <a
+            href={masseusesIndexHref}
+            class="inline-flex min-h-11 items-center text-xs text-stone-500 hover:text-cyan-400 font-display uppercase tracking-[0.15em] transition-colors touch-manipulation"
+          >
+            {t(lang, 'masseuses.back')}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="fixed bottom-0 inset-x-0 z-30 md:hidden flex gap-2 p-3 border-t border-white/[0.08] bg-void/92 backdrop-blur-xl pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+    style="padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right));"
+  >
+    <a
+      href={`tel:${contact.phoneTel}`}
+      class="btn-neon-ghost flex-1 justify-center min-h-12 text-xs touch-manipulation border-white/15"
+    >
+      {t(lang, 'masseuses.ctaCall')}
+    </a>
+    <a href={bookHref} class="btn-neon-primary flex-[1.35] justify-center min-h-12 text-xs touch-manipulation">
+      {t(lang, 'masseuses.ctaStickyBook')}
+    </a>
+  </div>
+</article>
+
+<script is:inline>
+  (function () {
+    var main = document.getElementById('host-main-photo');
+    if (!main) return;
+    document.querySelectorAll('[data-host-thumb]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var src = btn.getAttribute('data-src');
+        if (!src) return;
+        main.src = src;
+        document.querySelectorAll('[data-host-thumb]').forEach(function (b) {
+          b.removeAttribute('data-active');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.setAttribute('data-active', '');
+        btn.setAttribute('aria-pressed', 'true');
+      });
+    });
+  })();
+</script>

@@ -1,0 +1,41 @@
+---
+import type { MasseuseServiceRef } from '../data/masseuseDetails';
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/t';
+import { massageTitle } from '../i18n/massages';
+import { pathMassage } from '../i18n/paths';
+
+type Props = {
+  services: MasseuseServiceRef[];
+  lang: Lang;
+  title?: string;
+  class?: string;
+};
+
+const { services, lang, title, class: className } = Astro.props;
+const titleFinal = title ?? t(lang, 'masseuseServices.title');
+const shell = className ?? 'card-cyber p-5 md:p-6';
+---
+
+<div class:list={[shell]}>
+  <h2 class="font-display text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-400 mb-3">
+    {titleFinal}
+  </h2>
+  <ul class="flex flex-col gap-1.5">
+    {
+      services.map((s) => (
+        <li>
+          <a
+            href={pathMassage(lang, s.slug)}
+            class="group flex items-center justify-between gap-3 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 py-2.5 text-[13px] sm:text-sm text-stone-200 transition-all hover:border-fuchsia-500/35 hover:bg-fuchsia-500/[0.06] hover:text-white touch-manipulation min-h-10"
+          >
+            <span>{massageTitle(lang, s.slug)}</span>
+            <span class="font-display text-[10px] text-fuchsia-400/70 group-hover:text-fuchsia-300 shrink-0">
+              {t(lang, 'masseuseServices.info')}
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>

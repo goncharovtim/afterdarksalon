@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { t } from '../i18n/t';
+import { graphLd, webPageJsonLd } from '../lib/seo';
+
+const lang = 'cs' as const;
+const origin = Astro.site?.origin ?? Astro.url.origin;
+const title = `${t(lang, 'meta.docTeam')} | ${t(lang, 'meta.brand')}`;
+const description = t(lang, 'team.desc');
+const jsonLd = graphLd(
+  webPageJsonLd({
+    origin,
+    url: Astro.url.pathname,
+    name: title,
+    description,
+    lang,
+  }),
+);
+---
+
+<Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-5 py-14 md:py-24 text-center space-y-8">
+    <p class="font-display text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-400">{t(lang, 'team.eyebrow')}</p>
+    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon">{t(lang, 'team.title')}</h1>
+    <p class="text-stone-400 leading-relaxed whitespace-pre-line text-sm sm:text-base">
+      {t(lang, 'team.body')}
+    </p>
+    <a
+      href={t(lang, 'team.scheduleUrl')}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-neon-primary min-h-12 touch-manipulation"
+    >
+      {t(lang, 'team.cta')}
+    </a>
+  </div>
+</Layout>

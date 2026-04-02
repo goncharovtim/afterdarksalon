@@ -1,0 +1,644 @@
+{
+  "redirects": [
+    {
+      "source": "/cs",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/cs/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/cs/book",
+      "destination": "/book",
+      "permanent": true
+    },
+    {
+      "source": "/cs/book/",
+      "destination": "/book",
+      "permanent": true
+    },
+    {
+      "source": "/cs/contacts",
+      "destination": "/contacts",
+      "permanent": true
+    },
+    {
+      "source": "/cs/contacts/",
+      "destination": "/contacts",
+      "permanent": true
+    },
+    {
+      "source": "/cs/price",
+      "destination": "/price",
+      "permanent": true
+    },
+    {
+      "source": "/cs/price/",
+      "destination": "/price",
+      "permanent": true
+    },
+    {
+      "source": "/cs/team",
+      "destination": "/team",
+      "permanent": true
+    },
+    {
+      "source": "/cs/team/",
+      "destination": "/team",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages",
+      "destination": "/massages",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/",
+      "destination": "/massages",
+      "permanent": true
+    },
+    {
+      "source": "/cs/masseuses",
+      "destination": "/masseuses",
+      "permanent": true
+    },
+    {
+      "source": "/cs/masseuses/",
+      "destination": "/masseuses",
+      "permanent": true
+    },
+    {
+      "source": "/cs/masaze",
+      "destination": "/massages",
+      "permanent": true
+    },
+    {
+      "source": "/cs/masaze/",
+      "destination": "/massages",
+      "permanent": true
+    },
+    {
+      "source": "/cs/maserky",
+      "destination": "/masseuses",
+      "permanent": true
+    },
+    {
+      "source": "/cs/maserky/",
+      "destination": "/masseuses",
+      "permanent": true
+    },
+    {
+      "source": "/cs/cenik",
+      "destination": "/price",
+      "permanent": true
+    },
+    {
+      "source": "/cs/cenik/",
+      "destination": "/price",
+      "permanent": true
+    },
+    {
+      "source": "/cs/kontakty",
+      "destination": "/contacts",
+      "permanent": true
+    },
+    {
+      "source": "/cs/kontakty/",
+      "destination": "/contacts",
+      "permanent": true
+    },
+    {
+      "source": "/cs/nas-team",
+      "destination": "/team",
+      "permanent": true
+    },
+    {
+      "source": "/cs/nas-team/",
+      "destination": "/team",
+      "permanent": true
+    },
+    {
+      "source": "/cs/kontaktni-formular",
+      "destination": "/book",
+      "permanent": true
+    },
+    {
+      "source": "/cs/kontaktni-formular/",
+      "destination": "/book",
+      "permanent": true
+    },
+    {
+      "source": "/cs/telo-na-telo-masaz",
+      "destination": "/massages/body-to-body-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/telo-na-telo-masaz/",
+      "destination": "/massages/body-to-body-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/telo-na-telo-masaz",
+      "destination": "/massages/body-to-body-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/telo-na-telo-masaz/",
+      "destination": "/massages/body-to-body-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/eroticka-mix-masaz-3-v-1",
+      "destination": "/massages/erotic-mix-massage-2",
+      "permanent": true
+    },
+    {
+      "source": "/cs/eroticka-mix-masaz-3-v-1/",
+      "destination": "/massages/erotic-mix-massage-2",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/eroticka-mix-masaz-3-v-1",
+      "destination": "/massages/erotic-mix-massage-2",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/eroticka-mix-masaz-3-v-1/",
+      "destination": "/massages/erotic-mix-massage-2",
+      "permanent": true
+    },
+    {
+      "source": "/cs/lingam-masaz",
+      "destination": "/massages/lingam-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/lingam-masaz/",
+      "destination": "/massages/lingam-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/lingam-masaz",
+      "destination": "/massages/lingam-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/lingam-masaz/",
+      "destination": "/massages/lingam-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/nuru-masaz",
+      "destination": "/massages/nuru-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/nuru-masaz/",
+      "destination": "/massages/nuru-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/nuru-masaz",
+      "destination": "/massages/nuru-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/nuru-masaz/",
+      "destination": "/massages/nuru-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/pussycat-masaz",
+      "destination": "/massages/pussycat-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/pussycat-masaz/",
+      "destination": "/massages/pussycat-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/pussycat-masaz",
+      "destination": "/massages/pussycat-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/pussycat-masaz/",
+      "destination": "/massages/pussycat-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/masaz-ctyr-rukou",
+      "destination": "/massages/four-hands-joy-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/masaz-ctyr-rukou/",
+      "destination": "/massages/four-hands-joy-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/masaz-ctyr-rukou",
+      "destination": "/massages/four-hands-joy-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/masaz-ctyr-rukou/",
+      "destination": "/massages/four-hands-joy-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/masaz-pro-pary",
+      "destination": "/massages/couple-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/masaz-pro-pary/",
+      "destination": "/massages/couple-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/masaz-pro-pary",
+      "destination": "/massages/couple-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/masaz-pro-pary/",
+      "destination": "/massages/couple-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/masaz-prostaty",
+      "destination": "/massages/prostate-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/masaz-prostaty/",
+      "destination": "/massages/prostate-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/masaz-prostaty",
+      "destination": "/massages/prostate-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/masaz-prostaty/",
+      "destination": "/massages/prostate-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/relax-massage",
+      "destination": "/massages/relax-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/relax-massage/",
+      "destination": "/massages/relax-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/relax-massage",
+      "destination": "/massages/relax-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/relax-massage/",
+      "destination": "/massages/relax-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/hotel-massage-in-prague",
+      "destination": "/massages/hotel-massage-in-prague",
+      "permanent": true
+    },
+    {
+      "source": "/cs/hotel-massage-in-prague/",
+      "destination": "/massages/hotel-massage-in-prague",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/hotel-massage-in-prague",
+      "destination": "/massages/hotel-massage-in-prague",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/hotel-massage-in-prague/",
+      "destination": "/massages/hotel-massage-in-prague",
+      "permanent": true
+    },
+    {
+      "source": "/cs/smyslna-masaz",
+      "destination": "/massages/sensual-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/smyslna-masaz/",
+      "destination": "/massages/sensual-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/smyslna-masaz",
+      "destination": "/massages/sensual-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/smyslna-masaz/",
+      "destination": "/massages/sensual-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/asian-handjobs",
+      "destination": "/massages/asian-handjobs",
+      "permanent": true
+    },
+    {
+      "source": "/cs/asian-handjobs/",
+      "destination": "/massages/asian-handjobs",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/asian-handjobs",
+      "destination": "/massages/asian-handjobs",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/asian-handjobs/",
+      "destination": "/massages/asian-handjobs",
+      "permanent": true
+    },
+    {
+      "source": "/cs/erotic-thai-massage",
+      "destination": "/massages/erotic-thai-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/erotic-thai-massage/",
+      "destination": "/massages/erotic-thai-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/erotic-thai-massage",
+      "destination": "/massages/erotic-thai-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/erotic-thai-massage/",
+      "destination": "/massages/erotic-thai-massage",
+      "permanent": true
+    },
+    {
+      "source": "/cs/nirvana-express-cz",
+      "destination": "/massages/nirvana-express",
+      "permanent": true
+    },
+    {
+      "source": "/cs/nirvana-express-cz/",
+      "destination": "/massages/nirvana-express",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/nirvana-express-cz",
+      "destination": "/massages/nirvana-express",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/nirvana-express-cz/",
+      "destination": "/massages/nirvana-express",
+      "permanent": true
+    },
+    {
+      "source": "/cs/shibari-session-cz",
+      "destination": "/massages/shibari-session",
+      "permanent": true
+    },
+    {
+      "source": "/cs/shibari-session-cz/",
+      "destination": "/massages/shibari-session",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/shibari-session-cz",
+      "destination": "/massages/shibari-session",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/shibari-session-cz/",
+      "destination": "/massages/shibari-session",
+      "permanent": true
+    },
+    {
+      "source": "/cs/shibari-show-cz",
+      "destination": "/massages/shibari-show",
+      "permanent": true
+    },
+    {
+      "source": "/cs/shibari-show-cz/",
+      "destination": "/massages/shibari-show",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/shibari-show-cz",
+      "destination": "/massages/shibari-show",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/shibari-show-cz/",
+      "destination": "/massages/shibari-show",
+      "permanent": true
+    },
+    {
+      "source": "/cs/contact-success",
+      "destination": "/contact-success",
+      "permanent": true
+    },
+    {
+      "source": "/cs/contact-success/",
+      "destination": "/contact-success",
+      "permanent": true
+    },
+    {
+      "source": "/cs/callback-success",
+      "destination": "/callback-success",
+      "permanent": true
+    },
+    {
+      "source": "/cs/callback-success/",
+      "destination": "/callback-success",
+      "permanent": true
+    },
+    {
+      "source": "/body-to-body-massage",
+      "destination": "/en/massages/body-to-body-massage",
+      "permanent": true
+    },
+    {
+      "source": "/body-to-body-massage/",
+      "destination": "/en/massages/body-to-body-massage",
+      "permanent": true
+    },
+    {
+      "source": "/erotic-mix-massage-2",
+      "destination": "/en/massages/erotic-mix-massage-2",
+      "permanent": true
+    },
+    {
+      "source": "/erotic-mix-massage-2/",
+      "destination": "/en/massages/erotic-mix-massage-2",
+      "permanent": true
+    },
+    {
+      "source": "/lingam-massage",
+      "destination": "/en/massages/lingam-massage",
+      "permanent": true
+    },
+    {
+      "source": "/lingam-massage/",
+      "destination": "/en/massages/lingam-massage",
+      "permanent": true
+    },
+    {
+      "source": "/nuru-massage",
+      "destination": "/en/massages/nuru-massage",
+      "permanent": true
+    },
+    {
+      "source": "/nuru-massage/",
+      "destination": "/en/massages/nuru-massage",
+      "permanent": true
+    },
+    {
+      "source": "/pussycat-massage",
+      "destination": "/en/massages/pussycat-massage",
+      "permanent": true
+    },
+    {
+      "source": "/pussycat-massage/",
+      "destination": "/en/massages/pussycat-massage",
+      "permanent": true
+    },
+    {
+      "source": "/four-hands-joy-massage",
+      "destination": "/en/massages/four-hands-joy-massage",
+      "permanent": true
+    },
+    {
+      "source": "/four-hands-joy-massage/",
+      "destination": "/en/massages/four-hands-joy-massage",
+      "permanent": true
+    },
+    {
+      "source": "/couple-massage",
+      "destination": "/en/massages/couple-massage",
+      "permanent": true
+    },
+    {
+      "source": "/couple-massage/",
+      "destination": "/en/massages/couple-massage",
+      "permanent": true
+    },
+    {
+      "source": "/prostate-massage",
+      "destination": "/en/massages/prostate-massage",
+      "permanent": true
+    },
+    {
+      "source": "/prostate-massage/",
+      "destination": "/en/massages/prostate-massage",
+      "permanent": true
+    },
+    {
+      "source": "/relax-massage",
+      "destination": "/en/massages/relax-massage",
+      "permanent": true
+    },
+    {
+      "source": "/relax-massage/",
+      "destination": "/en/massages/relax-massage",
+      "permanent": true
+    },
+    {
+      "source": "/hotel-massage-in-prague",
+      "destination": "/en/massages/hotel-massage-in-prague",
+      "permanent": true
+    },
+    {
+      "source": "/hotel-massage-in-prague/",
+      "destination": "/en/massages/hotel-massage-in-prague",
+      "permanent": true
+    },
+    {
+      "source": "/sensual-massage",
+      "destination": "/en/massages/sensual-massage",
+      "permanent": true
+    },
+    {
+      "source": "/sensual-massage/",
+      "destination": "/en/massages/sensual-massage",
+      "permanent": true
+    },
+    {
+      "source": "/asian-handjobs",
+      "destination": "/en/massages/asian-handjobs",
+      "permanent": true
+    },
+    {
+      "source": "/asian-handjobs/",
+      "destination": "/en/massages/asian-handjobs",
+      "permanent": true
+    },
+    {
+      "source": "/erotic-thai-massage",
+      "destination": "/en/massages/erotic-thai-massage",
+      "permanent": true
+    },
+    {
+      "source": "/erotic-thai-massage/",
+      "destination": "/en/massages/erotic-thai-massage",
+      "permanent": true
+    },
+    {
+      "source": "/nirvana-express",
+      "destination": "/en/massages/nirvana-express",
+      "permanent": true
+    },
+    {
+      "source": "/nirvana-express/",
+      "destination": "/en/massages/nirvana-express",
+      "permanent": true
+    },
+    {
+      "source": "/shibari-session",
+      "destination": "/en/massages/shibari-session",
+      "permanent": true
+    },
+    {
+      "source": "/shibari-session/",
+      "destination": "/en/massages/shibari-session",
+      "permanent": true
+    },
+    {
+      "source": "/shibari-show",
+      "destination": "/en/massages/shibari-show",
+      "permanent": true
+    },
+    {
+      "source": "/shibari-show/",
+      "destination": "/en/massages/shibari-show",
+      "permanent": true
+    },
+    {
+      "source": "/cs/massages/:path*",
+      "destination": "/massages/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/cs/masseuses/:path*",
+      "destination": "/masseuses/:path*",
+      "permanent": true
+    }
+  ]
+}

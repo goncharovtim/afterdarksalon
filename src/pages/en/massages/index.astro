@@ -1,0 +1,80 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { massageGrid } from '../../../data/site';
+import { t } from '../../../i18n/t';
+import { bookWithQuery, pathMassage } from '../../../i18n/paths';
+import { massageTitle } from '../../../i18n/massages';
+import { graphLd, massagesIndexDescription, webPageJsonLd } from '../../../lib/seo';
+
+const lang = 'en' as const;
+const origin = Astro.site?.origin ?? Astro.url.origin;
+const title = `${t(lang, 'meta.docServices')} · ${t(lang, 'meta.brand')}`;
+const description = massagesIndexDescription(lang);
+const jsonLd = graphLd(
+  webPageJsonLd({
+    origin,
+    url: Astro.url.pathname,
+    name: title,
+    description,
+    lang,
+  }),
+);
+---
+
+<Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <section class="border-b border-fuchsia-500/15 bg-surface/25">
+    <div class="max-w-7xl mx-auto px-4 sm:px-5 py-12 md:py-16">
+      <p class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-fuchsia-400 text-center mb-2">
+        {t(lang, 'massages.eyebrow')}
+      </p>
+      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-center text-gradient-neon mb-4">
+        {t(lang, 'massages.title')}
+      </h1>
+      <p class="text-center text-stone-500 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+        {t(lang, 'massages.lead')}
+      </p>
+    </div>
+  </section>
+
+  <div id="grid" class="max-w-7xl mx-auto px-4 sm:px-5 py-12 md:py-16">
+    <div class="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {massageGrid.map((item) => (
+        <article class="card-cyber flex flex-col overflow-hidden group">
+          <a
+            href={pathMassage(lang, item.slug)}
+            class="block relative aspect-[5/4] sm:aspect-square overflow-hidden bg-black touch-manipulation"
+          >
+            <img
+              src={item.image}
+              alt=""
+              width="400"
+              height="400"
+              class="size-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-80" />
+            <div class="absolute bottom-3 left-3 right-3">
+              <h2 class="font-display text-base sm:text-lg font-bold uppercase tracking-wide text-white leading-tight">
+                {massageTitle(lang, item.slug)}
+              </h2>
+            </div>
+          </a>
+          <div class="p-3 sm:p-4 flex gap-2 border-t border-white/5">
+            <a
+              href={pathMassage(lang, item.slug)}
+              class="btn-neon-ghost flex-1 justify-center !text-[9px] sm:!text-[10px] min-h-11 touch-manipulation"
+            >
+              {t(lang, 'massages.intel')}
+            </a>
+            <a
+              href={bookWithQuery(lang, { service: item.slug })}
+              class="btn-neon-primary flex-1 justify-center !py-2 !text-[9px] sm:!text-[10px] min-h-11 touch-manipulation"
+            >
+              {t(lang, 'massages.book')}
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</Layout>

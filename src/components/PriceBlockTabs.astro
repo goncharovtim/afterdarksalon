@@ -1,0 +1,83 @@
+---
+import type { PriceBlock } from '../data/pricing';
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/t';
+import PriceTable from './PriceTable.astro';
+
+type Props = { block: PriceBlock; index: number; lang: Lang };
+
+const { block, index, lang } = Astro.props;
+const baseId = `price-block-${index}-${lang}`;
+
+const tabLabel = (ti: number) => {
+  if (block.tabs.length === 1) {
+    return t(lang, 'price.tabTwo');
+  }
+  return ti === 0 ? t(lang, 'price.tabOne') : t(lang, 'price.tabTwo');
+};
+---
+
+<div class="card-cyber p-5 md:p-6">
+  <h2 class="font-display text-lg md:text-xl font-bold uppercase tracking-[0.12em] text-fuchsia-400/90 mb-4">
+    {block.title}
+  </h2>
+  {
+    block.tabs.length === 1 ? (
+      <PriceTable rows={block.tabs[0].rows} />
+    ) : (
+      <div class="space-y-3" data-price-tabs={baseId}>
+        <div class="flex flex-wrap gap-2" role="tablist">
+          {block.tabs.map((tab, ti) => (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={ti === 0 ? 'true' : 'false'}
+              data-tab-index={String(ti)}
+              class:list={[
+                'rounded-lg px-3 py-1.5 text-xs font-display font-semibold uppercase tracking-wider border transition-all',
+                ti === 0
+                  ? 'border-cyan-400 bg-cyan-500/20 text-cyan-100 shadow-[0_0_16px_rgba(0,240,255,0.2)]'
+                  : 'border-white/15 text-stone-400 hover:border-fuchsia-500/40',
+              ]}
+            >
+              {tabLabel(ti)}
+            </button>
+          ))}
+        </div>
+        {block.tabs.map((tab, ti) => (
+          <div
+            role="tabpanel"
+            class:list={['overflow-x-auto', ti !== 0 && 'hidden']}
+            data-tab-panel={String(ti)}
+          >
+            <PriceTable rows={tab.rows} />
+          </div>
+        ))}
+      </div>
+    )
+  }
+</div>
+
+<script>
+  document.querySelectorAll('[data-price-tabs]').forEach((root) => {
+    const buttons = root.querySelectorAll('[role="tab"]');
+    const panels = root.querySelectorAll('[role="tabpanel"]');
+    buttons.forEach((btn, i) => {
+      btn.addEventListener('click', () => {
+        buttons.forEach((b, j) => {
+          b.setAttribute('aria-selected', j === i ? 'true' : 'false');
+          const on = j === i;
+          b.classList.toggle('border-cyan-400', on);
+          b.classList.toggle('bg-cyan-500/20', on);
+          b.classList.toggle('text-cyan-100', on);
+          b.classList.toggle('shadow-[0_0_16px_rgba(0,240,255,0.2)]', on);
+          b.classList.toggle('border-white/15', !on);
+          b.classList.toggle('text-stone-400', !on);
+        });
+        panels.forEach((p, j) => {
+          p.classList.toggle('hidden', j !== i);
+        });
+      });
+    });
+  });
+</script>

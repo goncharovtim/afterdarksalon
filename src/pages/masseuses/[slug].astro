@@ -1,0 +1,69 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MasseuseProfilePage from '../../templates/MasseuseProfilePage.astro';
+import { featuredMasseuses } from '../../data/site';
+import { getMasseuseDetail } from '../../data/masseuseDetails';
+import { fetchTeamMemberByPath } from '../../lib/wp';
+import { t } from '../../i18n/t';
+import { bookWithQuery, pathMassages, pathMasseuse, pathMasseuses } from '../../i18n/paths';
+import {
+  breadcrumbJsonLd,
+  graphLd,
+  masseuseMetaDescription,
+  stripHtml,
+  webPageJsonLd,
+} from '../../lib/seo';
+
+export async function getStaticPaths() {
+  return featuredMasseuses.map((m) => ({ params: { slug: m.slug } }));
+}
+
+const lang = 'cs' as const;
+const slug = Astro.params.slug!;
+const page = await fetchTeamMemberByPath(`/masseuses/${slug}`);
+const detail = getMasseuseDetail(slug);
+const m = featuredMasseuses.find((x) => x.slug === slug);
+const name = m?.name ?? t(lang, 'masseuses.fallbackName');
+const title = `${name} | ${t(lang, 'meta.brand')}`;
+
+const plain = page?.html ? stripHtml(page.html, 165) : '';
+const baseDesc = masseuseMetaDescription(lang, name, detail?.vibe);
+const description = plain.length > 90 ? plain : baseDesc;
+
+const origin = Astro.site?.origin ?? Astro.url.origin;
+const jsonLd = graphLd(
+  webPageJsonLd({
+    origin,
+    url: Astro.url.pathname,
+    name,
+    description,
+    lang,
+    image: m?.image,
+  }),
+  breadcrumbJsonLd(origin, lang, [
+    { name: t(lang, 'masseuses.breadcrumbHosts'), path: pathMasseuses(lang) },
+    { name, path: pathMasseuse(lang, slug) },
+  ]),
+);
+---
+
+<Layout
+  lang={lang}
+  title={title}
+  description={description}
+  image={m?.image}
+  ogType="article"
+  jsonLd={jsonLd}
+>
+  <MasseuseProfilePage
+    lang={lang}
+    slug={slug}
+    m={m}
+    photos={m?.photos ?? []}
+    detail={detail}
+    page={page}
+    bookHref={bookWithQuery(lang, { host: slug })}
+    masseusesIndexHref={pathMasseuses(lang)}
+    massagesIndexHref={pathMassages(lang)}
+  />
+</Layout>

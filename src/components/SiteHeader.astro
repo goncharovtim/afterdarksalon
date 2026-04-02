@@ -1,0 +1,193 @@
+---
+import { contact, logoUrl } from '../data/site';
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/t';
+import {
+  pathBook,
+  pathContacts,
+  pathHome,
+  pathMassages,
+  pathMasseuses,
+  pathPrice,
+  pathSchedule,
+  pathTeam,
+  switchLangPath,
+} from '../i18n/paths';
+
+type Props = {
+  lang: Lang;
+  pathname: string;
+};
+
+const { lang, pathname } = Astro.props;
+
+const otherLang: Lang = lang === 'en' ? 'cs' : 'en';
+const switchHref = switchLangPath(pathname, otherLang);
+
+const navItems = [
+  {
+    href: pathHome(lang),
+    label: t(lang, 'nav.home'),
+    match: (p: string) => {
+      const n = p.replace(/\/$/, '') || '/';
+      if (lang === 'cs') return n === '/';
+      return n === '/en';
+    },
+  },
+  { href: pathMasseuses(lang), label: t(lang, 'nav.hosts'), match: (p: string) => p.includes('/masseuses') },
+  { href: pathMassages(lang), label: t(lang, 'nav.services'), match: (p: string) => p.includes('/massages') },
+  { href: pathSchedule(lang), label: t(lang, 'nav.schedule'), match: (p: string) => p.includes('/schedule') },
+  { href: pathBook(lang), label: t(lang, 'nav.reserve'), match: (p: string) => p.endsWith('/book') },
+  { href: pathPrice(lang), label: t(lang, 'nav.price'), match: (p: string) => p.endsWith('/price') },
+  { href: pathTeam(lang), label: t(lang, 'nav.dayTeam'), match: (p: string) => p.endsWith('/team') },
+  { href: pathContacts(lang), label: t(lang, 'nav.contacts'), match: (p: string) => p.endsWith('/contacts') },
+] as const;
+---
+
+<div
+  class="fixed top-0 left-0 right-0 z-40 border-b border-cyan-500/25 bg-void/90 backdrop-blur-md shadow-[0_0_24px_rgba(0,240,255,0.08)]"
+>
+  <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-2 py-2">
+    <div class="flex items-center gap-3">
+      <span
+        class="font-display text-[10px] font-bold uppercase tracking-[0.25em] text-fuchsia-400 drop-shadow-[0_0_8px_rgba(255,45,106,0.6)]"
+      >
+        {t(lang, 'header.afterDark')}
+      </span>
+      <a
+        href={pathBook(lang)}
+        class="hidden sm:inline-flex btn-neon-primary !py-1.5 !px-4 !text-[10px] !tracking-[0.2em]"
+      >
+        {t(lang, 'header.reserve')}
+      </a>
+    </div>
+    <div class="flex items-center gap-4">
+      <a
+        href={`tel:${contact.phoneTel}`}
+        class="font-display text-xs font-semibold text-cyan-300 hover:text-cyan-100 transition-colors"
+      >
+        {contact.phoneDisplay}
+      </a>
+      <a
+        href={switchHref}
+        class="inline-flex min-h-11 min-w-11 sm:min-h-0 sm:min-w-0 items-center justify-center sm:justify-start gap-1.5 rounded-md border border-white/10 px-3 py-2 text-stone-400 hover:border-fuchsia-500/30 hover:text-fuchsia-400 text-xs font-display uppercase tracking-wider transition-colors"
+        hreflang={otherLang === 'cs' ? 'cs-CZ' : 'en-GB'}
+        rel="alternate"
+      >
+        {t(lang, 'header.altLangShort')}
+      </a>
+    </div>
+  </div>
+</div>
+
+<header
+  class="sticky z-30 top-[2.65rem] border-b border-fuchsia-500/20 bg-abyss/85 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+>
+  <nav class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-4 py-3 lg:py-3.5">
+    <a href={pathHome(lang)} class="flex items-center gap-3 shrink-0 group">
+      <div class="relative">
+        <img
+          src={logoUrl}
+          alt=""
+          class="h-8 w-auto max-w-[160px] object-contain opacity-90 group-hover:opacity-100 transition-opacity [filter:drop-shadow(0_0_12px_rgba(0,240,255,0.25))]"
+          width="160"
+          height="32"
+        />
+      </div>
+      <div class="hidden sm:flex flex-col border-l border-cyan-500/30 pl-3">
+        <span class="font-display text-[9px] font-bold uppercase tracking-[0.2em] text-cyan-400/90">
+          {t(lang, 'header.nightSalon')}
+        </span>
+        <span class="text-[10px] text-stone-500 uppercase tracking-widest">{t(lang, 'header.prague1')}</span>
+      </div>
+      <span class="sr-only">{t(lang, 'nav.home')}</span>
+    </a>
+
+    <button
+      type="button"
+      class="lg:hidden inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-cyan-500/40 px-3 py-2 text-cyan-300 hover:bg-cyan-500/10 touch-manipulation"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-mobile-nav-toggle
+    >
+      <span class="sr-only">{t(lang, 'header.menu')}</span>
+      <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+
+    <div
+      id="site-nav"
+      class="flex w-full max-lg:max-h-[min(72dvh,calc(100dvh-9rem))] max-lg:overflow-y-auto max-lg:overscroll-contain flex-col gap-0.5 pb-4 max-lg:hidden lg:flex lg:basis-auto lg:flex-row lg:items-center lg:gap-1 xl:gap-2 lg:w-auto lg:max-h-none lg:overflow-visible lg:pb-0"
+      data-mobile-nav-panel
+    >
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'font-display text-[11px] xl:text-xs font-semibold uppercase tracking-[0.12em] px-3 py-3 lg:py-2 rounded-md border border-transparent transition-all min-h-11 lg:min-h-0 touch-manipulation',
+              item.match(pathname)
+                ? 'text-fuchsia-200 border-fuchsia-500/40 bg-fuchsia-500/10 shadow-[0_0_16px_rgba(255,45,106,0.15)] hover:border-fuchsia-400'
+                : 'text-stone-300 hover:text-cyan-200 hover:border-cyan-500/20 hover:bg-cyan-500/5',
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <details class="relative lg:ml-2 border-t border-white/5 lg:border-0 pt-2 lg:pt-0">
+        <summary
+          class="list-none cursor-pointer font-display text-[11px] font-semibold uppercase tracking-wider text-cyan-400 py-2 lg:py-2 px-3 rounded-md hover:bg-white/5 [&::-webkit-details-marker]:hidden flex items-center gap-1"
+        >
+          {t(lang, 'header.call')}
+          <span class="text-stone-600 text-xs">▾</span>
+        </summary>
+        <ul
+          class="lg:absolute lg:right-0 lg:mt-1 lg:min-w-[11rem] rounded-lg border border-cyan-500/25 bg-void/98 py-1 text-sm shadow-[0_0_24px_rgba(0,0,0,0.5)] backdrop-blur-md"
+        >
+          <li>
+            <a
+              href={`tel:${contact.phoneTel}`}
+              class="block px-4 py-2.5 text-stone-200 hover:bg-fuchsia-500/10 hover:text-fuchsia-200"
+            >
+              {contact.phoneDisplay}
+            </a>
+          </li>
+          <li>
+            <a
+              href={pathContacts(lang)}
+              class="block px-4 py-2.5 text-stone-200 hover:bg-cyan-500/10 hover:text-cyan-200"
+            >
+              {t(lang, 'header.messageMap')}
+            </a>
+          </li>
+        </ul>
+      </details>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const btn = document.querySelector('[data-mobile-nav-toggle]');
+  const panel = document.querySelector('[data-mobile-nav-panel]');
+  if (btn && panel instanceof HTMLElement) {
+    const setOpen = (open: boolean) => {
+      panel.classList.toggle('max-lg:hidden', !open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    btn.addEventListener('click', () => {
+      const open = panel.classList.contains('max-lg:hidden');
+      setOpen(open);
+    });
+    panel.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (window.matchMedia('(max-width: 1023px)').matches) setOpen(false);
+      });
+    });
+  }
+</script>

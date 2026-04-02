@@ -1,0 +1,90 @@
+---
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import AgeGate from '../components/AgeGate.astro';
+import CookieBar from '../components/CookieBar.astro';
+import { faviconUrl } from '../data/site';
+import type { Lang } from '../i18n/types';
+import { switchLangPath } from '../i18n/paths';
+import { absoluteUrl } from '../lib/seo';
+
+type Props = {
+  lang: Lang;
+  title: string;
+  description?: string;
+  /** Open Graph / Twitter image (absolute URL or site-relative path). */
+  image?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>;
+};
+
+const {
+  lang,
+  title,
+  description,
+  image,
+  ogType = 'website',
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+
+const htmlLang = lang === 'cs' ? 'cs-CZ' : 'en-GB';
+const pathname = Astro.url.pathname;
+const origin = Astro.site?.origin ?? Astro.url.origin;
+const canonicalUrl = Astro.url.href.split('#')[0];
+const enUrl = absoluteUrl(origin, switchLangPath(pathname, 'en'));
+const csUrl = absoluteUrl(origin, switchLangPath(pathname, 'cs'));
+const ogLocale = lang === 'cs' ? 'cs_CZ' : 'en_GB';
+const ogLocaleAlt = lang === 'cs' ? 'en_GB' : 'cs_CZ';
+const ogImage = image ? absoluteUrl(origin, image) : undefined;
+const ldJson = jsonLd ? JSON.stringify(jsonLd) : null;
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#030308" />
+    {description && <meta name="description" content={description} />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {!noindex && <meta name="robots" content="index, follow, max-image-preview:large" />}
+    <link rel="icon" type="image/png" href={faviconUrl} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="cs" href={csUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={csUrl} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="After Dark" />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlt} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta name="twitter:card" content="summary_large_image" />}
+    {!ogImage && <meta name="twitter:card" content="summary" />}
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300..800;1,300..800&family=Orbitron:wght@400..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+    {ldJson && <script type="application/ld+json" set:html={ldJson} />}
+  </head>
+  <body class="cyber-root min-h-screen flex flex-col pb-[env(safe-area-inset-bottom)]">
+    <AgeGate lang={lang} />
+    <SiteHeader lang={lang} pathname={pathname} />
+    <main id="main-content" class="relative z-10 flex-1 pt-[6.5rem] md:pt-28">
+      <slot />
+    </main>
+    <SiteFooter lang={lang} />
+    <CookieBar lang={lang} />
+  </body>
+</html>

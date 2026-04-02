@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import HomePage from '../../templates/HomePage.astro';
+import { t } from '../../i18n/t';
+import { graphLd, webPageJsonLd } from '../../lib/seo';
+
+const lang = 'en' as const;
+const origin = Astro.site?.origin ?? Astro.url.origin;
+const title = t(lang, 'meta.title');
+const description = t(lang, 'meta.description');
+const jsonLd = graphLd(
+  webPageJsonLd({
+    origin,
+    url: Astro.url.pathname,
+    name: title,
+    description,
+    lang,
+  }),
+);
+---
+
+<Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <HomePage lang={lang} />
+</Layout>

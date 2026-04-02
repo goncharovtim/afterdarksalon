@@ -1,0 +1,30 @@
+---
+import type { PriceRow } from '../data/pricing';
+
+type Props = { rows: PriceRow[] };
+
+const { rows } = Astro.props;
+---
+
+<div class="overflow-x-auto rounded-lg border border-cyan-500/20">
+  <table class="w-full min-w-[320px] text-sm text-left">
+    <thead class="bg-black/50 font-display text-cyan-400 text-[10px] uppercase tracking-widest">
+      <tr>
+        <th class="px-3 py-2 font-bold" scope="col">Duration</th>
+        <th class="px-3 py-2 font-bold" scope="col">CZK</th>
+        <th class="px-3 py-2 font-bold" scope="col">EUR</th>
+        <th class="px-3 py-2 font-bold" scope="col">USD</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-white/10">
+      {rows.map((row) => (
+        <tr class="hover:bg-fuchsia-500/5">
+          <td class="px-3 py-2 text-stone-200">{row.duration}</td>
+          <td class="px-3 py-2 text-stone-400">{row.czk}</td>
+          <td class="px-3 py-2 text-stone-400">{row.eur}</td>
+          <td class="px-3 py-2 text-fuchsia-300/90">{row.usd}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

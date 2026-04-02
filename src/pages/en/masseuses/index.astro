@@ -1,0 +1,119 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { featuredMasseuses } from '../../../data/site';
+import { getMasseuseDetail } from '../../../data/masseuseDetails';
+import { t } from '../../../i18n/t';
+import { bookWithQuery, pathMasseuse } from '../../../i18n/paths';
+import { massageTitle } from '../../../i18n/massages';
+import { graphLd, masseusesIndexDescription, webPageJsonLd } from '../../../lib/seo';
+import MasseuseCardImage from '../../../components/MasseuseCardImage.astro';
+
+const lang = 'en' as const;
+const origin = Astro.site?.origin ?? Astro.url.origin;
+const title = `${t(lang, 'meta.docHosts')} · ${t(lang, 'meta.brand')}`;
+const description = masseusesIndexDescription(lang);
+const jsonLd = graphLd(
+  webPageJsonLd({
+    origin,
+    url: Astro.url.pathname,
+    name: title,
+    description,
+    lang,
+  }),
+);
+---
+
+<Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <section class="border-b border-cyan-500/15 bg-surface/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-5 py-12 md:py-16 text-center">
+      <p class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-cyan-400 mb-2">
+        {t(lang, 'masseuses.eyebrow')}
+      </p>
+      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon mb-4">
+        {t(lang, 'masseuses.title')}
+      </h1>
+      <p class="text-stone-500 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
+        {t(lang, 'masseuses.lead')}
+      </p>
+      <div class="max-w-md mx-auto mt-8">
+        <label class="sr-only" for="host-filter-en">{t(lang, 'masseuses.filterPh')}</label>
+        <input
+          type="search"
+          id="host-filter-en"
+          placeholder={t(lang, 'masseuses.filterPh')}
+          class="w-full min-h-12 rounded-lg border border-cyan-500/30 bg-black/40 px-4 py-3 text-base text-stone-200 placeholder:text-stone-600 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 touch-manipulation"
+          data-host-filter
+          autocomplete="off"
+        />
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-5 py-12 md:py-16">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-host-grid>
+      {featuredMasseuses.map((m) => {
+        const d = getMasseuseDetail(m.slug);
+        return (
+          <article
+            class="card-cyber overflow-hidden flex flex-col"
+            data-host-name={m.name.toLowerCase()}
+          >
+            <a
+              href={pathMasseuse(lang, m.slug)}
+              class="relative aspect-[7/10] overflow-hidden bg-black group block touch-manipulation"
+            >
+              <MasseuseCardImage
+                lang={lang}
+                name={m.name}
+                image={m.image}
+                vibe={d?.vibe}
+                stats={d?.stats}
+              />
+            </a>
+            <div class="p-4 flex flex-col gap-3 flex-1 border-t border-white/5">
+              {d && (
+                <ul class="flex flex-wrap gap-1.5">
+                  {d.services.map((s) => (
+                    <li>
+                      <a
+                        href={bookWithQuery(lang, { host: m.slug, service: s.slug })}
+                        class="inline-block text-[10px] uppercase tracking-wider px-2 py-1.5 min-h-9 rounded border border-cyan-500/25 text-cyan-400/80 hover:border-fuchsia-500/40 hover:text-fuchsia-300 transition-colors touch-manipulation"
+                      >
+                        {massageTitle(lang, s.slug)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div class="flex gap-2 mt-auto">
+                <a href={pathMasseuse(lang, m.slug)} class="btn-neon-ghost flex-1 justify-center !text-[9px] min-h-11 touch-manipulation">
+                  {t(lang, 'masseuses.dossier')}
+                </a>
+                <a
+                  href={bookWithQuery(lang, { host: m.slug })}
+                  class="btn-neon-primary flex-1 justify-center !py-2 !text-[9px] min-h-11 touch-manipulation"
+                >
+                  {t(lang, 'masseuses.reserve')}
+                </a>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const input = document.querySelector('[data-host-filter]') as HTMLInputElement | null;
+  const grid = document.querySelector('[data-host-grid]');
+  if (input && grid) {
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      grid.querySelectorAll<HTMLElement>('[data-host-name]').forEach((card) => {
+        const name = card.dataset.hostName ?? '';
+        card.style.display = !q || name.includes(q) ? '' : 'none';
+      });
+    });
+  }
+</script>

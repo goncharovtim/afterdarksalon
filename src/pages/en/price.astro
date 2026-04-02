@@ -1,0 +1,58 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PriceBlockTabs from '../../components/PriceBlockTabs.astro';
+import { extraServices, getPriceBlocks } from '../../data/pricing';
+import { t } from '../../i18n/t';
+import { graphLd, webPageJsonLd } from '../../lib/seo';
+
+const lang = 'en' as const;
+const origin = Astro.site?.origin ?? Astro.url.origin;
+const title = `${t(lang, 'meta.docPrice')} | ${t(lang, 'meta.brand')}`;
+const description = t(lang, 'price.desc');
+const jsonLd = graphLd(
+  webPageJsonLd({
+    origin,
+    url: Astro.url.pathname,
+    name: title,
+    description,
+    lang,
+  }),
+);
+
+const blocksForLang = getPriceBlocks(lang);
+---
+
+<Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
+  <section class="border-b border-cyan-500/15 bg-surface/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-5 py-12 text-center">
+      <p class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-cyan-400 mb-2">
+        {t(lang, 'price.eyebrow')}
+      </p>
+      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon">{t(lang, 'price.title')}</h1>
+    </div>
+  </section>
+  <div class="max-w-7xl mx-auto px-4 sm:px-5 py-14 md:py-20 space-y-10">
+    <div class="grid gap-8 lg:grid-cols-2">
+      {blocksForLang.map((block, index) => (
+        <PriceBlockTabs block={block} index={index} lang={lang} />
+      ))}
+    </div>
+    <div class="card-cyber neon-border p-6 md:p-8 max-w-3xl mx-auto overflow-x-auto">
+      <h2 class="font-display text-lg font-bold uppercase tracking-[0.15em] text-fuchsia-400 mb-4">
+        {t(lang, 'price.extraTitle')}
+      </h2>
+      <table class="w-full text-sm min-w-[280px]">
+        <tbody class="divide-y divide-white/10">
+          {extraServices.map((row) => (
+            <tr>
+              <td class="py-2.5 pe-4 text-stone-300">{row.name}</td>
+              <td class="py-2.5 text-cyan-400 text-right whitespace-nowrap font-display text-xs uppercase">
+                {row.price}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,55 @@
+---
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/t';
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+---
+
+<div
+  id="cookie-bar"
+  class="fixed bottom-0 left-0 right-0 z-50 border-t border-cyan-500/25 bg-void/95 backdrop-blur-md text-stone-400 text-xs px-4 py-3 shadow-[0_-8px_32px_rgba(0,0,0,0.5)]"
+>
+  <div class="max-w-7xl mx-auto flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+    <p class="leading-snug">
+      {t(lang, 'cookie.text')}
+    </p>
+    <button
+      type="button"
+      id="cookie-accept"
+      class="shrink-0 rounded-md border border-cyan-500/50 bg-cyan-500/10 px-4 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-cyan-200 hover:bg-cyan-500/20 transition-colors"
+    >
+      {t(lang, 'cookie.accept')}
+    </button>
+  </div>
+</div>
+
+<script>
+  const KEY = 'ads-cookie-ok';
+  const bar = document.getElementById('cookie-bar');
+  const btn = document.getElementById('cookie-accept');
+
+  const hide = () => {
+    if (bar) bar.classList.add('hidden');
+  };
+  const show = () => {
+    if (bar) bar.classList.remove('hidden');
+  };
+
+  try {
+    if (localStorage.getItem(KEY) === '1') hide();
+    else show();
+  } catch {
+    hide();
+  }
+
+  btn?.addEventListener('click', () => {
+    try {
+      localStorage.setItem(KEY, '1');
+    } catch {
+      /* ignore */
+    }
+    hide();
+  });
+</script>

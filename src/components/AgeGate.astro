@@ -1,0 +1,93 @@
+---
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/t';
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+---
+
+<div
+  id="age-gate"
+  class="fixed inset-0 z-[100] flex items-center justify-center bg-void/98 px-4 cyber-grid-bg"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="age-gate-title"
+  hidden
+>
+  <div
+    class="neon-border-magenta max-w-lg w-full rounded-2xl border border-fuchsia-500/40 bg-surface/95 p-8 md:p-10 shadow-[0_0_60px_rgba(255,45,106,0.2)] text-center relative overflow-hidden"
+  >
+    <div
+      class="pointer-events-none absolute -top-20 -right-20 size-40 rounded-full bg-cyan-500/20 blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+    <p class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-cyan-400 mb-3">
+      {t(lang, 'ageGate.eyebrow')}
+    </p>
+    <h1 id="age-gate-title" class="font-display text-xl md:text-2xl font-bold text-gradient-neon mb-4">
+      {t(lang, 'ageGate.title')}
+    </h1>
+    <p class="text-stone-400 leading-relaxed mb-8 text-sm">
+      {t(lang, 'ageGate.body')}
+    </p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <button type="button" id="age-gate-enter" class="btn-neon-primary justify-center">
+        {t(lang, 'ageGate.enter')}
+      </button>
+      <button
+        type="button"
+        id="age-gate-exit"
+        class="rounded-lg border border-white/15 px-6 py-3 text-sm text-stone-400 hover:border-fuchsia-500/40 hover:text-fuchsia-300 transition-colors"
+      >
+        {t(lang, 'ageGate.exit')}
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const KEY = 'ads-age-ok';
+  const gate = document.getElementById('age-gate');
+  const enter = document.getElementById('age-gate-enter');
+  const exit = document.getElementById('age-gate-exit');
+
+  const hide = () => {
+    if (gate) {
+      gate.hidden = true;
+      gate.style.display = 'none';
+    }
+    document.body.style.overflow = '';
+  };
+  const show = () => {
+    if (gate) {
+      gate.hidden = false;
+      gate.style.display = '';
+    }
+    document.body.style.overflow = 'hidden';
+  };
+
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem(KEY) === '1') {
+      hide();
+    } else {
+      show();
+    }
+  } catch {
+    show();
+  }
+
+  enter?.addEventListener('click', () => {
+    try {
+      localStorage.setItem(KEY, '1');
+    } catch {
+      /* ignore */
+    }
+    hide();
+  });
+
+  exit?.addEventListener('click', () => {
+    window.location.href = 'https://www.google.com/';
+  });
+</script>

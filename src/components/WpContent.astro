@@ -1,0 +1,10 @@
+---
+type Props = {
+  html: string;
+  class?: string;
+};
+
+const { html, class: className = '' } = Astro.props;
+---
+
+<section class:list={['prose-wp max-w-none', className]} set:html={html} />

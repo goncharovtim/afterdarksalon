@@ -1,0 +1,66 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MassageServicePage from '../../templates/MassageServicePage.astro';
+import { massageGrid } from '../../data/site';
+import { fetchWpPageBySlug, wpPageSlugForMassage } from '../../lib/wp';
+import { t } from '../../i18n/t';
+import { bookWithQuery, pathMassage, pathMassages } from '../../i18n/paths';
+import { massageTitle } from '../../i18n/massages';
+import {
+  breadcrumbJsonLd,
+  graphLd,
+  massageMetaDescription,
+  stripHtml,
+  webPageJsonLd,
+} from '../../lib/seo';
+
+export async function getStaticPaths() {
+  return massageGrid.map((m) => ({ params: { slug: m.slug } }));
+}
+
+const lang = 'cs' as const;
+const slug = Astro.params.slug!;
+const item = massageGrid.find((m) => m.slug === slug);
+const page = await fetchWpPageBySlug(wpPageSlugForMassage(item, lang));
+const label = item ? massageTitle(lang, item.slug) : slug;
+const heading = page?.title ?? label;
+const title = `${heading} | ${t(lang, 'meta.brand')}`;
+
+const plain = page?.html ? stripHtml(page.html, 165) : '';
+const description =
+  plain.length > 90 ? plain : massageMetaDescription(lang, heading);
+
+const origin = Astro.site?.origin ?? Astro.url.origin;
+const jsonLd = graphLd(
+  webPageJsonLd({
+    origin,
+    url: Astro.url.pathname,
+    name: heading,
+    description,
+    lang,
+    image: item?.image,
+  }),
+  breadcrumbJsonLd(origin, lang, [
+    { name: t(lang, 'nav.services'), path: pathMassages(lang) },
+    { name: heading, path: pathMassage(lang, slug) },
+  ]),
+);
+---
+
+<Layout
+  lang={lang}
+  title={title}
+  description={description}
+  image={item?.image}
+  ogType="article"
+  jsonLd={jsonLd}
+>
+  <MassageServicePage
+    lang={lang}
+    slug={slug}
+    item={item}
+    page={page}
+    bookHref={bookWithQuery(lang, { service: slug })}
+    massagesIndexHref={pathMassages(lang)}
+  />
+</Layout>

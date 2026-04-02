@@ -1,0 +1,76 @@
+---
+import type { Lang } from '../i18n/types';
+import type { MasseuseStats } from '../data/masseuseDetails';
+import { t } from '../i18n/t';
+
+type Props = {
+  lang: Lang;
+  stats: MasseuseStats;
+  /** Tighter row on cards / overlays */
+  compact?: boolean;
+};
+
+const { lang, stats, compact = false } = Astro.props;
+
+type StatKind = 'age' | 'bust' | 'height' | 'weight' | 'tattoos';
+
+type Row = { kind: StatKind; labelKey: string; value: string | undefined };
+
+function displayValue(kind: StatKind, raw: string): string {
+  if (kind === 'tattoos') {
+    const v = raw.trim().toLowerCase();
+    if (v === 'yes') return t(lang, 'masseuses.tattooYes');
+    if (v === 'no') return t(lang, 'masseuses.tattooNo');
+  }
+  return raw;
+}
+
+const rows: Row[] = [
+  { kind: 'age', labelKey: 'masseuses.cardAge', value: stats.age },
+  { kind: 'bust', labelKey: 'masseuses.cardBust', value: stats.bust },
+  { kind: 'height', labelKey: 'masseuses.cardHeight', value: stats.height },
+  { kind: 'weight', labelKey: 'masseuses.cardWeight', value: stats.weight },
+  { kind: 'tattoos', labelKey: 'masseuses.cardTattoo', value: stats.tattoos },
+];
+
+const visible = rows.filter((r) => r.value && String(r.value).trim().length > 0);
+---
+
+{
+  visible.length > 0 && (
+    <div
+      class:list={[
+        'flex flex-wrap items-start',
+        compact ? 'gap-x-4 gap-y-2.5' : 'gap-x-6 gap-y-3',
+      ]}
+      role="list"
+    >
+      {visible.map((row) => (
+        <div
+          class:list={[
+            'min-w-0',
+            compact ? 'min-w-[4.75rem]' : 'min-w-[5.25rem] sm:min-w-[5.75rem]',
+          ]}
+          role="listitem"
+        >
+          <p
+            class:list={[
+              'font-medium uppercase tracking-wider text-stone-500',
+              compact ? 'text-[8px] leading-tight' : 'text-[9px] sm:text-[10px] leading-tight',
+            ]}
+          >
+            {t(lang, row.labelKey)}
+          </p>
+          <p
+            class:list={[
+              'font-semibold text-stone-100 tabular-nums',
+              compact ? 'text-xs mt-0.5' : 'text-sm mt-0.5',
+            ]}
+          >
+            {displayValue(row.kind, String(row.value))}
+          </p>
+        </div>
+      ))}
+    </div>
+  )
+}
