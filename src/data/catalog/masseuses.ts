@@ -1,16 +1,13 @@
 import type { CatalogMasseuse } from './sanityTypes';
 import { defaultNightSchedule } from './nightSchedule';
 
-/**
- * Host profiles — Sanity: `masseuse` docs with image assets, references to `massageService`, schedule objects.
- */
 export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
   {
     _type: 'masseuse',
     _id: 'masseuse.alina',
     slug: 'alina',
     name: 'Alina',
-    vibe: 'Tantra · Nuru',
+    vibe: { en: 'Tantra · Nuru', cs: 'Tantra · nuru' },
     cardImageUrl: '/team/alina/IMG_9665.jpg',
     galleryUrls: [
       '/team/alina/IMG_9665.jpg',
@@ -28,7 +25,7 @@ export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
     _id: 'masseuse.angie-2',
     slug: 'angie-2',
     name: 'Angie',
-    vibe: 'Sensual · Mix',
+    vibe: { en: 'Sensual · Mix', cs: 'Smyslná masáž · mix' },
     cardImageUrl: '/team/angie-2/2026-03-27-13.52.46.jpg',
     galleryUrls: [
       '/team/angie-2/2026-03-27-13.52.46.jpg',
@@ -45,7 +42,7 @@ export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
     _id: 'masseuse.alice',
     slug: 'alice',
     name: 'Alice',
-    vibe: 'Four hands · Duo',
+    vibe: { en: 'Four hands · Duo', cs: 'Čtyři ruce · duo' },
     cardImageUrl: '/team/alice/IMG_9664.jpg',
     galleryUrls: [
       '/team/alice/IMG_9664.jpg',
@@ -63,7 +60,7 @@ export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
     _id: 'masseuse.tina',
     slug: 'tina',
     name: 'Tina',
-    vibe: 'Classic · Deep',
+    vibe: { en: 'Classic · Deep', cs: 'Klasická · hluboká' },
     cardImageUrl: '/team/tina/tina-2.jpg',
     galleryUrls: ['/team/tina/tina-2.jpg', '/team/tina/tina-3.jpg'],
     stats: { age: '27', height: '172 cm', weight: '55 kg', bust: '3', tattoos: 'yes' },
@@ -76,7 +73,7 @@ export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
     _id: 'masseuse.lola',
     slug: 'lola',
     name: 'Lola',
-    vibe: 'Playful · Nuru',
+    vibe: { en: 'Playful · Nuru', cs: 'Hravá · nuru' },
     cardImageUrl: '/team/lola/IMG_9612.jpg',
     galleryUrls: ['/team/lola/IMG_9612.jpg', '/team/lola/IMG_9613.jpg', '/team/lola/IMG_9615.jpg'],
     stats: { age: '23', height: '163 cm', weight: '48 kg', bust: '2', tattoos: 'no' },
@@ -89,7 +86,7 @@ export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
     _id: 'masseuse.nika',
     slug: 'nika',
     name: 'Nika',
-    vibe: 'Night owl · VIP',
+    vibe: { en: 'Night owl · VIP', cs: 'Noční typ · VIP' },
     cardImageUrl: '/team/nika/nika-15.jpg',
     galleryUrls: ['/team/nika/nika-15.jpg', '/team/nika/nika-17.jpg', '/team/nika/nika-18.jpg'],
     stats: { age: '28', height: '175 cm', weight: '56 kg', bust: '4', tattoos: 'yes' },

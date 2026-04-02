@@ -174,9 +174,37 @@
   .animate-float {
     animation: float-slow 6s ease-in-out infinite;
   }
+
+  .scrollbar-cyber {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 240, 255, 0.35) rgba(255, 255, 255, 0.05);
+  }
+
+  .scrollbar-cyber::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  .scrollbar-cyber::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 9999px;
+  }
+
+  .scrollbar-cyber::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(0, 240, 255, 0.28), rgba(191, 95, 255, 0.22));
+    border-radius: 9999px;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+  }
+
+  .scrollbar-cyber::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(0, 240, 255, 0.45), rgba(191, 95, 255, 0.35));
+  }
+
+  .scrollbar-cyber::-webkit-scrollbar-corner {
+    background: transparent;
+  }
 }
 
-/* WordPress legacy HTML */
 .prose-wp {
   @apply text-stone-300 leading-relaxed;
 }
@@ -192,7 +220,6 @@
   @apply font-display text-cyan-300 tracking-wide uppercase text-sm md:text-base;
 }
 
-/* Detail pages — mobile-first reading rhythm */
 .prose-wp--detail {
   @apply text-[15px] sm:text-base leading-[1.65] sm:leading-relaxed;
 }
@@ -214,7 +241,6 @@
   @apply mt-8 sm:mt-10 mb-3 text-[13px] sm:text-sm;
 }
 
-/* Host profile bio — calmer rhythm */
 .prose-wp--profile p:first-of-type {
   @apply text-[15px] sm:text-[17px] text-stone-200/95 leading-relaxed;
 }

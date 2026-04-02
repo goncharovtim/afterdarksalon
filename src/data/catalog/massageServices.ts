@@ -5,10 +5,6 @@ function httpsSrc(src: string): string {
   return src;
 }
 
-/**
- * Canonical massage / service list — titles, slugs, WP sources, hero art.
- * Sanity: one `massageService` document per row; `heroImageUrl` → upload asset, drop WP.
- */
 export const MASSAGE_SERVICE_CATALOG: CatalogMassageService[] = [
   {
     _type: 'massageService',
@@ -19,6 +15,14 @@ export const MASSAGE_SERVICE_CATALOG: CatalogMassageService[] = [
     heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9540.jpg'),
     homeFeature: true,
     sortOrder: 10,
+    seoTitle: {
+      en: 'Body to body massage - an exciting, eroticall charged procedure',
+      cs: 'Tělo na tělo masáž - vzrušující procedura s erotickým nábojem',
+    },
+    seoDescription: {
+      en: 'A body to body massage is a sexy procedure full of intimacy and close contact ❤️ This is as close to actual sex as you can get ❤️ Try it and find out.',
+      cs: 'Zažijte masáž tělo na tělo - sexy proceduru plnou těsného, intimního kontaktu ❤️ Žádný přímý sex, pořádná porce vzrušení se štastným koncem je zato zaručena ❤️.',
+    },
   },
   {
     _type: 'massageService',
@@ -29,6 +33,14 @@ export const MASSAGE_SERVICE_CATALOG: CatalogMassageService[] = [
     heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9542.jpg'),
     homeFeature: true,
     sortOrder: 20,
+    seoTitle: {
+      en: 'Mix massage – Our erotic massage in Prague | NIRVANA',
+      cs: 'Mix massage – Our erotic massage in Prague | NIRVANA',
+    },
+    seoDescription: {
+      en: 'Try this unique combination of all your favourite erotic massage treatments - Erotic Mix massage - your way to reach Nirvana',
+      cs: 'Try this unique combination of all your favourite erotic massage treatments - Erotic Mix massage - your way to reach Nirvana',
+    },
   },
   {
     _type: 'massageService',
@@ -39,6 +51,14 @@ export const MASSAGE_SERVICE_CATALOG: CatalogMassageService[] = [
     heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9545.jpg'),
     homeFeature: true,
     sortOrder: 30,
+    seoTitle: {
+      en: 'Lingam massage – a tantra-inspired penis & body treatment',
+      cs: 'Lingam masáž - smyslná masáž penisu s tantrickými prvky',
+    },
+    seoDescription: {
+      en: "Experience a lingam massage, a tantric-based rubdown focusing on your erogenous zones ❤️ Shorter and to the point, this is the perfect massage if you're busy.",
+      cs: 'Vyzkoušejte lingam masáž, speciální odnož masáže tantrické se zaměřením na penis a erogenní zóny ❤️ Maximální rozkoš a relaxace ❤️ Krásné masérky.',
+    },
   },
   {
     _type: 'massageService',
@@ -49,6 +69,14 @@ export const MASSAGE_SERVICE_CATALOG: CatalogMassageService[] = [
     heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9541.jpg'),
     homeFeature: true,
     sortOrder: 40,
+    seoTitle: {
+      en: "Nuru massage in Prague - an erotic Japanese rubdown you won't regret",
+      cs: 'Nuru masáž - klouzavá japonská masáž v těsném kontaktu',
+    },
+    seoDescription: {
+      en: 'Indulge in a delightful nuru massage, an erotic Japanese procedure which combines relaxation with pleasure ❤️ Add extra services for more pleasure ❤️.',
+      cs: 'Erotická nuru masáž patří mezi nejvíce sexy procedury svého druhu ❤️ Těšte se na intimní kontakt tělo na tělo, který přináší rozkoš i bez přímého sexu.',
+    },
   },
   {
     _type: 'massageService',
@@ -59,6 +87,14 @@ export const MASSAGE_SERVICE_CATALOG: CatalogMassageService[] = [
     heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9544.jpg'),
     homeFeature: true,
     sortOrder: 50,
+    seoTitle: {
+      en: 'Pussycat massage - try a special erotic rubdown at our spa',
+      cs: 'Pussycat masáž - vyzkoušejte speciální masáž našeho salónu',
+    },
+    seoDescription: {
+      en: "A sexy Pussycat massage is a unique procedure both thrilling and relaxing ❤️ Try this combination of nuru and lingam treatments at our spa ❤️. You won't regret.",
+      cs: 'Sexy Pussycat masáž je erotickou procedurou, jakou jinde nenajdete ❤️ Smyslné masírování celého těla včetně erogenních zón váš přivede na vrchol rozkoše ❤️.',
+    },
   },
   {
     _type: 'massageService',
@@ -69,105 +105,17 @@ export const MASSAGE_SERVICE_CATALOG: CatalogMassageService[] = [
     heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9543.jpg'),
     homeFeature: true,
     sortOrder: 60,
-  },
-  {
-    _type: 'massageService',
-    _id: 'massageService.couple-massage',
-    slug: 'couple-massage',
-    title: { en: 'Couple massage', cs: 'Masáž pro páry' },
-    wpSlug: { en: 'couple-massage', cs: 'masaz-pro-pary' },
-    heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9542.jpg'),
-    homeFeature: false,
-    sortOrder: 70,
-  },
-  {
-    _type: 'massageService',
-    _id: 'massageService.prostate-massage',
-    slug: 'prostate-massage',
-    title: { en: 'Prostate massage', cs: 'Masáž prostaty' },
-    wpSlug: { en: 'prostate-massage', cs: 'masaz-prostaty' },
-    heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9545.jpg'),
-    homeFeature: false,
-    sortOrder: 80,
-  },
-  {
-    _type: 'massageService',
-    _id: 'massageService.relax-massage',
-    slug: 'relax-massage',
-    title: { en: 'Relax massage', cs: 'Relaxační masáž' },
-    wpSlug: { en: 'relax-massage', cs: 'relax-massage' },
-    heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9540.jpg'),
-    homeFeature: false,
-    sortOrder: 90,
-  },
-  {
-    _type: 'massageService',
-    _id: 'massageService.hotel-massage-in-prague',
-    slug: 'hotel-massage-in-prague',
-    title: { en: 'Hotel massage in Prague', cs: 'Masáž v hotelu (Praha)' },
-    wpSlug: { en: 'hotel-massage-in-prague', cs: 'hotel-massage-in-prague' },
-    heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/salon-8.jpg'),
-    homeFeature: false,
-    sortOrder: 100,
-  },
-  {
-    _type: 'massageService',
-    _id: 'massageService.sensual-massage',
-    slug: 'sensual-massage',
-    title: { en: 'Sensual massage', cs: 'Smyslná masáž' },
-    wpSlug: { en: 'sensual-massage', cs: 'smyslna-masaz' },
-    heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9541.jpg'),
-    homeFeature: false,
-    sortOrder: 110,
-  },
-  {
-    _type: 'massageService',
-    _id: 'massageService.asian-handjobs',
-    slug: 'asian-handjobs',
-    title: { en: 'Asian handjobs', cs: 'Asijské masáže rukou' },
-    wpSlug: { en: 'asian-handjobs', cs: 'asian-handjobs' },
-    heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9544.jpg'),
-    homeFeature: false,
-    sortOrder: 120,
-  },
-  {
-    _type: 'massageService',
-    _id: 'massageService.erotic-thai-massage',
-    slug: 'erotic-thai-massage',
-    title: { en: 'Erotic Thai massage', cs: 'Erotická thajská masáž' },
-    wpSlug: { en: 'erotic-thai-massage', cs: 'erotic-thai-massage' },
-    heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/IMG_9543.jpg'),
-    homeFeature: false,
-    sortOrder: 130,
-  },
-  {
-    _type: 'massageService',
-    _id: 'massageService.nirvana-express',
-    slug: 'nirvana-express',
-    title: { en: 'Nirvana Express', cs: 'Nirvana Express' },
-    wpSlug: { en: 'nirvana-express', cs: 'nirvana-express-cz' },
-    heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/salon-10.jpg'),
-    homeFeature: false,
-    sortOrder: 140,
-  },
-  {
-    _type: 'massageService',
-    _id: 'massageService.shibari-session',
-    slug: 'shibari-session',
-    title: { en: 'Shibari session', cs: 'Shibari session' },
-    wpSlug: { en: 'shibari-session', cs: 'shibari-session-cz' },
-    heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/salon-11.jpg'),
-    homeFeature: false,
-    sortOrder: 150,
-  },
-  {
-    _type: 'massageService',
-    _id: 'massageService.shibari-show',
-    slug: 'shibari-show',
-    title: { en: 'Shibari show', cs: 'Shibari show' },
-    wpSlug: { en: 'shibari-show', cs: 'shibari-show-cz' },
-    heroImageUrl: httpsSrc('//erotic-massage-prague.com/wp-content/uploads/2026/02/salon-2.jpg'),
-    homeFeature: false,
-    sortOrder: 160,
+    seoTitle: {
+      en: 'Four hands joy massage - let two hot masseuses work on your body',
+      cs: 'Masáž čtyř rukou - nechte se opečovávat dvojicí krásných masérek',
+    },
+    seoDescription: {
+      en: 'To maximise your pleasure, order a four hands joy massage ❤️ A riveting rubdown with a happy ending performed by two masseuses ❤️ Available as outcall.',
+      cs: 'Jestliže chcete znásobit svou rozkoš, pak volte masáž čtyř rukou ❤️ Procedury s erotickým nábojem se zhostí dvě z našich masérek dle vašeho výběru.',
+    },
   },
 ];
+
+export function getMassageServiceBySlug(slug: string): CatalogMassageService | undefined {
+  return MASSAGE_SERVICE_CATALOG.find((s) => s.slug === slug);
+}

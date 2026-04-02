@@ -15,7 +15,6 @@ export type PriceBlock = {
   tabs: PriceTab[];
 };
 
-/** Localized matrices for the price page — source rows: `catalog/pricingCatalog.ts`. */
 export function getPriceBlocks(lang: Lang): PriceBlock[] {
   return PRICE_CATALOG.map((b) => ({
     title: t(lang, b.titleKey),
@@ -23,7 +22,6 @@ export function getPriceBlocks(lang: Lang): PriceBlock[] {
   }));
 }
 
-/** Extras table — `catalog/pricingCatalog.ts`. */
 export const extraServices = EXTRA_SERVICES_CATALOG.map((e) => ({
   name: e.name,
   price: e.price,

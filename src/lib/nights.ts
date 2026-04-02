@@ -1,5 +1,3 @@
-/** Next bookable night shifts (Thu–Sat), ISO date strings. */
-
 export type NightOption = { value: string; label: string };
 
 export function upcomingNightShifts(max = 14, locale = 'en-GB'): NightOption[] {

@@ -46,9 +46,6 @@ const couple: PriceRow[] = [
   { duration: '120 min', czk: '10600 Kč', eur: '460 €', usd: '530 $' },
 ];
 
-/**
- * Price matrices — Sanity: `priceBlock` docs or a single `priceList` with nested tables.
- */
 export const PRICE_CATALOG: CatalogPriceBlock[] = [
   {
     _type: 'priceBlock',

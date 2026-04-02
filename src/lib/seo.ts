@@ -1,7 +1,7 @@
 import type { Lang } from '../i18n/types';
 import { pathHome, pathMassage, pathMassages, pathMasseuse, pathMasseuses } from '../i18n/paths';
 
-const SITE_NAME = 'After Dark';
+const SITE_NAME = 'CandyShop AFTER DARK';
 
 export function absoluteUrl(origin: string, pathOrUrl: string): string {
   if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) {
@@ -25,27 +25,6 @@ export function masseuseMetaDescription(lang: Lang, name: string, vibe?: string)
     return `${name} — masérka ${SITE_NAME}, Praha 1.${extra} Noční směny, služby, rezervace online. Erotická masáž v Praze.`;
   }
   return `${name} — masseuse at ${SITE_NAME}, Prague 1.${extra} Night shifts, services, book online. Erotic massage in Prague.`;
-}
-
-export function massagesIndexDescription(lang: Lang): string {
-  if (lang === 'cs') {
-    return `Přehled erotických masáží v Praze — nuru, tantra, body-to-body, lingam, čtyři ruce. ${SITE_NAME}, noční salón Praha 1.`;
-  }
-  return `Erotic massage menu in Prague — nuru, tantra, body-to-body, lingam, four hands. ${SITE_NAME}, night salon Prague 1.`;
-}
-
-export function masseusesIndexDescription(lang: Lang): string {
-  if (lang === 'cs') {
-    return `Masérky nočního salónu ${SITE_NAME} v Praze — profily, směny, doporučené masáže a rezervace. Čt–So 23:00–04:00.`;
-  }
-  return `Masseuses at ${SITE_NAME}, Prague — profiles, shifts, recommended massages and booking. Thu–Sat 11pm–4am.`;
-}
-
-export function scheduleIndexDescription(lang: Lang): string {
-  if (lang === 'cs') {
-    return `Týdenní rozvrh masérek ${SITE_NAME}, Praha — klikněte na směnu a přejděte rovnou do rezervace.`;
-  }
-  return `Weekly masseuse schedule at ${SITE_NAME}, Prague — tap a shift to jump into booking.`;
 }
 
 export function stripHtml(html: string, maxLen = 320): string {
@@ -110,7 +89,6 @@ export function graphLd(...nodes: Record<string, unknown>[]) {
   };
 }
 
-/** Helpers for localized paths in JSON-LD (pathname only). */
 export const seoPaths = {
   home: pathHome,
   massages: pathMassages,

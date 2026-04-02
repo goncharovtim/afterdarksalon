@@ -2,16 +2,17 @@
 import Layout from '../../../layouts/Layout.astro';
 import { featuredMasseuses } from '../../../data/site';
 import { getMasseuseDetail } from '../../../data/masseuseDetails';
+import { pickLocale } from '../../../i18n/locale';
 import { t } from '../../../i18n/t';
 import { bookWithQuery, pathMasseuse } from '../../../i18n/paths';
 import { massageTitle } from '../../../i18n/massages';
-import { graphLd, masseusesIndexDescription, webPageJsonLd } from '../../../lib/seo';
+import { graphLd, webPageJsonLd } from '../../../lib/seo';
 import MasseuseCardImage from '../../../components/MasseuseCardImage.astro';
 
 const lang = 'en' as const;
 const origin = Astro.site?.origin ?? Astro.url.origin;
-const title = `${t(lang, 'meta.docHosts')} · ${t(lang, 'meta.brand')}`;
-const description = masseusesIndexDescription(lang);
+const title = t(lang, 'meta.seoHostsTitle');
+const description = t(lang, 'meta.seoHostsDesc');
 const jsonLd = graphLd(
   webPageJsonLd({
     origin,
@@ -25,39 +26,25 @@ const jsonLd = graphLd(
 
 <Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
   <section class="border-b border-cyan-500/15 bg-surface/20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-5 py-12 md:py-16 text-center">
-      <p class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-cyan-400 mb-2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-5 pt-3 pb-6 md:pt-4 md:pb-8 text-center">
+      <p class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-cyan-400 mb-1.5">
         {t(lang, 'masseuses.eyebrow')}
       </p>
-      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon mb-4">
+      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon mb-3">
         {t(lang, 'masseuses.title')}
       </h1>
       <p class="text-stone-500 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
         {t(lang, 'masseuses.lead')}
       </p>
-      <div class="max-w-md mx-auto mt-8">
-        <label class="sr-only" for="host-filter-en">{t(lang, 'masseuses.filterPh')}</label>
-        <input
-          type="search"
-          id="host-filter-en"
-          placeholder={t(lang, 'masseuses.filterPh')}
-          class="w-full min-h-12 rounded-lg border border-cyan-500/30 bg-black/40 px-4 py-3 text-base text-stone-200 placeholder:text-stone-600 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 touch-manipulation"
-          data-host-filter
-          autocomplete="off"
-        />
-      </div>
     </div>
   </section>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-5 py-12 md:py-16">
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-host-grid>
+  <div class="max-w-7xl mx-auto px-4 sm:px-5 py-6 md:py-8">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {featuredMasseuses.map((m) => {
         const d = getMasseuseDetail(m.slug);
         return (
-          <article
-            class="card-cyber overflow-hidden flex flex-col"
-            data-host-name={m.name.toLowerCase()}
-          >
+          <article class="card-cyber overflow-hidden flex flex-col">
             <a
               href={pathMasseuse(lang, m.slug)}
               class="relative aspect-[7/10] overflow-hidden bg-black group block touch-manipulation"
@@ -66,7 +53,7 @@ const jsonLd = graphLd(
                 lang={lang}
                 name={m.name}
                 image={m.image}
-                vibe={d?.vibe}
+                vibe={d ? pickLocale(lang, d.vibe) : undefined}
                 stats={d?.stats}
               />
             </a>
@@ -103,17 +90,3 @@ const jsonLd = graphLd(
     </div>
   </div>
 </Layout>
-
-<script>
-  const input = document.querySelector('[data-host-filter]') as HTMLInputElement | null;
-  const grid = document.querySelector('[data-host-grid]');
-  if (input && grid) {
-    input.addEventListener('input', () => {
-      const q = input.value.trim().toLowerCase();
-      grid.querySelectorAll<HTMLElement>('[data-host-name]').forEach((card) => {
-        const name = card.dataset.hostName ?? '';
-        card.style.display = !q || name.includes(q) ? '' : 'none';
-      });
-    });
-  }
-</script>

@@ -1,13 +1,8 @@
+import { SALON_GALLERY_ITEMS } from '../salonGallery';
 import { MASSEUSE_CATALOG } from './masseuses';
 import { MASSAGE_SERVICE_CATALOG } from './massageServices';
 import { EXTRA_SERVICES_CATALOG, PRICE_CATALOG } from './pricingCatalog';
 
-/**
- * Portable bundle for a future Sanity dataset (schema to be created in Studio).
- * - `masseuse.serviceSlugs` → replace with `reference` fields to `massageService`.
- * - `heroImageUrl` / `cardImageUrl` / `galleryUrls` → upload as `image` assets.
- * - `priceBlock.tabs` → model as array of `{ _key, label?, rows[] }` in Studio.
- */
 export function buildSanityExportBundle(): {
   meta: {
     generator: string;
@@ -36,14 +31,23 @@ export function buildSanityExportBundle(): {
   }));
   const extras = EXTRA_SERVICES_CATALOG.map((e) => ({ ...e }));
 
+  const salonGallery = {
+    _type: 'salonGallery' as const,
+    _id: 'salonGallery',
+    images: SALON_GALLERY_ITEMS.map((row) => ({
+      _key: row._id.replace(/^salonGallery\./, ''),
+      url: row.url,
+    })),
+  };
+
   return {
     meta: {
       generator: 'afterdarksalon',
       version: 1,
       exportedAt: new Date().toISOString(),
       note:
-        'Import: define Sanity types massageService, masseuse, priceBlock, extraService; map serviceSlugs to references; upload images.',
+        'Import: define Sanity types massageService, masseuse, priceBlock, extraService, salonGallery; map serviceSlugs to references; upload images.',
     },
-    documents: [...services, ...hosts, ...priceBlocks, ...extras],
+    documents: [...services, ...hosts, ...priceBlocks, ...extras, salonGallery],
   };
 }

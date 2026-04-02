@@ -17,7 +17,6 @@ function toMasseuseDetail(c: (typeof MASSEUSE_CATALOG)[number]): MasseuseDetail 
   };
 }
 
-/** Legacy grid shape for `wp.ts`, routes, `MassageServicePage`. */
 export const massageGrid = [...MASSAGE_SERVICE_CATALOG]
   .sort((a, b) => a.sortOrder - b.sortOrder)
   .map((d) => ({
@@ -28,7 +27,6 @@ export const massageGrid = [...MASSAGE_SERVICE_CATALOG]
     homeFeature: d.homeFeature,
   }));
 
-/** Card strip + booking selects. */
 export const featuredMasseuses = [...MASSEUSE_CATALOG]
   .sort((a, b) => a.sortOrder - b.sortOrder)
   .map((d) => ({

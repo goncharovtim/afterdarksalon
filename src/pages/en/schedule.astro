@@ -3,12 +3,12 @@ import Layout from '../../layouts/Layout.astro';
 import MasseuseScheduleGrid from '../../components/MasseuseScheduleGrid.astro';
 import { t } from '../../i18n/t';
 import { pathBook } from '../../i18n/paths';
-import { graphLd, scheduleIndexDescription, webPageJsonLd } from '../../lib/seo';
+import { graphLd, webPageJsonLd } from '../../lib/seo';
 
 const lang = 'en' as const;
 const origin = Astro.site?.origin ?? Astro.url.origin;
-const title = `${t(lang, 'meta.docSchedule')} · ${t(lang, 'meta.brand')}`;
-const description = scheduleIndexDescription(lang);
+const title = t(lang, 'meta.seoScheduleTitle');
+const description = t(lang, 'meta.seoScheduleDesc');
 const jsonLd = graphLd(
   webPageJsonLd({
     origin,

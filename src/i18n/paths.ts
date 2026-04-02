@@ -1,9 +1,7 @@
 import type { Lang } from './types';
 
-/** English is secondary — prefixed with /en. Czech (default) has no prefix. */
 const EN_PREFIX = '/en';
 
-/** Logical path always starts with `/` (e.g. `/`, `/book`, `/massages/x`). */
 export function stripLocalePrefix(pathname: string): string {
   const raw = pathname.replace(/\/$/, '') || '/';
   if (raw === EN_PREFIX) return '/';
@@ -63,7 +61,6 @@ export function pathSchedule(lang: Lang): string {
   return pathWithLang('/schedule', lang);
 }
 
-/** Toggle EN ↔ CS while staying on the same logical page */
 export function switchLangPath(pathname: string, target: Lang): string {
   const logical = stripLocalePrefix(pathname);
   return pathWithLang(logical, target);

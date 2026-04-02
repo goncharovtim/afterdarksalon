@@ -4,12 +4,12 @@ import { massageGrid } from '../../data/site';
 import { t } from '../../i18n/t';
 import { bookWithQuery, pathMassage } from '../../i18n/paths';
 import { massageTitle } from '../../i18n/massages';
-import { graphLd, massagesIndexDescription, webPageJsonLd } from '../../lib/seo';
+import { graphLd, webPageJsonLd } from '../../lib/seo';
 
 const lang = 'cs' as const;
 const origin = Astro.site?.origin ?? Astro.url.origin;
-const title = `${t(lang, 'meta.docServices')} · ${t(lang, 'meta.brand')}`;
-const description = massagesIndexDescription(lang);
+const title = t(lang, 'meta.seoMassagesTitle');
+const description = t(lang, 'meta.seoMassagesDesc');
 const jsonLd = graphLd(
   webPageJsonLd({
     origin,

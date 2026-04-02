@@ -82,7 +82,7 @@ const { lang } = Astro.props;
     try {
       localStorage.setItem(KEY, '1');
     } catch {
-      /* ignore */
+      void 0;
     }
     hide();
   });

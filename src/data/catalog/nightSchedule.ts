@@ -1,6 +1,5 @@
 import type { DaySchedule } from './sanityTypes';
 
-/** Default weekly grid — copy per host in Studio or use a shared reference later. */
 export const defaultNightSchedule: DaySchedule[] = [
   { short: 'Mo', label: 'Monday', open: false },
   { short: 'Tu', label: 'Tuesday', open: false },

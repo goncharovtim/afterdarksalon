@@ -10,9 +10,10 @@ import {
   pathMasseuses,
   pathPrice,
   pathSchedule,
-  pathTeam,
   switchLangPath,
 } from '../i18n/paths';
+
+const DAY_TEAM_SCHEDULE_URL = 'https://candyshop-massage.cz/rozvrh/';
 
 type Props = {
   lang: Lang;
@@ -39,7 +40,12 @@ const navItems = [
   { href: pathSchedule(lang), label: t(lang, 'nav.schedule'), match: (p: string) => p.includes('/schedule') },
   { href: pathBook(lang), label: t(lang, 'nav.reserve'), match: (p: string) => p.endsWith('/book') },
   { href: pathPrice(lang), label: t(lang, 'nav.price'), match: (p: string) => p.endsWith('/price') },
-  { href: pathTeam(lang), label: t(lang, 'nav.dayTeam'), match: (p: string) => p.endsWith('/team') },
+  {
+    href: DAY_TEAM_SCHEDULE_URL,
+    label: t(lang, 'nav.dayTeam'),
+    match: () => false,
+    external: true,
+  },
   { href: pathContacts(lang), label: t(lang, 'nav.contacts'), match: (p: string) => p.endsWith('/contacts') },
 ] as const;
 ---
@@ -49,14 +55,9 @@ const navItems = [
 >
   <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-2 py-2">
     <div class="flex items-center gap-3">
-      <span
-        class="font-display text-[10px] font-bold uppercase tracking-[0.25em] text-fuchsia-400 drop-shadow-[0_0_8px_rgba(255,45,106,0.6)]"
-      >
-        {t(lang, 'header.afterDark')}
-      </span>
       <a
         href={pathBook(lang)}
-        class="hidden sm:inline-flex btn-neon-primary !py-1.5 !px-4 !text-[10px] !tracking-[0.2em]"
+        class="inline-flex btn-neon-primary !py-1.5 !px-4 !text-[10px] !tracking-[0.2em]"
       >
         {t(lang, 'header.reserve')}
       </a>
@@ -83,18 +84,19 @@ const navItems = [
 <header
   class="sticky z-30 top-[2.65rem] border-b border-fuchsia-500/20 bg-abyss/85 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
 >
-  <nav class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-4 py-3 lg:py-3.5">
-    <a href={pathHome(lang)} class="flex items-center gap-3 shrink-0 group">
-      <div class="relative">
+  <nav class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-4 py-2.5 sm:py-3 lg:py-3">
+    <a href={pathHome(lang)} class="flex items-center gap-2 sm:gap-3 min-w-0 shrink-0 group">
+      <div class="relative shrink-0">
         <img
           src={logoUrl}
           alt=""
-          class="h-8 w-auto max-w-[160px] object-contain opacity-90 group-hover:opacity-100 transition-opacity [filter:drop-shadow(0_0_12px_rgba(0,240,255,0.25))]"
-          width="160"
-          height="32"
+          class="h-14 w-auto sm:h-20 md:h-24 lg:h-28 xl:h-[7.25rem] object-contain object-left opacity-95 group-hover:opacity-100 transition-opacity [filter:drop-shadow(0_0_14px_rgba(0,240,255,0.3))]"
+          width="700"
+          height="844"
+          fetchpriority="high"
         />
       </div>
-      <div class="hidden sm:flex flex-col border-l border-cyan-500/30 pl-3">
+      <div class="hidden sm:flex flex-col border-l border-cyan-500/30 pl-2.5 sm:pl-3 min-w-0">
         <span class="font-display text-[9px] font-bold uppercase tracking-[0.2em] text-cyan-400/90">
           {t(lang, 'header.nightSalon')}
         </span>
@@ -129,6 +131,8 @@ const navItems = [
         navItems.map((item) => (
           <a
             href={item.href}
+            target={'external' in item && item.external ? '_blank' : undefined}
+            rel={'external' in item && item.external ? 'noopener noreferrer' : undefined}
             class:list={[
               'font-display text-[11px] xl:text-xs font-semibold uppercase tracking-[0.12em] px-3 py-3 lg:py-2 rounded-md border border-transparent transition-all min-h-11 lg:min-h-0 touch-manipulation',
               item.match(pathname)

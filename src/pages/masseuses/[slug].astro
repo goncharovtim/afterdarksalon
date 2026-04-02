@@ -3,14 +3,13 @@ import Layout from '../../layouts/Layout.astro';
 import MasseuseProfilePage from '../../templates/MasseuseProfilePage.astro';
 import { featuredMasseuses } from '../../data/site';
 import { getMasseuseDetail } from '../../data/masseuseDetails';
-import { fetchTeamMemberByPath } from '../../lib/wp';
+import { pickLocale } from '../../i18n/locale';
 import { t } from '../../i18n/t';
 import { bookWithQuery, pathMassages, pathMasseuse, pathMasseuses } from '../../i18n/paths';
 import {
   breadcrumbJsonLd,
   graphLd,
   masseuseMetaDescription,
-  stripHtml,
   webPageJsonLd,
 } from '../../lib/seo';
 
@@ -20,15 +19,16 @@ export async function getStaticPaths() {
 
 const lang = 'cs' as const;
 const slug = Astro.params.slug!;
-const page = await fetchTeamMemberByPath(`/masseuses/${slug}`);
 const detail = getMasseuseDetail(slug);
 const m = featuredMasseuses.find((x) => x.slug === slug);
 const name = m?.name ?? t(lang, 'masseuses.fallbackName');
-const title = `${name} | ${t(lang, 'meta.brand')}`;
+const title = t(lang, 'masseuses.profileSeoTitle').replace('{name}', name);
 
-const plain = page?.html ? stripHtml(page.html, 165) : '';
-const baseDesc = masseuseMetaDescription(lang, name, detail?.vibe);
-const description = plain.length > 90 ? plain : baseDesc;
+const description = masseuseMetaDescription(
+  lang,
+  name,
+  detail ? pickLocale(lang, detail.vibe) : undefined,
+);
 
 const origin = Astro.site?.origin ?? Astro.url.origin;
 const jsonLd = graphLd(
@@ -61,7 +61,6 @@ const jsonLd = graphLd(
     m={m}
     photos={m?.photos ?? []}
     detail={detail}
-    page={page}
     bookHref={bookWithQuery(lang, { host: slug })}
     masseusesIndexHref={pathMasseuses(lang)}
     massagesIndexHref={pathMassages(lang)}

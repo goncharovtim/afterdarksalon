@@ -1,5 +1,4 @@
 ---
-import WpContent from '../components/WpContent.astro';
 import NightSchedule from '../components/NightSchedule.astro';
 import MasseuseServices from '../components/MasseuseServices.astro';
 import BookingForm from '../components/BookingForm.astro';
@@ -7,6 +6,7 @@ import MasseuseStatsBar from '../components/MasseuseStatsBar.astro';
 import { contact } from '../data/site';
 import type { MasseuseDetail } from '../data/masseuseDetails';
 import type { Lang } from '../i18n/types';
+import { pickLocale } from '../i18n/locale';
 import { t } from '../i18n/t';
 
 type Featured = { name: string; slug: string; image: string };
@@ -15,38 +15,26 @@ type Props = {
   lang: Lang;
   slug: string;
   m: Featured | undefined;
-  /** Local full-size gallery paths (same order as source site). */
   photos: readonly string[];
   detail: MasseuseDetail | undefined;
-  page: { title: string; html: string } | null;
   bookHref: string;
   masseusesIndexHref: string;
   massagesIndexHref: string;
 };
 
-const { lang, slug, m, photos, detail, page, bookHref, masseusesIndexHref, massagesIndexHref } = Astro.props;
+const { lang, slug, m, photos, detail, bookHref, masseusesIndexHref, massagesIndexHref } = Astro.props;
 
 const name = m?.name ?? t(lang, 'masseuses.fallbackName');
 const reserveLabel = t(lang, 'masseuses.profileReserve').replace('{name}', name);
-
-function htmlToPlain(html: string): string {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[\s\S]*?<\/style>/gi, '')
-    .replace(/&nbsp;|&#160;/gi, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-const bioPlain = page ? htmlToPlain(page.html) : '';
-const hasBio = bioPlain.length > 24;
-const pageLoaded = page !== null;
 
 const softPanel =
   'rounded-2xl border border-white/[0.07] bg-black/20 p-4 sm:p-5 backdrop-blur-md shadow-[0_20px_60px_-28px_rgba(0,0,0,0.75)]';
 const softPanelSchedule =
   'rounded-2xl border border-white/[0.07] bg-black/25 p-3 sm:p-3.5 backdrop-blur-md shadow-[0_16px_48px_-24px_rgba(0,0,0,0.72)]';
+
+const lightboxUrls = m ? (photos.length > 0 ? [...photos] : [m.image]) : [];
+const lightboxUrlsJson = JSON.stringify(lightboxUrls);
+const galleryCounterTpl = t(lang, 'home.galleryCounter');
 ---
 
 <article
@@ -77,26 +65,47 @@ const softPanelSchedule =
     <div
       class="grid gap-8 lg:gap-10 xl:gap-12 items-start lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]"
     >
-      <aside class="space-y-5 lg:sticky lg:top-32 self-start">
+      <aside class="space-y-5 lg:sticky lg:top-44 self-start">
         {
           m ? (
-            <div class="max-w-md mx-auto lg:mx-0">
+            <div
+              class="max-w-md mx-auto lg:mx-0"
+              data-host-profile-gallery
+              data-host-gallery-urls={lightboxUrlsJson}
+              data-host-gallery-counter-tpl={galleryCounterTpl}
+              data-host-gallery-lightbox-label={`${name} — ${t(lang, 'masseuses.photoGallery')}`}
+            >
               <div class="relative">
                 <div
                   class="pointer-events-none absolute -inset-px rounded-[1.65rem] bg-gradient-to-br from-cyan-500/25 via-transparent to-fuchsia-500/20 opacity-70 blur-[2px]"
                   aria-hidden="true"
                 />
                 <div class="relative overflow-hidden rounded-3xl border border-white/10 shadow-[0_28px_90px_-24px_rgba(0,0,0,0.92)] ring-1 ring-white/[0.04]">
-                  <img
-                    id="host-main-photo"
-                    src={m.image}
-                    alt={name}
-                    width="560"
-                    height="720"
-                    class="aspect-[3/4] w-full object-cover object-top transition-opacity duration-300"
-                    loading="eager"
-                    decoding="async"
-                  />
+                  <button
+                    type="button"
+                    class="group relative block w-full cursor-zoom-in border-0 bg-transparent p-0 text-left touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-void rounded-3xl"
+                    id="host-main-photo-open"
+                    aria-label={`${t(lang, 'home.expand')} — ${name}`}
+                  >
+                    <img
+                      id="host-main-photo"
+                      src={m.image}
+                      alt={name}
+                      width="560"
+                      height="720"
+                      class="aspect-[3/4] w-full object-cover object-top transition-opacity duration-300 pointer-events-none"
+                      loading="eager"
+                      decoding="async"
+                    />
+                    <span
+                      class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/35 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                      aria-hidden="true"
+                    >
+                      <span class="font-display text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white drop-shadow-md">
+                        {t(lang, 'home.expand')}
+                      </span>
+                    </span>
+                  </button>
                 </div>
               </div>
               {
@@ -106,17 +115,17 @@ const softPanelSchedule =
                       {t(lang, 'masseuses.photoGallery')}
                     </p>
                     <ul
-                      class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory scrollbar-thin touch-pan-x"
+                      class="flex gap-2 overflow-x-auto pb-1.5 -mx-1 px-1 snap-x snap-mandatory scrollbar-cyber touch-pan-x"
                       role="list"
-                      style="scrollbar-width: thin;"
                     >
                       {photos.map((src, i) => (
                         <li class="snap-center shrink-0">
                           <button
                             type="button"
-                            class="host-photo-thumb block rounded-xl overflow-hidden border border-white/10 ring-2 ring-transparent transition-all hover:border-cyan-500/40 focus:outline-none focus-visible:ring-cyan-500/50 data-[active]:border-cyan-500/50 data-[active]:ring-cyan-500/30 touch-manipulation"
+                            class="host-photo-thumb block rounded-xl overflow-hidden border border-white/10 ring-2 ring-transparent transition-all hover:border-cyan-500/40 focus:outline-none focus-visible:ring-cyan-500/50 data-[active]:border-cyan-500/50 data-[active]:ring-cyan-500/30 touch-manipulation cursor-zoom-in"
                             data-host-thumb
                             data-src={src}
+                            data-gallery-index={i}
                             data-active={src === m.image ? true : undefined}
                             aria-label={`${name} — ${t(lang, 'masseuses.photoGallery')} ${i + 1}`}
                             aria-pressed={src === m.image ? 'true' : 'false'}
@@ -143,15 +152,10 @@ const softPanelSchedule =
                 <h1 class="font-display text-3xl sm:text-4xl font-semibold text-white tracking-tight [text-wrap:balance]">
                   {name}
                 </h1>
-                {detail && <p class="text-sm sm:text-base text-stone-400 leading-relaxed">{detail.vibe}</p>}
+                {detail && (
+                  <p class="text-sm sm:text-base text-stone-400 leading-relaxed">{pickLocale(lang, detail.vibe)}</p>
+                )}
                 <p class="text-xs text-stone-600 leading-relaxed pt-1">{t(lang, 'masseuses.metaLine')}</p>
-                {
-                  detail?.stats && (
-                    <div class="mt-5 pt-5 border-t border-white/[0.08]">
-                      <MasseuseStatsBar lang={lang} stats={detail.stats} />
-                    </div>
-                  )
-                }
               </div>
             </div>
           ) : (
@@ -178,15 +182,12 @@ const softPanelSchedule =
 
         {
           detail && (
-            <>
-              <NightSchedule
-                schedule={detail.schedule}
-                lang={lang}
-                class={softPanelSchedule}
-                compact
-              />
-              <MasseuseServices services={detail.services} lang={lang} class={softPanel} />
-            </>
+            <NightSchedule
+              schedule={detail.schedule}
+              lang={lang}
+              class={softPanelSchedule}
+              compact
+            />
           )
         }
 
@@ -210,51 +211,39 @@ const softPanelSchedule =
       </aside>
 
       <div class="min-w-0 flex flex-col gap-8 lg:gap-10">
-        <div class="min-w-0 space-y-5">
-          {
-            hasBio ? (
+        {
+          detail && (
+            <div class="grid gap-6 lg:grid-cols-2 lg:items-stretch">
               <section
-                class="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-br from-white/[0.03] via-black/25 to-black/40"
-                aria-labelledby="host-bio-heading"
-              >
-                <div
-                  class="pointer-events-none absolute start-0 top-4 bottom-4 w-px bg-gradient-to-b from-cyan-500/35 via-fuchsia-500/25 to-transparent"
-                  aria-hidden="true"
-                />
-                <div class="ps-5 sm:ps-7 pe-4 sm:pe-7 py-6 sm:py-9 md:py-10">
-                  <h2
-                    id="host-bio-heading"
-                    class="font-display text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.26em] text-stone-500 mb-5"
-                  >
-                    {t(lang, 'masseuses.bioTitle')}
-                  </h2>
-                  <WpContent html={page!.html} class="prose-wp prose-wp--detail prose-wp--profile max-w-none" />
-                </div>
-              </section>
-            ) : (
-              <section
-                class="rounded-2xl border border-white/[0.06] bg-black/25 px-4 py-4 sm:px-6 sm:py-6 min-h-[12rem] sm:min-h-[14rem] flex flex-col justify-center"
-                aria-labelledby="host-bio-heading"
+                class:list={[softPanel, 'flex flex-col gap-4']}
+                aria-labelledby="host-params-heading"
               >
                 <h2
-                  id="host-bio-heading"
-                  class="font-display text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.26em] text-stone-500 mb-2"
+                  id="host-params-heading"
+                  class="font-display text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.26em] text-cyan-400/90"
                 >
-                  {t(lang, 'masseuses.bioTitle')}
+                  {t(lang, 'masseuses.parametersTitle')}
                 </h2>
+                <a
+                  href={`tel:${contact.phoneTel}`}
+                  class="font-display text-sm font-semibold text-cyan-300 hover:text-cyan-100 transition-colors w-fit touch-manipulation min-h-10 inline-flex items-center"
+                >
+                  {contact.phoneDisplay}
+                </a>
                 {
-                  pageLoaded ? (
-                    <p class="text-sm text-stone-400 leading-relaxed">{t(lang, 'masseuses.bioPlaceholder')}</p>
-                  ) : (
-                    <p class="text-sm text-stone-500">{t(lang, 'masseuses.profileSyncing')}</p>
+                  detail.stats && (
+                    <div class="pt-2 border-t border-white/[0.08]">
+                      <MasseuseStatsBar lang={lang} stats={detail.stats} />
+                    </div>
                   )
                 }
               </section>
-            )
-          }
-        </div>
+              <MasseuseServices services={detail.services} lang={lang} class={`${softPanel} h-full`} />
+            </div>
+          )
+        }
 
-        <div id="night-booking" class="scroll-mt-28 sm:scroll-mt-32 w-full">
+        <div id="night-booking" class="scroll-mt-40 sm:scroll-mt-44 w-full">
           <div
             class="rounded-3xl border border-cyan-500/15 bg-gradient-to-b from-cyan-500/[0.04] via-black/30 to-black/40 p-1 shadow-[0_0_48px_-20px_rgba(0,240,255,0.18)] ring-1 ring-white/[0.04]"
           >
@@ -274,6 +263,89 @@ const softPanelSchedule =
     </div>
   </div>
 
+  {
+    m && (
+      <dialog
+        class="host-profile-lightbox m-0 max-h-none max-w-none border-0 bg-transparent p-0 text-[0] backdrop:bg-void/92 backdrop:backdrop-blur-sm open:flex open:h-full open:w-full open:max-w-none open:items-center open:justify-center z-[100]"
+        aria-labelledby="host-lightbox-title"
+        data-host-lightbox-dialog
+      >
+        <div
+          class="relative flex max-h-[min(92dvh,920px)] w-[min(96vw,1200px)] flex-col gap-3 p-3 sm:p-5"
+          role="document"
+        >
+          <h2 id="host-lightbox-title" class="sr-only">
+            {name} — {t(lang, 'masseuses.photoGallery')}
+          </h2>
+          <div class="absolute end-2 top-2 z-20 flex gap-2 sm:end-4 sm:top-4">
+            <button
+              type="button"
+              class="rounded-lg border border-white/20 bg-black/70 px-3 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-stone-200 backdrop-blur-md transition hover:border-cyan-500/50 hover:text-cyan-200 touch-manipulation min-h-11 min-w-11 sm:min-w-0"
+              data-host-lightbox-close
+              aria-label={t(lang, 'home.galleryClose')}
+            >
+              <span aria-hidden="true">✕</span>
+            </button>
+          </div>
+          <div class="relative flex flex-1 items-center justify-center gap-2 sm:gap-3 min-h-0">
+            <button
+              type="button"
+              class="hidden sm:flex shrink-0 rounded-lg border border-white/15 bg-black/50 p-2 text-cyan-300 backdrop-blur-sm transition hover:border-cyan-500/40 hover:bg-black/70 touch-manipulation min-h-11 min-w-11 items-center justify-center"
+              data-host-lightbox-prev
+              aria-label={t(lang, 'home.galleryPrev')}
+            >
+              <span class="text-lg leading-none" aria-hidden="true">
+                ‹
+              </span>
+            </button>
+            <div class="relative flex min-h-0 w-full flex-1 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-black/40 shadow-[0_0_60px_-20px_rgba(0,240,255,0.15)]">
+              <img
+                src=""
+                alt=""
+                class="max-h-[min(78dvh,800px)] max-w-full object-contain"
+                data-host-lightbox-img
+                decoding="async"
+              />
+            </div>
+            <button
+              type="button"
+              class="hidden sm:flex shrink-0 rounded-lg border border-white/15 bg-black/50 p-2 text-cyan-300 backdrop-blur-sm transition hover:border-cyan-500/40 hover:bg-black/70 touch-manipulation min-h-11 min-w-11 items-center justify-center"
+              data-host-lightbox-next
+              aria-label={t(lang, 'home.galleryNext')}
+            >
+              <span class="text-lg leading-none" aria-hidden="true">
+                ›
+              </span>
+            </button>
+          </div>
+          <p
+            class="text-center font-display text-[10px] uppercase tracking-[0.2em] text-stone-500"
+            data-host-lightbox-counter
+            aria-live="polite"
+          />
+          <div class="flex justify-center gap-3 sm:hidden">
+            <button
+              type="button"
+              class="rounded-lg border border-white/15 bg-black/50 px-4 py-2 font-display text-[10px] uppercase tracking-wider text-cyan-300 touch-manipulation min-h-11"
+              data-host-lightbox-prev-m
+              aria-label={t(lang, 'home.galleryPrev')}
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              class="rounded-lg border border-white/15 bg-black/50 px-4 py-2 font-display text-[10px] uppercase tracking-wider text-cyan-300 touch-manipulation min-h-11"
+              data-host-lightbox-next-m
+              aria-label={t(lang, 'home.galleryNext')}
+            >
+              ›
+            </button>
+          </div>
+        </div>
+      </dialog>
+    )
+  }
+
   <div
     class="fixed bottom-0 inset-x-0 z-30 md:hidden flex gap-2 p-3 border-t border-white/[0.08] bg-void/92 backdrop-blur-xl pb-[max(0.75rem,env(safe-area-inset-bottom))]"
     style="padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right));"
@@ -292,20 +364,110 @@ const softPanelSchedule =
 
 <script is:inline>
   (function () {
+    var root = document.querySelector('[data-host-profile-gallery]');
     var main = document.getElementById('host-main-photo');
     if (!main) return;
+
+    var urls = [];
+    var counterTpl = '{current} / {total}';
+    var lightboxLabel = '';
+    if (root) {
+      try {
+        urls = JSON.parse(root.getAttribute('data-host-gallery-urls') || '[]');
+      } catch (e) {}
+      counterTpl = root.getAttribute('data-host-gallery-counter-tpl') || counterTpl;
+      lightboxLabel = root.getAttribute('data-host-gallery-lightbox-label') || '';
+    }
+
+    var dialog = document.querySelector('[data-host-lightbox-dialog]');
+    var lbImg = document.querySelector('[data-host-lightbox-img]');
+    var lbCounter = document.querySelector('[data-host-lightbox-counter]');
+    var lbClose = document.querySelector('[data-host-lightbox-close]');
+    var lbPrev = document.querySelector('[data-host-lightbox-prev]');
+    var lbNext = document.querySelector('[data-host-lightbox-next]');
+    var lbPrevM = document.querySelector('[data-host-lightbox-prev-m]');
+    var lbNextM = document.querySelector('[data-host-lightbox-next-m]');
+
+    var index = 0;
+
+    function indexForSrc(src) {
+      if (!src || !urls.length) return 0;
+      var i = urls.indexOf(src);
+      if (i >= 0) return i;
+      for (var j = 0; j < urls.length; j++) {
+        if (src.indexOf(urls[j]) !== -1 || src.endsWith(urls[j])) return j;
+      }
+      return 0;
+    }
+
+    function formatCounter(i) {
+      return counterTpl.replace('{current}', String(i + 1)).replace('{total}', String(urls.length));
+    }
+
+    function showLightbox(i) {
+      if (!lbImg || !urls.length) return;
+      index = ((i % urls.length) + urls.length) % urls.length;
+      lbImg.src = urls[index] || '';
+      lbImg.alt = lightboxLabel ? lightboxLabel + ' ' + (index + 1) : '';
+      if (lbCounter) lbCounter.textContent = formatCounter(index);
+    }
+
+    function openLightbox(i) {
+      if (!dialog || typeof dialog.showModal !== 'function' || !urls.length) return;
+      showLightbox(i);
+      dialog.showModal();
+    }
+
+    if (dialog && lbImg) {
+      dialog.addEventListener('close', function () {
+        lbImg.removeAttribute('src');
+      });
+      dialog.addEventListener('click', function (e) {
+        if (e.target === dialog) dialog.close();
+      });
+      if (lbClose) lbClose.addEventListener('click', function () { dialog.close(); });
+      if (lbPrev) lbPrev.addEventListener('click', function () { showLightbox(index - 1); });
+      if (lbNext) lbNext.addEventListener('click', function () { showLightbox(index + 1); });
+      if (lbPrevM) lbPrevM.addEventListener('click', function () { showLightbox(index - 1); });
+      if (lbNextM) lbNextM.addEventListener('click', function () { showLightbox(index + 1); });
+      document.addEventListener('keydown', function (e) {
+        if (!dialog.open) return;
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          showLightbox(index - 1);
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          showLightbox(index + 1);
+        }
+      });
+    }
+
+    function syncThumbActive(btn) {
+      document.querySelectorAll('[data-host-thumb]').forEach(function (b) {
+        b.removeAttribute('data-active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.setAttribute('data-active', '');
+      btn.setAttribute('aria-pressed', 'true');
+    }
+
     document.querySelectorAll('[data-host-thumb]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var src = btn.getAttribute('data-src');
         if (!src) return;
         main.src = src;
-        document.querySelectorAll('[data-host-thumb]').forEach(function (b) {
-          b.removeAttribute('data-active');
-          b.setAttribute('aria-pressed', 'false');
-        });
-        btn.setAttribute('data-active', '');
-        btn.setAttribute('aria-pressed', 'true');
+        syncThumbActive(btn);
+        var gi = btn.getAttribute('data-gallery-index');
+        var i = gi != null ? parseInt(gi, 10) : indexForSrc(src);
+        if (!isNaN(i) && urls.length) openLightbox(i);
       });
     });
+
+    var mainOpen = document.getElementById('host-main-photo-open');
+    if (mainOpen && urls.length) {
+      mainOpen.addEventListener('click', function () {
+        openLightbox(indexForSrc(main.getAttribute('src') || main.src));
+      });
+    }
   })();
 </script>

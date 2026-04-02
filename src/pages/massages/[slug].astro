@@ -2,7 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import MassageServicePage from '../../templates/MassageServicePage.astro';
 import { massageGrid } from '../../data/site';
+import { getMassageServiceBySlug } from '../../data/catalog/massageServices';
 import { fetchWpPageBySlug, wpPageSlugForMassage } from '../../lib/wp';
+import { decodeHtmlEntities } from '../../lib/htmlEntities';
 import { t } from '../../i18n/t';
 import { bookWithQuery, pathMassage, pathMassages } from '../../i18n/paths';
 import { massageTitle } from '../../i18n/massages';
@@ -24,11 +26,19 @@ const item = massageGrid.find((m) => m.slug === slug);
 const page = await fetchWpPageBySlug(wpPageSlugForMassage(item, lang));
 const label = item ? massageTitle(lang, item.slug) : slug;
 const heading = page?.title ?? label;
-const title = `${heading} | ${t(lang, 'meta.brand')}`;
+const catalogRow = getMassageServiceBySlug(slug);
+const legacyTitle = catalogRow?.seoTitle?.[lang];
+const legacyDesc = catalogRow?.seoDescription?.[lang];
+const title = legacyTitle
+  ? decodeHtmlEntities(legacyTitle)
+  : `${heading} | ${t(lang, 'meta.brand')}`;
 
 const plain = page?.html ? stripHtml(page.html, 165) : '';
-const description =
-  plain.length > 90 ? plain : massageMetaDescription(lang, heading);
+const description = legacyDesc
+  ? decodeHtmlEntities(legacyDesc)
+  : plain.length > 90
+    ? plain
+    : massageMetaDescription(lang, heading);
 
 const origin = Astro.site?.origin ?? Astro.url.origin;
 const jsonLd = graphLd(

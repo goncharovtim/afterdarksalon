@@ -2,10 +2,10 @@ import type { Lang } from './types';
 
 const en = {
   meta: {
-    brand: 'After Dark',
-    title: 'Erotic massage in Prague | After Dark',
+    brand: 'CandyShop AFTER DARK',
+    title: 'Erotic massage in Prague | CandyShop Night Shift | Erotic massages in Prague',
     description:
-      'Erotic massage in Prague — After Dark. A full menu of rituals, skilled masseuses, hotel outcalls and optional extras.',
+      'Try out our erotic massages in Prague CandyShop After Dark ❤️ Wide selection of massages, beautiful masseuses, outcall and extra services ❤️.',
     docBook: 'Reserve',
     docContacts: 'Contacts',
     docTeam: 'Day team',
@@ -15,6 +15,27 @@ const en = {
     docSchedule: 'Schedule',
     docContactSuccess: 'Message sent',
     docCallbackSuccess: 'Callback',
+    seoMassagesTitle: 'Our massages - which erotic rubdowns does our parlor offer',
+    seoMassagesDesc:
+      '❤️ Take your pick from among our exciting rubdowns, including nuru, lingam, prostate massage and many more ❤️',
+    seoHostsTitle: 'Masseuses - Erotic massage in Prague | CandyShop Night Shift',
+    seoHostsDesc:
+      'Masseuses at CandyShop Night Shift, Prague — profiles, shifts, recommended massages and booking. Thu–Sat 11pm–4am.',
+    seoContactsTitle: 'Contacts - where can you find us and how to contact us',
+    seoContactsDesc:
+      'These are the necessary contacts for our erotic massage parlor ❤️ Where is our address and how to get in touch with us? Find out more here ❤️.',
+    seoPriceTitle: 'Price of our erotic massages - check out our pricelist',
+    seoPriceDesc:
+      'How much does an erotic massage cost? Our pricelist has the answer ❤️. Check out the price of nuru and other procedures here, but choose not only based on that!',
+    seoTeamTitle: 'Our erotic masseuses - meet our gorgeous erotic massage priestesses',
+    seoTeamDesc:
+      'Meet our team of erotic masseuses ❤️ Young, friendly, hot girls and boys who are no strangers to pleasure ❤️ Choose one to perform your massage. Outcall available.',
+    seoScheduleTitle: 'Schedule — CandyShop Night Shift',
+    seoScheduleDesc:
+      'Weekly masseuse schedule at CandyShop Night Shift, Prague — tap a shift to jump into booking.',
+    seoBookTitle: 'Reserve — CandyShop Night Shift',
+    seoBookDesc:
+      'Choose a masseuse, massage and time. We’ll confirm by phone the same evening.',
   },
   nav: {
     home: 'Home',
@@ -27,7 +48,6 @@ const en = {
     contacts: 'Contacts',
   },
   header: {
-    afterDark: 'After dark',
     reserve: 'Reserve',
     menu: 'Menu',
     call: 'Call',
@@ -45,7 +65,7 @@ const en = {
     nightAccessBody:
       'Thursday · Friday · Saturday · 11pm – 4am. Call to book — we’re open when the city winds down.',
     reserveSlot: 'Book a slot',
-    copyright: 'All nights reserved.',
+    copyright: '© Copyright CandyShop Night Shift. All Rights Reserved.',
   },
   googleRating: {
     ratedOnGoogle: 'Rated on Google',
@@ -65,10 +85,10 @@ const en = {
   },
   home: {
     tagline: 'FROM DUSK TILL DAWN · Prague after midnight — we open when the city sleeps.',
-    heroTitle: 'Erotic Massage in Prague — After Dark',
+    heroTitle: 'Erotic Massage in Prague — CandyShop AFTER DARK',
     intro: [
-      'After Dark is an erotic massage studio in the heart of Prague.',
-      'Our masseuses combine warmth with real skill—tantra, nuru, body-to-body, lingam and more.',
+      'CandyShop AFTER DARK is an erotic massage studio in the heart of Prague.',
+      'Our masseuses combine warmth with real skill—body-to-body, erotic mix, lingam, nuru, pussycat and four hands.',
       'Whether you want to slow right down or turn the intensity up, we’ll help you find a session that fits.',
       'Blondes, brunettes, redheads—it’s your call who you’d like to meet.',
     ],
@@ -77,7 +97,7 @@ const en = {
     quick1: 'Choose a masseuse',
     quick1sub: 'Profiles · photos · shift calendar',
     quick2: 'Massages',
-    quick2sub: 'Nuru · body-to-body · lingam · four hands…',
+    quick2sub: 'Body-to-body · mix · lingam · nuru · pussycat · four hands',
     quick3: 'Pick a time',
     quick3sub: 'Thu–Sat · 11pm–4am',
     teamTitle: 'OUR CHERRIES ON THE CAKE',
@@ -90,12 +110,17 @@ const en = {
     openDossier: 'Read more',
     galleryTitle: 'AFTER DARK · SALON GALLERY',
     galleryHighlight:
-      'After Dark is a discreet, sensual space in central Prague—a place to switch off and let someone else take care of you for a while.',
+      'CandyShop AFTER DARK is a discreet, sensual space in central Prague—a place to switch off and let someone else take care of you for a while.',
     salonAlt: 'Salon',
-    expand: 'Expand',
+    expand: 'Open',
+    galleryClose: 'Close',
+    galleryPrev: 'Previous image',
+    galleryNext: 'Next image',
+    galleryCounter: 'Image {current} of {total}',
+    galleryLightboxLabel: 'Salon gallery enlarged image',
     ctaTitle: 'Your night starts here',
     ctaP1:
-      'Welcome to our Prague studio. We look after your body, but we care just as much about how you feel when you walk out. Our masseuses are trained in tantra, nuru and classic sensual massage—and they work with men, women and couples.',
+      'Welcome to our Prague studio. We look after your body, but we care just as much about how you feel when you walk out. Our masseuses specialise in the massages on our menu—body-to-body, erotic mix, lingam, nuru, pussycat and four hands—and welcome men, women and couples.',
     ctaP2:
       'Expect slow touch, deep relaxation and arousal without hurry. Each visit is shaped around what you want that evening, whether that’s pure unwind or something more exploratory.',
     ctaP3:
@@ -131,10 +156,9 @@ const en = {
     demoStatus: 'Queued (demo): {host} · {service}. Call +420 775 445 442 to confirm.',
   },
   masseuses: {
-    eyebrow: 'After Dark',
+    eyebrow: 'CandyShop AFTER DARK',
     title: 'Masseuses',
-    lead: 'Search by name. Every profile shows photos, massages she’s great at, and her night-shift calendar.',
-    filterPh: 'Search by name…',
+    lead: 'Every profile shows photos, massages she’s great at, and her night-shift calendar.',
     dossier: 'Profile',
     reserve: 'Book',
     breadcrumbHosts: 'Masseuses',
@@ -145,7 +169,7 @@ const en = {
     profileSyncing: 'Loading profile…',
     detailEyebrow: 'Profile',
     atAGlance: 'At a glance',
-    metaLine: 'After Dark · Prague 1 · Night salon',
+    metaLine: 'CandyShop AFTER DARK · Prague 1 · Night salon',
     bioTitle: 'About her',
     bioPlaceholder:
       'We’re still polishing this write-up. You’ll find her nights and favourite massages in the cards by her photo—or call and we’ll find you a slot.',
@@ -154,6 +178,8 @@ const en = {
     ctaStickyHosts: 'All masseuses',
     photoGallery: 'Gallery',
     fallbackName: 'Masseuse',
+    parametersTitle: 'Parameters',
+    profileSeoTitle: '{name} - Erotic massage in Prague | CandyShop Night Shift',
     cardAge: 'Age',
     cardHeight: 'Height',
     cardWeight: 'Weight',
@@ -166,7 +192,7 @@ const en = {
     eyebrow: 'Services',
     title: 'Massages',
     lead:
-      'Body-to-body, nuru, couples massage, prostate massage, hotel visits, Shibari, Nirvana Express and more. Open a tile for details, timing and how it feels.',
+      'Body-to-body, erotic mix, lingam, nuru, pussycat and four-hands massage. Open a tile for details, timing and how it feels.',
     intel: 'Details',
     book: 'Book',
     bookRitual: 'Book this massage',
@@ -190,7 +216,7 @@ const en = {
     block1b: 'NIGHT DESK 11PM – 8AM',
     addressLabel: 'Address:',
     phoneLead: 'Questions or special requests? Call us:',
-    desc: 'Contact After Dark in Prague.',
+    desc: 'Contact CandyShop AFTER DARK in Prague.',
     mapIframeTitle: 'Map — salon',
   },
   success: {
@@ -208,14 +234,14 @@ const en = {
 
 If someone here feels like a match, book by phone and say you’re calling about the day schedule.`,
     cta: 'Daytime schedule',
-    desc: 'Day team — After Dark.',
-    scheduleUrl: 'https://erotic-massage-prague.com/en/schedule/',
+    desc: 'Day team — CandyShop AFTER DARK.',
+    scheduleUrl: 'https://candyshop-massage.cz/rozvrh/',
   },
   price: {
     eyebrow: 'Rates',
     title: 'Prices',
     extraTitle: 'Extras',
-    desc: 'Night rates at After Dark, Prague.',
+    desc: 'Night rates at CandyShop AFTER DARK, Prague.',
     blockSalon: 'In the salon',
     blockHotel: 'Hotel visit',
     blockWomen: 'Massage for women',
@@ -258,10 +284,10 @@ If someone here feels like a match, book by phone and say you’re calling about
 
 const cs = {
   meta: {
-    brand: 'After Dark',
-    title: 'Erotická masáž Praha | After Dark',
+    brand: 'CandyShop AFTER DARK',
+    title: 'Erotická masáž v Praze | CandyShop Night Shift',
     description:
-      'Erotická masáž v Praze — After Dark. Široká nabídka masáží, zkušené masérky, návštěva v hotelu a doplňkové služby.',
+      'Takové erotické masáže jako u nás jinde nezakusíte ❤️ Bohatý výběr procedur, krásné masérky, extra služby a mnoho dalšího ❤️.',
     docBook: 'Rezervace',
     docContacts: 'Kontakty',
     docTeam: 'Denní tým',
@@ -271,6 +297,27 @@ const cs = {
     docSchedule: 'Rozvrh',
     docContactSuccess: 'Zpráva odeslána',
     docCallbackSuccess: 'Zpětné volání',
+    seoMassagesTitle: 'Masáže, které nabízíme - pestrý výběr erotických procedur',
+    seoMassagesDesc:
+      'Podívejte se na masáže, které v našem salónu nabízíme ❤️ Bohatý výběr erotických procedur za skvělé ceny, s možností dalších extra služeb ❤️.',
+    seoHostsTitle: 'Masérky - Erotic massage in Prague | CandyShop Night Shift',
+    seoHostsDesc:
+      'Masérky nočního salónu CandyShop Night Shift v Praze — profily, směny, doporučené masáže a rezervace. Čt–So 23:00–04:00.',
+    seoContactsTitle: 'Kontakty - kde nás najdete a jak se s námi spojíte',
+    seoContactsDesc:
+      'Zajímá vás, kde náš erotický masážní salón najdete a jak nás můžete kontaktovat? ❤️ Naši adresu i veškeré kontaktní údaje najdete na této stránce ❤️.',
+    seoPriceTitle: 'Náš ceník - kolik stojí jednotlivé erotické masáže v našem salonu',
+    seoPriceDesc:
+      'Prohlédněte si ceník našich erotických masáží ❤️ Kolik stojí smyslná nuru či vzrušující lingam masáž? Rozhodněte se, která je pro vás ta pravá.',
+    seoTeamTitle: 'Naše erotické masérky - seznamte se s týmem našich krásných specialistek',
+    seoTeamDesc:
+      'Kdo jsou naše masérky, v jejichž režii se u nás erotické masáže odehrávají? ❤️ Poznejte kompletní tým krásných i empatických profesionálek z našeho salonu ❤️.',
+    seoScheduleTitle: 'Rozvrh masérek — CandyShop Night Shift',
+    seoScheduleDesc:
+      'Týdenní rozvrh masérek CandyShop Night Shift, Praha — klikněte na směnu a přejděte rovnou do rezervace.',
+    seoBookTitle: 'Rezervace — CandyShop Night Shift',
+    seoBookDesc:
+      'Vyberte masérku, druh masáže a čas. Potvrdíme telefonicky ještě tentýž večer.',
   },
   nav: {
     home: 'Úvod',
@@ -283,7 +330,6 @@ const cs = {
     contacts: 'Kontakty',
   },
   header: {
-    afterDark: 'Po setmění',
     reserve: 'Rezervovat',
     menu: 'Menu',
     call: 'Volejte',
@@ -301,7 +347,7 @@ const cs = {
     nightAccessBody:
       'Čtvrtek · pátek · sobota · 23:00 – 04:00. Rezervace telefonicky — otevíráme, když město zpomalí.',
     reserveSlot: 'Rezervovat termín',
-    copyright: 'Všechny noci vyhrazeny.',
+    copyright: '© Copyright CandyShop Night Shift. All Rights Reserved.',
   },
   googleRating: {
     ratedOnGoogle: 'Hodnocení na Google',
@@ -321,10 +367,10 @@ const cs = {
   },
   home: {
     tagline: 'OD SOUMRAKU DO ÚSVITU · Praha po půlnoci — otevíráme, když město spí.',
-    heroTitle: 'Erotická masáž v Praze — After Dark',
+    heroTitle: 'Erotická masáž v Praze — CandyShop AFTER DARK',
     intro: [
-      'After Dark je erotický masážní salón v centru Prahy.',
-      'Naše masérky spojují osobní přístup s pořádnou technikou — tantra, nuru, body-to-body, lingam a další.',
+      'CandyShop AFTER DARK je erotický masážní salón v centru Prahy.',
+      'Naše masérky spojují osobní přístup s pořádnou technikou — tělo na tělo, erotická mix, lingam, nuru, pussycat a masáž čtyř rukou.',
       'Chcete-li hlavně vypnout, nebo naopak intenzivnější zážitek, společně vybereme masáž, která vám sedne.',
       'Blondýnky, brunetky, zrzky — je jen na vás, s kým si budete rozumět.',
     ],
@@ -333,7 +379,7 @@ const cs = {
     quick1: 'Vybrat masérku',
     quick1sub: 'Profily · fotky · rozvrh směn',
     quick2: 'Masáže',
-    quick2sub: 'Nuru · body-to-body · lingam · čtyři ruce…',
+    quick2sub: 'Tělo na tělo · mix · lingam · nuru · pussycat · čtyři ruce',
     quick3: 'Vybrat čas',
     quick3sub: 'Čt–So · 23:00–04:00',
     teamTitle: 'NAŠE TŘEŠNIČKY NA DORTU',
@@ -346,12 +392,17 @@ const cs = {
     openDossier: 'Více informací',
     galleryTitle: 'AFTER DARK · GALERIE SALÓNU',
     galleryHighlight:
-      'After Dark je diskrétní, smyslný prostor v centru Prahy — místo, kde na chvíli vypnete a necháte se hýčkat.',
+      'CandyShop AFTER DARK je diskrétní, smyslný prostor v centru Prahy — místo, kde na chvíli vypnete a necháte se hýčkat.',
     salonAlt: 'Salón',
-    expand: 'Zvětšit',
+    expand: 'Otevřít',
+    galleryClose: 'Zavřít',
+    galleryPrev: 'Předchozí fotografie',
+    galleryNext: 'Další fotografie',
+    galleryCounter: 'Fotografie {current} z {total}',
+    galleryLightboxLabel: 'Galerie salónu — zvětšený náhled',
     ctaTitle: 'Vaše noc začíná tady',
     ctaP1:
-      'Vítejte v našem pražském studiu. Staráme se o vaše tělo, ale stejně tak o to, jak se budete cítit, až odejdete. Naše masérky ovládají tantru, nuru i klasickou smyslnou masáž a pracují s muži, ženami i páry.',
+      'Vítejte v našem pražském studiu. Staráme se o vaše tělo, ale stejně tak o to, jak se budete cítit, až odejdete. Naše masérky se zaměřují na masáže z naší nabídky — tělo na tělo, erotická mix, lingam, nuru, pussycat a masáž čtyř rukou — a pracují s muži, ženami i páry.',
     ctaP2:
       'Čekejte pomalé doteky, hluboké uvolnění a vzrušení bez nutnosti spěchat. Každá návštěva se přizpůsobí tomu, co zrovna chcete — čistě relax, nebo něco víc objevného.',
     ctaP3:
@@ -386,10 +437,9 @@ const cs = {
     demoStatus: 'Ve frontě (demo): {host} · {service}. Potvrďte na +420 775 445 442.',
   },
   masseuses: {
-    eyebrow: 'After Dark',
+    eyebrow: 'CandyShop AFTER DARK',
     title: 'Masérky',
-    lead: 'Hledejte podle jména. U každé najdete fotky, masáže, které dělá nejraději, a přehled nočních směn.',
-    filterPh: 'Hledat podle jména…',
+    lead: 'U každé najdete fotky, masáže, které dělá nejraději, a přehled nočních směn.',
     dossier: 'Profil',
     reserve: 'Rezervovat',
     breadcrumbHosts: 'Masérky',
@@ -400,7 +450,7 @@ const cs = {
     profileSyncing: 'Načítáme profil…',
     detailEyebrow: 'Profil',
     atAGlance: 'Přehled',
-    metaLine: 'After Dark · Praha 1 · Noční salón',
+    metaLine: 'CandyShop AFTER DARK · Praha 1 · Noční salón',
     bioTitle: 'O ní',
     bioPlaceholder:
       'Delší text k profilu doplňujeme. Směny a oblíbené masáže najdete v kartách u její fotky — případně zavolejte a domluvíme termín.',
@@ -409,6 +459,8 @@ const cs = {
     ctaStickyHosts: 'Všechny masérky',
     photoGallery: 'Galerie',
     fallbackName: 'Masérka',
+    parametersTitle: 'Parametry',
+    profileSeoTitle: '{name} — erotická masáž v Praze | CandyShop Night Shift',
     cardAge: 'Věk',
     cardHeight: 'Výška',
     cardWeight: 'Váha',
@@ -421,7 +473,7 @@ const cs = {
     eyebrow: 'Služby',
     title: 'Masáže',
     lead:
-      'Tělo na tělo, nuru, masáž pro páry, prostatická masáž, návštěva v hotelu, Shibari, Nirvana Express a další. Otevřete dlaždici pro popis, délku a průběh.',
+      'Tělo na tělo, erotická mix, lingam, nuru, pussycat a masáž čtyř rukou. Otevřete dlaždici pro popis, délku a průběh.',
     intel: 'Podrobnosti',
     book: 'Rezervovat',
     bookRitual: 'Rezervovat tuto masáž',
@@ -445,7 +497,7 @@ const cs = {
     block1b: 'NOČNÍ LINKA 23:00 – 8:00',
     addressLabel: 'Adresa:',
     phoneLead: 'Dotazy nebo speciální přání? Volejte:',
-    desc: 'Kontakt na After Dark v Praze.',
+    desc: 'Kontakt na CandyShop AFTER DARK v Praze.',
     mapIframeTitle: 'Mapa — salón',
   },
   success: {
@@ -463,14 +515,14 @@ const cs = {
 
 Když vás někdo zaujme, rezervujte telefonicky a uveďte, že voláte ohledně denního rozvrhu.`,
     cta: 'Rozvrh denního týmu',
-    desc: 'Denní tým — After Dark.',
-    scheduleUrl: 'https://erotic-massage-prague.com/cs/schedule/',
+    desc: 'Denní tým — CandyShop AFTER DARK.',
+    scheduleUrl: 'https://candyshop-massage.cz/rozvrh/',
   },
   price: {
     eyebrow: 'Ceny',
     title: 'Ceník',
     extraTitle: 'Doplňkové služby',
-    desc: 'Noční ceník — After Dark, Praha.',
+    desc: 'Noční ceník — CandyShop AFTER DARK, Praha.',
     blockSalon: 'Masáž v salónu',
     blockHotel: 'Masáž v hotelu',
     blockWomen: 'Masáž pro ženy',

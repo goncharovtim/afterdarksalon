@@ -7,7 +7,6 @@ type WpPage = {
   content: { rendered: string };
 };
 
-/** WordPress page slug to fetch for a localized massage/service route. */
 export function wpPageSlugForMassage(
   entry: { wpEn: string; wpCs: string } | undefined,
   lang: Lang,
@@ -32,7 +31,6 @@ export async function fetchWpPageBySlug(
   };
 }
 
-/** Team / masseuse profiles are not exposed via REST; scrape public HTML. */
 export async function fetchTeamMemberByPath(
   pathname: string,
 ): Promise<{ title: string; html: string } | null> {

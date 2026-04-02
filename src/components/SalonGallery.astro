@@ -1,0 +1,218 @@
+---
+import type { Lang } from '../i18n/types';
+import type { SalonGalleryItem } from '../data/salonGallery';
+import { t } from '../i18n/t';
+
+type Props = {
+  lang: Lang;
+  items: readonly SalonGalleryItem[];
+};
+
+const { lang, items } = Astro.props;
+
+const urls = items.map((i) => i.url);
+const urlsJson = JSON.stringify(urls);
+const counterTemplate = t(lang, 'home.galleryCounter');
+---
+
+<section
+  class="salon-gallery-root py-16 md:py-20 px-4"
+  data-salon-gallery
+  data-urls={urlsJson}
+  data-counter-template={counterTemplate}
+  data-lightbox-label={t(lang, 'home.galleryLightboxLabel')}
+>
+  <div class="max-w-7xl mx-auto">
+    <h2 class="font-display text-xl md:text-2xl font-bold uppercase tracking-[0.15em] text-center text-fuchsia-400 mb-10">
+      {t(lang, 'home.galleryTitle')}
+    </h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        items.map((item, i) => (
+          <button
+            type="button"
+            class="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl border border-cyan-500/20 text-left cursor-pointer touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-void"
+            data-gallery-index={i}
+            aria-label={`${t(lang, 'home.expand')} — ${t(lang, 'home.salonAlt')} ${i + 1} / ${items.length}`}
+          >
+            <img
+              src={item.url}
+              alt=""
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+              decoding="async"
+            />
+            <span
+              class="pointer-events-none absolute inset-0 flex items-center justify-center bg-fuchsia-950/40 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+              aria-hidden="true"
+            >
+              <span class="font-display text-xs uppercase tracking-widest text-white drop-shadow-md">
+                {t(lang, 'home.expand')}
+              </span>
+            </span>
+          </button>
+        ))
+      }
+    </div>
+    <p class="mt-12 text-center text-stone-500 max-w-3xl mx-auto leading-relaxed text-sm md:text-base">
+      {t(lang, 'home.galleryHighlight')}
+    </p>
+  </div>
+
+  <dialog
+    class="salon-lightbox m-0 max-h-none max-w-none border-0 bg-transparent p-0 text-[0] backdrop:bg-void/90 backdrop:backdrop-blur-sm open:flex open:h-full open:w-full open:max-w-none open:items-center open:justify-center"
+    aria-labelledby="salon-lightbox-title"
+    data-gallery-dialog
+  >
+    <div
+      class="relative flex max-h-[min(92dvh,920px)] w-[min(96vw,1200px)] flex-col gap-3 p-3 sm:p-5"
+      role="document"
+    >
+      <h2 id="salon-lightbox-title" class="sr-only" data-lightbox-title>
+        {t(lang, 'home.galleryLightboxLabel')}
+      </h2>
+      <div class="absolute end-2 top-2 z-20 flex gap-2 sm:end-4 sm:top-4">
+        <button
+          type="button"
+          class="rounded-lg border border-white/20 bg-black/70 px-3 py-2 font-display text-[10px] font-bold uppercase tracking-wider text-stone-200 backdrop-blur-md transition hover:border-cyan-500/50 hover:text-cyan-200 touch-manipulation min-h-11 min-w-11 sm:min-w-0"
+          data-gallery-close
+          aria-label={t(lang, 'home.galleryClose')}
+        >
+          <span aria-hidden="true">✕</span>
+        </button>
+      </div>
+      <div class="relative flex flex-1 items-center justify-center gap-2 sm:gap-3 min-h-0">
+        <button
+          type="button"
+          class="hidden sm:flex shrink-0 rounded-lg border border-white/15 bg-black/50 p-2 text-cyan-300 backdrop-blur-sm transition hover:border-cyan-500/40 hover:bg-black/70 touch-manipulation min-h-11 min-w-11 items-center justify-center"
+          data-gallery-prev
+          aria-label={t(lang, 'home.galleryPrev')}
+        >
+          <span class="text-lg leading-none" aria-hidden="true">‹</span>
+        </button>
+        <div
+          class="relative flex min-h-0 w-full flex-1 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-black/40 shadow-[0_0_60px_-20px_rgba(0,240,255,0.15)]"
+        >
+          <img
+            src=""
+            alt=""
+            class="max-h-[min(78dvh,800px)] max-w-full object-contain"
+            data-gallery-img
+            decoding="async"
+          />
+        </div>
+        <button
+          type="button"
+          class="hidden sm:flex shrink-0 rounded-lg border border-white/15 bg-black/50 p-2 text-cyan-300 backdrop-blur-sm transition hover:border-cyan-500/40 hover:bg-black/70 touch-manipulation min-h-11 min-w-11 items-center justify-center"
+          data-gallery-next
+          aria-label={t(lang, 'home.galleryNext')}
+        >
+          <span class="text-lg leading-none" aria-hidden="true">›</span>
+        </button>
+      </div>
+      <p
+        class="text-center font-display text-[10px] uppercase tracking-[0.2em] text-stone-500"
+        data-gallery-counter
+        aria-live="polite"
+      >
+      </p>
+      <div class="flex justify-center gap-3 sm:hidden">
+        <button
+          type="button"
+          class="rounded-lg border border-white/15 bg-black/50 px-4 py-2 font-display text-[10px] uppercase tracking-wider text-cyan-300 touch-manipulation min-h-11"
+          data-gallery-prev-mobile
+          aria-label={t(lang, 'home.galleryPrev')}
+        >
+          ‹
+        </button>
+        <button
+          type="button"
+          class="rounded-lg border border-white/15 bg-black/50 px-4 py-2 font-display text-[10px] uppercase tracking-wider text-cyan-300 touch-manipulation min-h-11"
+          data-gallery-next-mobile
+          aria-label={t(lang, 'home.galleryNext')}
+        >
+          ›
+        </button>
+      </div>
+    </div>
+  </dialog>
+</section>
+
+<script is:inline>
+  (function initSalonGallery() {
+    var root = document.querySelector('[data-salon-gallery]');
+    if (!root) return;
+
+    var urls = [];
+    try {
+      urls = JSON.parse(root.getAttribute('data-urls') || '[]');
+    } catch (e) {
+      return;
+    }
+    if (!urls.length) return;
+
+    var dialog = root.querySelector('[data-gallery-dialog]');
+    var img = root.querySelector('[data-gallery-img]');
+    var counter = root.querySelector('[data-gallery-counter]');
+    var btnClose = root.querySelector('[data-gallery-close]');
+    var btnPrev = root.querySelector('[data-gallery-prev]');
+    var btnNext = root.querySelector('[data-gallery-next]');
+    var btnPrevM = root.querySelector('[data-gallery-prev-mobile]');
+    var btnNextM = root.querySelector('[data-gallery-next-mobile]');
+
+    if (!dialog || !img || typeof dialog.showModal !== 'function') return;
+
+    var counterTpl = root.getAttribute('data-counter-template') || '{current} / {total}';
+    var lightboxLabel = root.getAttribute('data-lightbox-label') || 'Gallery';
+
+    var index = 0;
+
+    function formatCounter(i) {
+      return counterTpl.replace('{current}', String(i + 1)).replace('{total}', String(urls.length));
+    }
+
+    function show(i) {
+      index = ((i % urls.length) + urls.length) % urls.length;
+      img.src = urls[index] || '';
+      img.alt = lightboxLabel + ' ' + (index + 1);
+      if (counter) counter.textContent = formatCounter(index);
+    }
+
+    function openAt(i) {
+      show(i);
+      dialog.showModal();
+    }
+
+    dialog.addEventListener('close', function () {
+      img.removeAttribute('src');
+    });
+
+    root.querySelectorAll('[data-gallery-index]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var i = Number(btn.getAttribute('data-gallery-index'));
+        if (!isNaN(i)) openAt(i);
+      });
+    });
+
+    if (btnClose) btnClose.addEventListener('click', function () { dialog.close(); });
+    if (btnPrev) btnPrev.addEventListener('click', function () { show(index - 1); });
+    if (btnNext) btnNext.addEventListener('click', function () { show(index + 1); });
+    if (btnPrevM) btnPrevM.addEventListener('click', function () { show(index - 1); });
+    if (btnNextM) btnNextM.addEventListener('click', function () { show(index + 1); });
+
+    dialog.addEventListener('click', function (e) {
+      if (e.target === dialog) dialog.close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!dialog.open) return;
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        show(index - 1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        show(index + 1);
+      }
+    });
+  })();
+</script>

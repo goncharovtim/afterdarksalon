@@ -7,8 +7,8 @@ import { graphLd, webPageJsonLd } from '../lib/seo';
 
 const lang = 'cs' as const;
 const origin = Astro.site?.origin ?? Astro.url.origin;
-const title = `${t(lang, 'meta.docPrice')} | ${t(lang, 'meta.brand')}`;
-const description = t(lang, 'price.desc');
+const title = t(lang, 'meta.seoPriceTitle');
+const description = t(lang, 'meta.seoPriceDesc');
 const jsonLd = graphLd(
   webPageJsonLd({
     origin,

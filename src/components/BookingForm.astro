@@ -375,7 +375,6 @@ const selectHostLabel = t(lang, 'book.selectHost');
 
   mountMasseusePicker();
 
-  /** Sync visible picker when hidden <select> value changes (SSR default, ?host=, programmatic). */
   form?.querySelector('#book-masseuse')?.addEventListener('change', function syncPickerFromSelect() {
     var trigger = document.getElementById('book-masseuse-trigger');
     var hidden = document.getElementById('book-masseuse');
