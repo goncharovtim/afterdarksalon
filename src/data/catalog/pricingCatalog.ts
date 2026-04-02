@@ -73,21 +73,69 @@ export const PRICE_CATALOG: CatalogPriceBlock[] = [
   },
 ];
 
-const extras: { name: string; price: string }[] = [
-  { name: 'French kiss', price: '+500 Kč' },
-  { name: 'Pussycat', price: '+500 Kč' },
-  { name: 'Prostate massage', price: '+500 Kč' },
-  { name: 'Tenga egg', price: '+500 Kč' },
-  { name: 'Footjob', price: '+500 Kč' },
-  { name: 'Stripshow', price: '+500 Kč' },
-  { name: 'Autoeroticism', price: '+500 Kč' },
-  { name: 'Autoeroticism with toys', price: '+1000 Kč' },
+export const EXTRA_SERVICES_CATALOG: CatalogExtraService[] = [
+  {
+    _type: 'extraService',
+    _id: 'extraService.french-kiss',
+    slug: 'french-kiss',
+    title: { en: 'French kiss', cs: 'Francouzské polibky' },
+    price: '+500 Kč',
+    sortOrder: 10,
+  },
+  {
+    _type: 'extraService',
+    _id: 'extraService.pussycat-addon',
+    slug: 'pussycat-addon',
+    title: { en: 'Pussycat (add-on)', cs: 'Pussycat (doplněk)' },
+    price: '+500 Kč',
+    sortOrder: 20,
+  },
+  {
+    _type: 'extraService',
+    _id: 'extraService.prostate-massage',
+    slug: 'prostate-massage',
+    title: { en: 'Prostate massage', cs: 'Masáž prostaty' },
+    price: '+500 Kč',
+    sortOrder: 30,
+  },
+  {
+    _type: 'extraService',
+    _id: 'extraService.tenga-egg',
+    slug: 'tenga-egg',
+    title: { en: 'Tenga egg', cs: 'Tenga vejce' },
+    price: '+500 Kč',
+    sortOrder: 40,
+  },
+  {
+    _type: 'extraService',
+    _id: 'extraService.footjob',
+    slug: 'footjob',
+    title: { en: 'Foot fetish / footjob', cs: 'Footfetish / footjob' },
+    price: '+500 Kč',
+    sortOrder: 50,
+  },
+  {
+    _type: 'extraService',
+    _id: 'extraService.stripshow',
+    slug: 'stripshow',
+    title: { en: 'Stripshow', cs: 'Stripshow' },
+    price: '+500 Kč',
+    sortOrder: 60,
+  },
+  {
+    _type: 'extraService',
+    _id: 'extraService.autoerotica',
+    slug: 'autoerotica',
+    title: { en: 'Autoerotica', cs: 'Autoerotika' },
+    price: '+500 Kč',
+    sortOrder: 70,
+  },
+  {
+    _type: 'extraService',
+    _id: 'extraService.autoerotica-toys',
+    slug: 'autoerotica-toys',
+    title: { en: 'Autoerotica with a toy', cs: 'Autoerotika s hračkou' },
+    price: '+1000 Kč',
+    sortOrder: 80,
+  },
 ];
-
-export const EXTRA_SERVICES_CATALOG: CatalogExtraService[] = extras.map((row, i) => ({
-  _type: 'extraService',
-  _id: `extraService.${i + 1}`,
-  name: row.name,
-  price: row.price,
-  sortOrder: (i + 1) * 10,
-}));

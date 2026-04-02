@@ -8,6 +8,8 @@ import { bookWithQuery, pathMasseuse } from '../../i18n/paths';
 import { massageTitle } from '../../i18n/massages';
 import { graphLd, webPageJsonLd } from '../../lib/seo';
 import MasseuseCardImage from '../../components/MasseuseCardImage.astro';
+import PageHero from '../../components/PageHero.astro';
+import MasseuseGridShuffle from '../../components/MasseuseGridShuffle.astro';
 
 const lang = 'cs' as const;
 const origin = Astro.site?.origin ?? Astro.url.origin;
@@ -25,26 +27,30 @@ const jsonLd = graphLd(
 ---
 
 <Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
-  <section class="border-b border-cyan-500/15 bg-surface/20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-5 pt-3 pb-6 md:pt-4 md:pb-8 text-center">
-      <p class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-cyan-400 mb-1.5">
-        {t(lang, 'masseuses.eyebrow')}
-      </p>
-      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon mb-3">
-        {t(lang, 'masseuses.title')}
-      </h1>
-      <p class="text-stone-500 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
-        {t(lang, 'masseuses.lead')}
-      </p>
-    </div>
-  </section>
+  <PageHero>
+    <p
+      slot="eyebrow"
+      class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-cyan-400"
+    >
+      {t(lang, 'masseuses.eyebrow')}
+    </p>
+    <h1
+      slot="title"
+      class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon"
+    >
+      {t(lang, 'masseuses.title')}
+    </h1>
+    <p class="text-stone-500 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
+      {t(lang, 'masseuses.lead')}
+    </p>
+  </PageHero>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-5 py-6 md:py-8">
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  <div class="page-content">
+    <div id="masseuses-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {featuredMasseuses.map((m) => {
         const d = getMasseuseDetail(m.slug);
         return (
-          <article class="card-cyber overflow-hidden flex flex-col">
+          <article class="card-cyber overflow-hidden flex flex-col" data-masseuse-slug={m.slug}>
             <a
               href={pathMasseuse(lang, m.slug)}
               class="relative aspect-[7/10] overflow-hidden bg-black group block touch-manipulation"
@@ -53,6 +59,8 @@ const jsonLd = graphLd(
                 lang={lang}
                 name={m.name}
                 image={m.image}
+                imageObjectPosition={m.cardImageObjectPosition}
+                imageScale={m.cardImageScale}
                 vibe={d ? pickLocale(lang, d.vibe) : undefined}
                 stats={d?.stats}
               />
@@ -64,7 +72,7 @@ const jsonLd = graphLd(
                     <li>
                       <a
                         href={bookWithQuery(lang, { host: m.slug, service: s.slug })}
-                        class="inline-block text-[10px] uppercase tracking-wider px-2 py-1.5 min-h-9 rounded border border-cyan-500/25 text-cyan-400/80 hover:border-fuchsia-500/40 hover:text-fuchsia-300 transition-colors touch-manipulation"
+                        class="inline-flex min-h-9 items-center justify-center rounded border border-cyan-500/25 px-2.5 text-center font-display text-[10px] font-medium uppercase leading-none tracking-wider text-cyan-400/80 transition-colors hover:border-fuchsia-500/40 hover:text-fuchsia-300 touch-manipulation"
                       >
                         {massageTitle(lang, s.slug)}
                       </a>
@@ -89,4 +97,5 @@ const jsonLd = graphLd(
       })}
     </div>
   </div>
+  <MasseuseGridShuffle />
 </Layout>

@@ -1,6 +1,6 @@
 # build output
 dist/
-# `npm run export:sanity` — local bundle for Studio import (optional to commit)
+# `npm run export:sanity` - local bundle for Studio import (optional to commit)
 sanity-export/
 # generated types
 .astro/

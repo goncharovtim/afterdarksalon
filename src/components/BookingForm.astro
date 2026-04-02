@@ -2,7 +2,7 @@
 import { featuredMasseuses, massageGrid } from '../data/site';
 import { upcomingNightShifts, nightSlots } from '../lib/nights';
 import type { Lang } from '../i18n/types';
-import { t } from '../i18n/t';
+import { t, tArr } from '../i18n/t';
 import { massageTitle } from '../i18n/massages';
 
 type Props = {
@@ -19,6 +19,16 @@ const masseusePickerJson = JSON.stringify(
   featuredMasseuses.map((m) => ({ slug: m.slug, name: m.name, image: m.image })),
 );
 const selectHostLabel = t(lang, 'book.selectHost');
+const nightsJson = JSON.stringify(nights);
+const calendarWeekdaysJson = JSON.stringify(tArr(lang, 'book.calendarWeekdays'));
+const calPickDate = t(lang, 'book.pickDate');
+const calNightSuffix = t(lang, 'book.nightShiftSuffix');
+const calPrev = t(lang, 'book.calendarPrev');
+const calNext = t(lang, 'book.calendarNext');
+const calEmpty = t(lang, 'book.calendarEmptyMonth');
+const calLegend = t(lang, 'book.calendarLegend');
+const calPickTime = t(lang, 'book.pickTime');
+const nightSlotsJson = JSON.stringify([...nightSlots]);
 ---
 
 <form
@@ -53,8 +63,8 @@ const selectHostLabel = t(lang, 'book.selectHost');
     )
   }
 
-  <div class="grid gap-5 md:grid-cols-2">
-    <div class="block space-y-2">
+  <div class="flex flex-col gap-5 md:flex-row md:gap-5">
+    <div class="flex min-w-0 flex-1 flex-col gap-2">
       <span
         class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90"
         id="book-masseuse-label"
@@ -76,17 +86,17 @@ const selectHostLabel = t(lang, 'book.selectHost');
           </option>
         ))}
       </select>
-      <div id="book-masseuse-picker" class="relative z-20"></div>
+      <div id="book-masseuse-picker" class="relative z-20 w-full min-w-0"></div>
     </div>
 
-    <label class="block space-y-2">
+    <label class="flex min-w-0 flex-1 flex-col gap-2">
       <span class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90">
         {t(lang, 'book.service')}
       </span>
       <select
         name="service"
         id="book-service"
-        class="min-h-12 w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-base text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 sm:text-sm"
+        class="box-border min-h-16 w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-2.5 text-sm leading-normal text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500"
         required
       >
         <option value="">{t(lang, 'book.selectRitual')}</option>
@@ -95,42 +105,58 @@ const selectHostLabel = t(lang, 'book.selectHost');
         ))}
       </select>
     </label>
+  </div>
 
-    <label class="block space-y-2">
-      <span class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90">
-        {t(lang, 'book.nightDate')}
-      </span>
-      <select
-        name="date"
-        id="book-date"
-        class="min-h-12 w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-base text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 sm:text-sm"
-        required
-      >
-        <option value="">{t(lang, 'book.pickDate')}</option>
+  <div class="flex flex-col gap-5 md:flex-row md:gap-5 md:items-stretch md:min-h-0">
+    <div class="flex min-w-0 flex-1 flex-col gap-2 md:min-h-0">
+      <div class="flex flex-wrap items-end justify-between gap-2 shrink-0">
+        <span
+          class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90"
+          id="book-night-calendar-label"
+        >
+          {t(lang, 'book.nightDate')}
+        </span>
+        <span class="font-display text-[9px] uppercase tracking-wider text-stone-600">{calLegend}</span>
+      </div>
+      <select name="date" id="book-date" class="sr-only" tabindex="-1" aria-hidden="true" required>
+        <option value="">{calPickDate}</option>
         {nights.map((n) => (
           <option value={n.value}>
-            {n.label} {t(lang, 'book.nightShiftSuffix')}
+            {n.label} {calNightSuffix}
           </option>
         ))}
       </select>
-    </label>
+      <div
+        id="book-night-calendar-root"
+        class="relative z-10 w-full min-w-0 md:flex md:min-h-0 md:flex-1 md:flex-col"
+        data-cal-compact="true"
+        role="group"
+        aria-labelledby="book-night-calendar-label"
+      >
+      </div>
+    </div>
 
-    <label class="block space-y-2">
-      <span class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90">
+    <div class="flex min-w-0 flex-1 flex-col gap-2 md:min-h-0">
+      <span
+        class="font-display text-[10px] font-bold uppercase tracking-widest text-cyan-400/90 shrink-0"
+        id="book-time-grid-label"
+      >
         {t(lang, 'book.arrival')}
       </span>
-      <select
-        name="time"
-        id="book-time"
-        class="min-h-12 w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-base text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 sm:text-sm"
-        required
-      >
+      <select name="time" id="book-time" class="sr-only" tabindex="-1" aria-hidden="true" required>
         <option value="">{t(lang, 'book.time')}</option>
         {nightSlots.map((time) => (
           <option value={time}>{time}</option>
         ))}
       </select>
-    </label>
+      <div
+        id="book-time-grid-root"
+        class="relative z-10 w-full min-w-0 md:flex md:min-h-0 md:flex-1 md:flex-col"
+        role="group"
+        aria-labelledby="book-time-grid-label"
+      >
+      </div>
+    </div>
   </div>
 
   <div class="grid gap-5 md:grid-cols-2">
@@ -171,18 +197,32 @@ const selectHostLabel = t(lang, 'book.selectHost');
     </label>
   </div>
 
-  <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-    <button type="submit" class="btn-neon-primary order-1 min-h-12 w-full touch-manipulation sm:w-auto">
+  <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-end sm:gap-4">
+    <button type="submit" class="btn-neon-primary order-1 min-h-12 w-full touch-manipulation sm:w-auto sm:shrink-0">
       {t(lang, 'book.submit')}
     </button>
     <p id="booking-status" class="order-2 hidden text-sm text-cyan-300" role="status"></p>
   </div>
-  <p class:list={['text-[11px] leading-relaxed text-stone-500', compact && 'hidden']}>
-    {t(lang, 'book.demoNote')}
-  </p>
 </form>
 
-<script is:inline define:vars={{ demoTpl, masseusePickerJson, selectHostLabel }}>
+<script
+  is:inline
+  define:vars={{
+    demoTpl,
+    masseusePickerJson,
+    selectHostLabel,
+    nightsJson,
+    nightSlotsJson,
+    locale,
+    calendarWeekdaysJson,
+    calPickDate,
+    calPickTime,
+    calNightSuffix,
+    calPrev,
+    calNext,
+    calEmpty,
+  }}
+>
   const MASSEUSES = JSON.parse(masseusePickerJson);
 
   function mountMasseusePicker() {
@@ -252,7 +292,7 @@ const selectHostLabel = t(lang, 'book.selectHost');
       '' +
       '<button type="button" id="' +
       triggerId +
-      '" class="book-ms-trigger flex w-full min-h-[3rem] items-center gap-2 rounded-lg border border-cyan-500/30 bg-black/50 py-2.5 ps-3 pe-2 text-left text-sm text-stone-100 outline-none hover:border-cyan-500/45 focus-visible:border-fuchsia-500 focus-visible:ring-1 focus-visible:ring-fuchsia-500 touch-manipulation sm:gap-3 sm:pe-2.5" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="book-masseuse-label ' +
+      '" class="book-ms-trigger flex w-full min-h-16 items-center gap-2 rounded-lg border border-cyan-500/30 bg-black/50 py-2.5 ps-3 pe-2 text-left text-sm text-stone-100 outline-none hover:border-cyan-500/45 focus-visible:border-fuchsia-500 focus-visible:ring-1 focus-visible:ring-fuchsia-500 touch-manipulation sm:gap-3 sm:pe-2.5" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="book-masseuse-label ' +
       triggerId +
       '" aria-controls="' +
       listId +
@@ -380,11 +420,359 @@ const selectHostLabel = t(lang, 'book.selectHost');
     });
   }
 
+  function mountNightCalendar() {
+    var nights = [];
+    try {
+      nights = JSON.parse(nightsJson);
+    } catch (e) {
+      nights = [];
+    }
+    var labelByValue = {};
+    var valuesSet = {};
+    for (var i = 0; i < nights.length; i++) {
+      labelByValue[nights[i].value] = nights[i].label;
+      valuesSet[nights[i].value] = true;
+    }
+    var select = document.getElementById('book-date');
+    var root = document.getElementById('book-night-calendar-root');
+    if (!select || !root || !(select instanceof HTMLSelectElement)) return;
+
+    var weekdays = [];
+    try {
+      weekdays = JSON.parse(calendarWeekdaysJson);
+    } catch (e) {
+      weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+    }
+
+    function isoFromDate(d) {
+      var y = d.getFullYear();
+      var m = String(d.getMonth() + 1).padStart(2, '0');
+      var day = String(d.getDate()).padStart(2, '0');
+      return y + '-' + m + '-' + day;
+    }
+
+    function parseIso(iso) {
+      var p = String(iso).split('-');
+      if (p.length !== 3) return new Date();
+      return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10), 12, 0, 0, 0);
+    }
+
+    var view = new Date();
+    view.setDate(1);
+    view.setHours(12, 0, 0, 0);
+    if (nights[0] && nights[0].value) {
+      var pv = nights[0].value.split('-');
+      if (pv.length === 3) {
+        view.setFullYear(parseInt(pv[0], 10), parseInt(pv[1], 10) - 1, 1);
+      }
+    }
+
+    var today = new Date();
+    today.setHours(12, 0, 0, 0);
+    var todayIso = isoFromDate(today);
+
+    function minMaxMonths() {
+      if (!nights.length) {
+        return { min: view, max: view };
+      }
+      return {
+        min: parseIso(nights[0].value),
+        max: parseIso(nights[nights.length - 1].value),
+      };
+    }
+
+    function monthStart(d) {
+      return new Date(d.getFullYear(), d.getMonth(), 1, 12, 0, 0, 0);
+    }
+
+    function canGoPrev() {
+      var mm = minMaxMonths();
+      var prev = new Date(view.getFullYear(), view.getMonth() - 1, 1, 12, 0, 0, 0);
+      return monthStart(prev) >= monthStart(mm.min);
+    }
+
+    function canGoNext() {
+      var mm = minMaxMonths();
+      var next = new Date(view.getFullYear(), view.getMonth() + 1, 1, 12, 0, 0, 0);
+      return monthStart(next) <= monthStart(mm.max);
+    }
+
+    function selectedLabel() {
+      var v = select.value;
+      if (!v) return calPickDate;
+      var lb = labelByValue[v];
+      if (!lb) return calPickDate;
+      return lb + ' ' + calNightSuffix;
+    }
+
+    function render() {
+      var compact = root.getAttribute('data-cal-compact') === 'true';
+      var cardPad = compact ? 'p-2 sm:p-3' : 'p-3 sm:p-4';
+      var headMb = compact ? 'mb-2 pb-2' : 'mb-3 pb-3';
+      var summaryText = compact ? 'text-xs' : 'text-sm';
+      var navSz = compact ? 'size-9' : 'size-10';
+      var navSvg = compact ? 'size-4' : 'size-5';
+      var monthTitleMb = compact ? 'mb-1.5' : 'mb-2';
+      var monthTitleText = compact ? 'text-[10px] tracking-[0.16em]' : 'text-xs tracking-[0.2em]';
+      var wkRowMb = compact ? 'mb-0.5' : 'mb-1';
+      var wkCell = compact
+        ? 'py-0.5 font-display text-[8px] font-bold uppercase tracking-wider text-stone-500'
+        : 'py-1 font-display text-[9px] font-bold uppercase tracking-wider text-stone-500';
+      var gridGap = compact ? 'gap-1' : 'gap-1.5';
+      var dayBase =
+        'relative flex flex-col items-center justify-center rounded-lg border font-semibold tabular-nums transition-all touch-manipulation ' +
+        (compact
+          ? 'min-h-[2.25rem] text-xs'
+          : 'min-h-[2.75rem] text-sm sm:min-h-[3rem]');
+
+      var y = view.getFullYear();
+      var m = view.getMonth();
+      var monthTitle = view.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
+      var cp = canGoPrev();
+      var cn = canGoNext();
+      var selected = select.value;
+
+      var first = new Date(y, m, 1, 12, 0, 0, 0);
+      var startPad = (first.getDay() + 6) % 7;
+      var dim = new Date(y, m + 1, 0).getDate();
+
+      var hasAny = false;
+      for (var di = 1; di <= dim; di++) {
+        var iso = isoFromDate(new Date(y, m, di, 12, 0, 0, 0));
+        if (valuesSet[iso]) {
+          hasAny = true;
+          break;
+        }
+      }
+
+      var head =
+        '<div class="flex min-h-0 flex-1 flex-col rounded-xl border border-cyan-500/25 bg-black/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] ' +
+        cardPad +
+        '">' +
+        '<div class="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-white/[0.06] ' +
+        headMb +
+        '">' +
+        '<p class="min-w-0 flex-1 font-display font-semibold uppercase tracking-[0.12em] text-cyan-200/95 ' +
+        summaryText +
+        '" id="book-cal-summary" aria-live="polite">' +
+        selectedLabel()
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;') +
+        '</p>' +
+        '<div class="flex shrink-0 items-center gap-1">' +
+        '<button type="button" data-cal-prev class="flex ' +
+        navSz +
+        ' items-center justify-center rounded-lg border border-cyan-500/35 bg-black/50 text-cyan-300 transition-colors hover:border-fuchsia-500/40 hover:bg-fuchsia-500/10 hover:text-fuchsia-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500/50 disabled:pointer-events-none disabled:opacity-25 touch-manipulation" aria-label="' +
+        calPrev.replace(/"/g, '&quot;') +
+        '"' +
+        (cp ? '' : ' disabled') +
+        '><svg class="' +
+        navSvg +
+        '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>' +
+        '<button type="button" data-cal-next class="flex ' +
+        navSz +
+        ' items-center justify-center rounded-lg border border-cyan-500/35 bg-black/50 text-cyan-300 transition-colors hover:border-fuchsia-500/40 hover:bg-fuchsia-500/10 hover:text-fuchsia-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500/50 disabled:pointer-events-none disabled:opacity-25 touch-manipulation" aria-label="' +
+        calNext.replace(/"/g, '&quot;') +
+        '"' +
+        (cn ? '' : ' disabled') +
+        '><svg class="' +
+        navSvg +
+        '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>' +
+        '</div></div>' +
+        '<p class="shrink-0 text-center font-display font-bold uppercase text-stone-400 ' +
+        monthTitleMb +
+        ' ' +
+        monthTitleText +
+        '">' +
+        monthTitle.replace(/&/g, '&amp;').replace(/</g, '&lt;') +
+        '</p>';
+
+      var wk = '<div class="grid shrink-0 grid-cols-7 gap-1 text-center ' + wkRowMb + '">';
+      for (var wi = 0; wi < 7; wi++) {
+        wk += '<div class="' + wkCell + '">' + String(weekdays[wi] || '').replace(/&/g, '&amp;') + '</div>';
+      }
+      wk += '</div>';
+
+      var grid =
+        '<div class="grid min-h-0 flex-1 grid-cols-7 ' +
+        gridGap +
+        '" style="grid-template-rows: repeat(6, minmax(0, 1fr))">';
+      var cur = new Date(y, m, 1 - startPad, 12, 0, 0, 0);
+      for (var c = 0; c < 42; c++) {
+        var inMonth = cur.getMonth() === m;
+        var iso = isoFromDate(cur);
+        var isAvail = inMonth && valuesSet[iso];
+        var isSel = selected === iso;
+        var isToday = iso === todayIso;
+        var num = cur.getDate();
+        var cls = dayBase + ' h-full w-full';
+        if (!inMonth) {
+          cls += ' border-transparent bg-transparent text-stone-700/40';
+        } else if (!isAvail) {
+          cls +=
+            ' cursor-not-allowed border-white/[0.05] bg-white/[0.02] text-stone-600/50 line-through decoration-stone-600/40';
+        } else if (isSel) {
+          cls +=
+            ' border-fuchsia-500/70 bg-fuchsia-500/15 text-fuchsia-100 shadow-[0_0_20px_rgba(255,45,106,0.25)]';
+        } else {
+          cls +=
+            ' border-cyan-500/25 bg-black/40 text-stone-200 hover:border-cyan-400/50 hover:bg-cyan-500/10 hover:text-cyan-100';
+        }
+        if (isToday && inMonth) {
+          cls += ' ring-1 ring-cyan-400/50 ring-offset-2 ring-offset-[#060608]';
+        }
+        if (isAvail) {
+          grid +=
+            '<button type="button" class="' +
+            cls +
+            '" data-cal-day="' +
+            iso +
+            '" aria-pressed="' +
+            (isSel ? 'true' : 'false') +
+            '">' +
+            num +
+            '</button>';
+        } else {
+          grid += '<div class="' + cls + ' pointer-events-none" aria-hidden="true">' + (inMonth ? num : '') + '</div>';
+        }
+        cur.setDate(cur.getDate() + 1);
+      }
+      grid += '</div>';
+
+      var foot = '';
+      if (!hasAny) {
+        foot =
+          '<p class="mt-3 text-center text-xs text-stone-500">' +
+          calEmpty.replace(/&/g, '&amp;').replace(/</g, '&lt;') +
+          '</p>';
+      }
+      foot += '</div>';
+
+      root.innerHTML = head + wk + grid + foot;
+
+      var prevBtn = root.querySelector('[data-cal-prev]');
+      var nextBtn = root.querySelector('[data-cal-next]');
+      if (prevBtn)
+        prevBtn.addEventListener('click', function () {
+          if (!canGoPrev()) return;
+          view.setMonth(view.getMonth() - 1);
+          render();
+        });
+      if (nextBtn)
+        nextBtn.addEventListener('click', function () {
+          if (!canGoNext()) return;
+          view.setMonth(view.getMonth() + 1);
+          render();
+        });
+
+      Array.prototype.forEach.call(root.querySelectorAll('[data-cal-day]'), function (btn) {
+        btn.addEventListener('click', function () {
+          var iso = btn.getAttribute('data-cal-day');
+          if (!iso) return;
+          select.value = iso;
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+    }
+
+    select.addEventListener('change', function () {
+      var v = select.value;
+      if (v) {
+        var sd = parseIso(v);
+        view.setFullYear(sd.getFullYear(), sd.getMonth(), 1);
+      }
+      render();
+    });
+    render();
+  }
+
+  function mountTimeSlotGrid() {
+    var slots = [];
+    try {
+      slots = JSON.parse(nightSlotsJson);
+    } catch (e) {
+      slots = [];
+    }
+    var select = document.getElementById('book-time');
+    var root = document.getElementById('book-time-grid-root');
+    if (!select || !root || !(select instanceof HTMLSelectElement)) return;
+
+    function esc(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function summaryText() {
+      var v = select.value;
+      if (!v) return calPickTime;
+      return v;
+    }
+
+    function render() {
+      var selected = select.value;
+      var timeRowCount = Math.max(1, Math.ceil(slots.length / 2));
+      var head =
+        '<div class="flex min-h-0 flex-1 flex-col rounded-xl border border-cyan-500/25 bg-black/45 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:p-3">' +
+        '<div class="mb-2 shrink-0 border-b border-white/[0.06] pb-2">' +
+        '<p class="min-w-0 font-display text-xs font-semibold uppercase tracking-[0.12em] text-cyan-200/95" id="book-time-summary" aria-live="polite">' +
+        esc(summaryText()) +
+        '</p></div>' +
+        '<div class="grid min-h-0 flex-1 grid-cols-2 gap-1 sm:gap-1.5" style="grid-template-rows: repeat(' +
+        timeRowCount +
+        ', minmax(0, 1fr))">';
+
+      var body = '';
+      for (var i = 0; i < slots.length; i++) {
+        var t = slots[i];
+        var isSel = selected === t;
+        var cls =
+          'flex h-full min-h-[2.25rem] w-full items-center justify-center rounded-lg border text-xs font-semibold tabular-nums transition-all touch-manipulation sm:min-h-[2.5rem] sm:text-sm';
+        if (isSel) {
+          cls +=
+            ' border-fuchsia-500/70 bg-fuchsia-500/15 text-fuchsia-100 shadow-[0_0_16px_rgba(255,45,106,0.22)]';
+        } else {
+          cls +=
+            ' border-cyan-500/25 bg-black/40 text-stone-200 hover:border-cyan-400/50 hover:bg-cyan-500/10 hover:text-cyan-100';
+        }
+        body +=
+          '<button type="button" class="' +
+          cls +
+          '" data-time-slot="' +
+          esc(t) +
+          '" aria-pressed="' +
+          (isSel ? 'true' : 'false') +
+          '">' +
+          esc(t) +
+          '</button>';
+      }
+
+      root.innerHTML = head + body + '</div></div>';
+
+      Array.prototype.forEach.call(root.querySelectorAll('[data-time-slot]'), function (btn) {
+        btn.addEventListener('click', function () {
+          var v = btn.getAttribute('data-time-slot');
+          if (!v) return;
+          select.value = v;
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+    }
+
+    select.addEventListener('change', render);
+    render();
+  }
+
   const form = document.getElementById('booking-form');
   const statusEl = document.getElementById('booking-status');
   const defaultSlug = form?.getAttribute('data-default-masseuse')?.trim();
 
   mountMasseusePicker();
+  mountNightCalendar();
+  mountTimeSlotGrid();
 
   form?.querySelector('#book-masseuse')?.addEventListener('change', function syncPickerFromSelect() {
     var trigger = document.getElementById('book-masseuse-trigger');
@@ -445,7 +833,10 @@ const selectHostLabel = t(lang, 'book.selectHost');
     const sel = form.querySelector('#book-date');
     if (sel instanceof HTMLSelectElement) {
       const opt = Array.from(sel.options).find((o) => o.value === qDate);
-      if (opt) sel.value = qDate;
+      if (opt) {
+        sel.value = qDate;
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+      }
     }
   }
 

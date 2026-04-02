@@ -1,15 +1,24 @@
 ---
 import NightSchedule from '../components/NightSchedule.astro';
 import MasseuseServices from '../components/MasseuseServices.astro';
+import MasseuseExtras from '../components/MasseuseExtras.astro';
 import BookingForm from '../components/BookingForm.astro';
 import MasseuseStatsBar from '../components/MasseuseStatsBar.astro';
-import { contact } from '../data/site';
+import { contact, contactWhatsAppUrl } from '../data/site';
 import type { MasseuseDetail } from '../data/masseuseDetails';
 import type { Lang } from '../i18n/types';
 import { pickLocale } from '../i18n/locale';
 import { t } from '../i18n/t';
+import { reserveWithHostLabel } from '../i18n/reserveWithName';
 
-type Featured = { name: string; slug: string; image: string };
+type Featured = {
+  name: string;
+  slug: string;
+  image: string;
+  nameInstrumentalCs?: string;
+  cardImageObjectPosition?: string;
+  cardImageScale?: number;
+};
 
 type Props = {
   lang: Lang;
@@ -25,7 +34,7 @@ type Props = {
 const { lang, slug, m, photos, detail, bookHref, masseusesIndexHref, massagesIndexHref } = Astro.props;
 
 const name = m?.name ?? t(lang, 'masseuses.fallbackName');
-const reserveLabel = t(lang, 'masseuses.profileReserve').replace('{name}', name);
+const reserveLabel = reserveWithHostLabel(lang, name, m?.nameInstrumentalCs);
 
 const softPanel =
   'rounded-2xl border border-white/[0.07] bg-black/20 p-4 sm:p-5 backdrop-blur-md shadow-[0_20px_60px_-28px_rgba(0,0,0,0.75)]';
@@ -41,7 +50,7 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
   class="pb-24 md:pb-10 bg-[radial-gradient(ellipse_90%_50%_at_50%_-8%,rgba(191,95,255,0.07),transparent_58%)]"
 >
   <div
-    class="mx-auto max-w-7xl px-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] pt-3 sm:px-6 sm:pt-5"
+    class="mx-auto max-w-7xl px-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] pt-6 sm:px-6 md:pt-8"
   >
     <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
       <nav
@@ -64,22 +73,37 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
   </div>
 
   <div
-    class="mx-auto max-w-7xl px-[max(1rem,env(safe-area-inset-left,0px))] py-6 pe-[max(1rem,env(safe-area-inset-right,0px))] sm:px-6 sm:py-10"
+    class="mx-auto max-w-7xl px-[max(1rem,env(safe-area-inset-left,0px))] py-6 pe-[max(1rem,env(safe-area-inset-right,0px))] sm:px-6 md:py-8"
   >
     <div
-      class="grid gap-6 lg:gap-8 xl:gap-10 items-start lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]"
+      class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-8 xl:gap-10 lg:items-start"
     >
-      <aside class="space-y-5 lg:sticky lg:top-[8.5rem] xl:top-[9rem] self-start">
-        {
-          m ? (
-            <div
-              class="max-w-md mx-auto lg:mx-0"
-              data-host-profile-gallery
-              data-host-gallery-urls={lightboxUrlsJson}
-              data-host-gallery-counter-tpl={galleryCounterTpl}
-              data-host-gallery-lightbox-label={`${name} — ${t(lang, 'masseuses.photoGallery')}`}
-            >
-              <div class="relative">
+      {
+        m && (
+          <div class="mb-5 space-y-2 text-center max-w-md mx-auto lg:col-start-1 lg:row-start-1 lg:mb-0 lg:mx-0 lg:text-left">
+            <p class="text-[10px] font-display font-semibold uppercase tracking-[0.32em] text-fuchsia-400/85">
+              {t(lang, 'masseuses.detailEyebrow')}
+            </p>
+            <h1 class="font-display text-3xl sm:text-4xl font-semibold text-white tracking-tight [text-wrap:balance]">
+              {name}
+            </h1>
+            {detail && (
+              <p class="text-sm sm:text-base text-stone-400 leading-relaxed">{pickLocale(lang, detail.vibe)}</p>
+            )}
+            <p class="text-xs text-stone-600 leading-relaxed pt-1">{t(lang, 'masseuses.metaLine')}</p>
+          </div>
+        )
+      }
+      {
+        m ? (
+          <div
+            class="max-w-md mx-auto w-full lg:col-start-1 lg:row-start-2 lg:mx-0 lg:self-start"
+            data-host-profile-gallery
+            data-host-gallery-urls={lightboxUrlsJson}
+            data-host-gallery-counter-tpl={galleryCounterTpl}
+            data-host-gallery-lightbox-label={`${name} - ${t(lang, 'masseuses.photoGallery')}`}
+          >
+            <div class="relative">
                 <div
                   class="pointer-events-none absolute -inset-px rounded-[1.65rem] bg-gradient-to-br from-cyan-500/25 via-transparent to-fuchsia-500/20 opacity-70 blur-[2px]"
                   aria-hidden="true"
@@ -87,20 +111,59 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
                 <div class="relative overflow-hidden rounded-3xl border border-white/10 shadow-[0_28px_90px_-24px_rgba(0,0,0,0.92)] ring-1 ring-white/[0.04]">
                   <button
                     type="button"
-                    class="group relative block w-full cursor-zoom-in border-0 bg-transparent p-0 text-left touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-void rounded-3xl"
+                    class="group relative block w-full cursor-zoom-in overflow-hidden border-0 bg-transparent p-0 text-left touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-void rounded-3xl"
                     id="host-main-photo-open"
-                    aria-label={`${t(lang, 'home.expand')} — ${name}`}
+                    aria-label={`${t(lang, 'home.expand')} - ${name}`}
                   >
-                    <img
-                      id="host-main-photo"
-                      src={m.image}
-                      alt={name}
-                      width="560"
-                      height="720"
-                      class="aspect-[3/4] w-full object-cover object-top transition-opacity duration-300 pointer-events-none"
-                      loading="eager"
-                      decoding="async"
-                    />
+                    {
+                      m.cardImageScale != null && m.cardImageScale > 1 ? (
+                        <span class="block aspect-[3/4] w-full">
+                          <div
+                            class="host-card-photo-zoom size-full"
+                            style={{
+                              '--host-card-zoom': String(m.cardImageScale),
+                              '--host-zoom-origin': m.cardImageObjectPosition ?? 'center center',
+                            }}
+                          >
+                            <img
+                              id="host-main-photo"
+                              src={m.image}
+                              alt={name}
+                              width="560"
+                              height="720"
+                              class:list={[
+                                'h-full w-full object-cover transition-opacity duration-300 pointer-events-none',
+                                !m.cardImageObjectPosition && 'object-top',
+                              ]}
+                              style={
+                                m.cardImageObjectPosition
+                                  ? { objectPosition: m.cardImageObjectPosition }
+                                  : undefined
+                              }
+                              loading="eager"
+                              decoding="async"
+                            />
+                          </div>
+                        </span>
+                      ) : (
+                        <img
+                          id="host-main-photo"
+                          src={m.image}
+                          alt={name}
+                          width="560"
+                          height="720"
+                          class:list={[
+                            'aspect-[3/4] w-full object-cover transition-opacity duration-300 pointer-events-none',
+                            !m.cardImageObjectPosition && 'object-top',
+                          ]}
+                          style={
+                            m.cardImageObjectPosition ? { objectPosition: m.cardImageObjectPosition } : undefined
+                          }
+                          loading="eager"
+                          decoding="async"
+                        />
+                      )
+                    }
                     <span
                       class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/35 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
                       aria-hidden="true"
@@ -131,17 +194,54 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
                             data-src={src}
                             data-gallery-index={i}
                             data-active={src === m.image ? true : undefined}
-                            aria-label={`${name} — ${t(lang, 'masseuses.photoGallery')} ${i + 1}`}
+                            aria-label={`${name} - ${t(lang, 'masseuses.photoGallery')} ${i + 1}`}
                             aria-pressed={src === m.image ? 'true' : 'false'}
                           >
-                            <img
-                              src={src}
-                              alt=""
-                              width="80"
-                              height="100"
-                              class="h-24 w-[4.75rem] sm:h-28 sm:w-[5.25rem] object-cover object-top"
-                              loading="lazy"
-                            />
+                            {src === m.image && m.cardImageScale != null && m.cardImageScale > 1 ? (
+                              <span class="block h-24 w-[4.75rem] overflow-hidden sm:h-28 sm:w-[5.25rem]">
+                                <div
+                                  class="host-card-photo-zoom size-full"
+                                  style={{
+                                    '--host-card-zoom': String(m.cardImageScale),
+                                    '--host-zoom-origin': m.cardImageObjectPosition ?? 'center center',
+                                  }}
+                                >
+                                  <img
+                                    src={src}
+                                    alt=""
+                                    width="80"
+                                    height="100"
+                                    class:list={[
+                                      'h-24 w-[4.75rem] sm:h-28 sm:w-[5.25rem] object-cover',
+                                      !m.cardImageObjectPosition && 'object-top',
+                                    ]}
+                                    style={
+                                      m.cardImageObjectPosition
+                                        ? { objectPosition: m.cardImageObjectPosition }
+                                        : undefined
+                                    }
+                                    loading="lazy"
+                                  />
+                                </div>
+                              </span>
+                            ) : (
+                              <img
+                                src={src}
+                                alt=""
+                                width="80"
+                                height="100"
+                                class:list={[
+                                  'h-24 w-[4.75rem] sm:h-28 sm:w-[5.25rem] object-cover',
+                                  !(src === m.image && m.cardImageObjectPosition) && 'object-top',
+                                ]}
+                                style={
+                                  src === m.image && m.cardImageObjectPosition
+                                    ? { objectPosition: m.cardImageObjectPosition }
+                                    : undefined
+                                }
+                                loading="lazy"
+                              />
+                            )}
                           </button>
                         </li>
                       ))}
@@ -149,27 +249,15 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
                   </div>
                 )
               }
-              <div class="mt-6 text-center lg:text-left space-y-2">
-                <p class="text-[10px] font-display font-semibold uppercase tracking-[0.32em] text-fuchsia-400/85">
-                  {t(lang, 'masseuses.detailEyebrow')}
-                </p>
-                <h1 class="font-display text-3xl sm:text-4xl font-semibold text-white tracking-tight [text-wrap:balance]">
-                  {name}
-                </h1>
-                {detail && (
-                  <p class="text-sm sm:text-base text-stone-400 leading-relaxed">{pickLocale(lang, detail.vibe)}</p>
-                )}
-                <p class="text-xs text-stone-600 leading-relaxed pt-1">{t(lang, 'masseuses.metaLine')}</p>
-              </div>
             </div>
-          ) : (
-            <div class="rounded-3xl border border-white/10 bg-surface/40 p-8 text-center">
-              <h1 class="font-display text-3xl font-semibold text-white">{name}</h1>
-            </div>
-          )
-        }
+        ) : (
+          <div class="rounded-3xl border border-white/10 bg-surface/40 p-8 text-center max-w-md mx-auto lg:col-start-1 lg:row-start-1 lg:mx-0">
+            <h1 class="font-display text-3xl font-semibold text-white">{name}</h1>
+          </div>
+        )
+      }
 
-        <div class="flex flex-wrap gap-2 lg:hidden">
+      <div class="flex w-full max-w-md flex-wrap gap-2 mx-auto lg:mx-0 lg:hidden">
           <a
             href={bookHref}
             class="btn-neon-primary flex-1 min-w-[min(100%,10rem)] min-h-12 justify-center text-xs touch-manipulation"
@@ -177,48 +265,52 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
             {t(lang, 'masseuses.reserve')}
           </a>
           <a
-            href={`tel:${contact.phoneTel}`}
+            href={contactWhatsAppUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             class="btn-neon-ghost min-h-12 px-5 touch-manipulation border-cyan-500/30 text-cyan-200"
           >
             {t(lang, 'masseuses.ctaCall')}
           </a>
         </div>
 
-        {
-          detail && (
-            <NightSchedule
-              schedule={detail.schedule}
-              lang={lang}
-              class={softPanelSchedule}
-              compact
-            />
-          )
-        }
+        <div class="w-full max-w-md mx-auto space-y-5 lg:col-start-1 lg:row-start-3 lg:mx-0 lg:max-w-none">
+          {
+            detail && (
+              <NightSchedule
+                schedule={detail.schedule}
+                lang={lang}
+                class={softPanelSchedule}
+                compact
+              />
+            )
+          }
 
-        <div class="hidden lg:flex flex-col gap-2.5 pt-1">
-          <a href={bookHref} class="btn-neon-primary justify-center min-h-11 touch-manipulation text-xs">
-            {reserveLabel}
-          </a>
-          <a
-            href={`tel:${contact.phoneTel}`}
-            class="btn-neon-ghost justify-center min-h-11 touch-manipulation border-white/15 text-stone-200 text-xs"
-          >
-            {contact.phoneDisplay}
-          </a>
-          <a
-            href={massagesIndexHref}
-            class="text-center text-[10px] font-display uppercase tracking-[0.2em] text-stone-500 hover:text-cyan-400/90 py-1.5 touch-manipulation"
-          >
-            {t(lang, 'masseuses.allServices')}
-          </a>
+          <div class="hidden lg:flex flex-col gap-2.5 pt-1">
+            <a href={bookHref} class="btn-neon-primary justify-center min-h-11 touch-manipulation text-xs">
+              {reserveLabel}
+            </a>
+            <a
+              href={contactWhatsAppUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-neon-ghost justify-center min-h-11 touch-manipulation border-white/15 text-stone-200 text-xs"
+            >
+              {contact.phoneDisplay}
+            </a>
+            <a
+              href={massagesIndexHref}
+              class="text-center text-[10px] font-display uppercase tracking-[0.2em] text-stone-500 hover:text-cyan-400/90 py-1.5 touch-manipulation"
+            >
+              {t(lang, 'masseuses.allServices')}
+            </a>
+          </div>
         </div>
-      </aside>
 
-      <div class="min-w-0 flex flex-col gap-8 lg:gap-10">
         {
           detail && (
             <section
-              class:list={[softPanel, 'flex flex-col gap-3']}
+              class:list={[softPanel, 'flex min-w-0 flex-col gap-3 lg:col-start-2 lg:row-start-1']}
               aria-labelledby="host-bio-heading"
             >
               <h2
@@ -227,7 +319,7 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
               >
                 {t(lang, 'masseuses.bioTitle')}
               </h2>
-              <p class="text-[15px] sm:text-base text-stone-200/95 leading-relaxed [text-wrap:pretty]">
+              <p class="text-base sm:text-lg text-stone-100/95 leading-[1.65] [text-wrap:pretty]">
                 {pickLocale(lang, detail.personalIntro)}
               </p>
             </section>
@@ -235,7 +327,7 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
         }
         {
           detail && (
-            <div class="grid gap-6 lg:grid-cols-2 lg:items-stretch">
+            <div class="grid min-w-0 gap-6 lg:col-start-2 lg:row-start-2 lg:grid-cols-2 lg:items-stretch">
               <section
                 class:list={[softPanel, 'flex flex-col gap-4']}
                 aria-labelledby="host-params-heading"
@@ -246,34 +338,28 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
                 >
                   {t(lang, 'masseuses.parametersTitle')}
                 </h2>
-                <a
-                  href={`tel:${contact.phoneTel}`}
-                  class="font-display text-sm font-semibold text-cyan-300 hover:text-cyan-100 transition-colors w-fit touch-manipulation min-h-10 inline-flex items-center"
-                >
-                  {contact.phoneDisplay}
-                </a>
-                {
-                  detail.stats && (
-                    <div class="pt-2 border-t border-white/[0.08]">
-                      <MasseuseStatsBar lang={lang} stats={detail.stats} />
-                    </div>
-                  )
-                }
+                {detail.stats && <MasseuseStatsBar lang={lang} stats={detail.stats} />}
               </section>
-              <MasseuseServices services={detail.services} lang={lang} class={`${softPanel} h-full`} />
+              <div class="flex min-w-0 flex-col gap-6">
+                <MasseuseServices services={detail.services} lang={lang} class={`${softPanel} h-full`} />
+                <MasseuseExtras
+                  lang={lang}
+                  hostName={name}
+                  items={
+                    detail.extras ? (lang === 'cs' ? detail.extras.cs : detail.extras.en) : []
+                  }
+                  class={softPanel}
+                />
+              </div>
             </div>
           )
         }
 
-        <div id="night-booking" class="scroll-mt-40 sm:scroll-mt-44 w-full">
-          <div
-            class="rounded-3xl border border-cyan-500/15 bg-gradient-to-b from-cyan-500/[0.04] via-black/30 to-black/40 p-1 shadow-[0_0_48px_-20px_rgba(0,240,255,0.18)] ring-1 ring-white/[0.04]"
-          >
-            <BookingForm lang={lang} defaultMasseuseSlug={slug} />
-          </div>
+        <div id="night-booking" class="scroll-mt-40 sm:scroll-mt-44 w-full min-w-0 lg:col-start-2 lg:row-start-3">
+          <BookingForm lang={lang} defaultMasseuseSlug={slug} />
         </div>
 
-        <p class="text-center lg:text-start">
+        <p class="min-w-0 text-center lg:col-start-2 lg:row-start-4 lg:text-start">
           <a
             href={masseusesIndexHref}
             class="inline-flex min-h-11 items-center text-xs text-stone-500 hover:text-cyan-400 font-display uppercase tracking-[0.15em] transition-colors touch-manipulation"
@@ -281,7 +367,6 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
             {t(lang, 'masseuses.back')}
           </a>
         </p>
-      </div>
     </div>
   </div>
 
@@ -297,7 +382,7 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
           role="document"
         >
           <h2 id="host-lightbox-title" class="sr-only">
-            {name} — {t(lang, 'masseuses.photoGallery')}
+            {name} - {t(lang, 'masseuses.photoGallery')}
           </h2>
           <div class="absolute end-2 top-2 z-20 flex gap-2 sm:end-4 sm:top-4">
             <button
@@ -373,7 +458,9 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
     style="padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right));"
   >
     <a
-      href={`tel:${contact.phoneTel}`}
+      href={contactWhatsAppUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       class="btn-neon-ghost flex-1 justify-center min-h-12 text-xs touch-manipulation border-white/15"
     >
       {t(lang, 'masseuses.ctaCall')}

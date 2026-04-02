@@ -29,6 +29,7 @@
     overflow-x: clip;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 240, 255, 0.09);
   }
 
   body.cyber-root {
@@ -150,6 +151,32 @@
       0 12px 40px rgba(0, 0, 0, 0.5);
   }
 
+  /**
+   * Host card photo: set inline --host-card-zoom (e.g. 1.5) and optional --host-zoom-origin
+   * to crop JPEG letterboxing. Parent must be .group for hover zoom.
+   */
+  .host-card-photo-zoom {
+    transform: scale(var(--host-card-zoom, 1));
+    transform-origin: var(--host-zoom-origin, center center);
+    transition: transform 0.5s ease;
+  }
+
+  .group:hover .host-card-photo-zoom,
+  .group:focus-within .host-card-photo-zoom {
+    transform: scale(calc(var(--host-card-zoom, 1) * 1.03));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .host-card-photo-zoom {
+      transition: none;
+    }
+
+    .group:hover .host-card-photo-zoom,
+    .group:focus-within .host-card-photo-zoom {
+      transform: scale(var(--host-card-zoom, 1));
+    }
+  }
+
   .glow-pulse {
     animation: glow-pulse 3s ease-in-out infinite;
   }
@@ -208,13 +235,39 @@
   .scrollbar-cyber::-webkit-scrollbar-corner {
     background: transparent;
   }
+
+  /**
+   * Main column below PageHero: shared horizontal + vertical padding across listing pages.
+   */
+  .page-content {
+    @apply mx-auto w-full min-w-0 max-w-7xl px-4 py-6 sm:px-5 md:py-8;
+  }
+
+  .page-content--6xl {
+    @apply max-w-6xl;
+  }
+
+  .page-content--3xl {
+    @apply max-w-3xl;
+  }
+
+  /**
+   * Embed iframe has no dark style API; invert + hue-rotate yields dark tiles that fit the site.
+   */
+  .contacts-map-dark {
+    background: var(--color-surface);
+  }
+
+  .contacts-map-dark iframe {
+    filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(1.06) saturate(0.88);
+  }
 }
 
 .prose-wp {
   @apply text-stone-300 leading-relaxed;
 }
 .prose-wp a {
-  @apply text-cyan-400 underline-offset-2 hover:text-fuchsia-400;
+  @apply text-cyan-400 underline-offset-2 hover:text-fuchsia-400 touch-manipulation;
 }
 .prose-wp img {
   @apply max-w-full min-w-0 h-auto rounded-lg border border-cyan-500/20;

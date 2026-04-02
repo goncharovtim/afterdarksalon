@@ -5,6 +5,7 @@ import { t } from '../../../i18n/t';
 import { bookWithQuery, pathMassage } from '../../../i18n/paths';
 import { massageTitle } from '../../../i18n/massages';
 import { graphLd, webPageJsonLd } from '../../../lib/seo';
+import PageHero from '../../../components/PageHero.astro';
 
 const lang = 'en' as const;
 const origin = Astro.site?.origin ?? Astro.url.origin;
@@ -22,21 +23,22 @@ const jsonLd = graphLd(
 ---
 
 <Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
-  <section class="border-b border-fuchsia-500/15 bg-surface/25">
-    <div class="max-w-7xl mx-auto px-4 sm:px-5 pt-3 pb-5 md:pt-4 md:pb-7">
-      <p class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-fuchsia-400 text-center mb-1.5">
-        {t(lang, 'massages.eyebrow')}
-      </p>
-      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-center text-gradient-neon mb-3">
-        {t(lang, 'massages.title')}
-      </h1>
-      <p class="text-center text-stone-500 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-        {t(lang, 'massages.lead')}
-      </p>
-    </div>
-  </section>
+  <PageHero variant="fuchsia">
+    <p
+      slot="eyebrow"
+      class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-fuchsia-400"
+    >
+      {t(lang, 'massages.eyebrow')}
+    </p>
+    <h1
+      slot="title"
+      class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon"
+    >
+      {t(lang, 'massages.title')}
+    </h1>
+  </PageHero>
 
-  <div id="grid" class="max-w-7xl mx-auto px-4 sm:px-5 py-5 md:py-7">
+  <div id="grid" class="page-content">
     <div class="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {massageGrid.map((item) => (
         <article class="card-cyber flex flex-col overflow-hidden group">

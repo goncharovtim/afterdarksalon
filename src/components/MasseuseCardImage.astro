@@ -7,12 +7,24 @@ type Props = {
   lang: Lang;
   name: string;
   image: string;
+  /** CSS `object-position` when the photo has excess headroom (overrides default `object-top`). */
+  imageObjectPosition?: string;
+  /** >1 zooms the photo inside the frame to crop in-file letterboxing (see `.host-card-photo-zoom`). */
+  imageScale?: number;
   vibe?: string;
   stats?: MasseuseStats;
   compact?: boolean;
 };
 
-const { lang, name, image, vibe, stats, compact = false } = Astro.props;
+const { lang, name, image, imageObjectPosition, imageScale, vibe, stats, compact = false } = Astro.props;
+
+const useZoom = imageScale != null && imageScale > 1;
+const zoomCssVars = useZoom
+  ? {
+      '--host-card-zoom': String(imageScale),
+      '--host-zoom-origin': imageObjectPosition ?? 'center center',
+    }
+  : undefined;
 
 function hasAnyStat(s: MasseuseStats | undefined): boolean {
   if (!s) return false;
@@ -33,18 +45,39 @@ const imgTone = compact ? 'opacity-90 group-hover:opacity-100' : '';
 ---
 
 <div class="relative h-full w-full min-h-[12rem] overflow-hidden bg-black">
-  <img
-    src={image}
-    alt={name}
-    width="350"
-    height="500"
-    class:list={[
-      'h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100',
-      imgTone,
-    ]}
-    loading="lazy"
-    decoding="async"
-  />
+  {
+    useZoom ? (
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="host-card-photo-zoom size-full" style={zoomCssVars}>
+          <img
+            src={image}
+            alt={name}
+            width="350"
+            height="500"
+            class:list={['h-full w-full object-cover', !imageObjectPosition && 'object-top', imgTone]}
+            style={imageObjectPosition ? { objectPosition: imageObjectPosition } : undefined}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
+    ) : (
+      <img
+        src={image}
+        alt={name}
+        width="350"
+        height="500"
+        class:list={[
+          'h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100',
+          !imageObjectPosition && 'object-top',
+          imgTone,
+        ]}
+        style={imageObjectPosition ? { objectPosition: imageObjectPosition } : undefined}
+        loading="lazy"
+        decoding="async"
+      />
+    )
+  }
   <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-void/95 via-void/15 to-transparent opacity-80" />
 
   {

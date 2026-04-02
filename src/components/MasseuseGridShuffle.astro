@@ -1,0 +1,86 @@
+---
+/**
+ * Reorders masseuse cards client-side (static build cannot randomize per request).
+ * - New browser session: first visit gets a random order (stored in sessionStorage).
+ * - Same session: order is kept until every Nth page load, then reshuffled.
+ */
+---
+
+<script is:inline>
+  (function () {
+    var KEY_ORDER = 'ads-masseuses-order-v1';
+    var KEY_VISITS = 'ads-masseuses-visits-v1';
+    /** Reshuffle on visits 3, 6, 9, … (first visit always shuffles via missing/invalid order). */
+    var RESHUFFLE_EVERY = 3;
+
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i];
+        a[i] = a[j];
+        a[j] = t;
+      }
+      return a;
+    }
+
+    function sameSet(order, slugs) {
+      if (!order || order.length !== slugs.length) return false;
+      var seen = {};
+      var i;
+      for (i = 0; i < slugs.length; i++) seen[slugs[i]] = (seen[slugs[i]] || 0) + 1;
+      for (i = 0; i < order.length; i++) {
+        if (!seen[order[i]]) return false;
+        seen[order[i]]--;
+      }
+      for (var k in seen) if (seen[k] !== 0) return false;
+      return true;
+    }
+
+    function run() {
+      var grid = document.getElementById('masseuses-grid');
+      if (!grid) return;
+      var articles = Array.prototype.slice.call(grid.querySelectorAll('[data-masseuse-slug]'));
+      if (articles.length < 2) return;
+
+      var slugs = articles.map(function (el) {
+        return el.getAttribute('data-masseuse-slug');
+      });
+
+      var visits = parseInt(sessionStorage.getItem(KEY_VISITS) || '0', 10) + 1;
+      sessionStorage.setItem(KEY_VISITS, String(visits));
+
+      var order = null;
+      try {
+        var raw = sessionStorage.getItem(KEY_ORDER);
+        if (raw) order = JSON.parse(raw);
+      } catch (e) {
+        order = null;
+      }
+
+      var valid = Array.isArray(order) && sameSet(order, slugs);
+      var reshuffle = !valid || visits % RESHUFFLE_EVERY === 0;
+
+      if (reshuffle) {
+        order = shuffle(slugs);
+        sessionStorage.setItem(KEY_ORDER, JSON.stringify(order));
+      }
+
+      var by = {};
+      for (var i = 0; i < articles.length; i++) {
+        var s = articles[i].getAttribute('data-masseuse-slug');
+        by[s] = articles[i];
+      }
+      for (var j = 0; j < order.length; j++) {
+        var el = by[order[j]];
+        if (el) grid.appendChild(el);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run);
+    } else {
+      run();
+    }
+  })();
+</script>

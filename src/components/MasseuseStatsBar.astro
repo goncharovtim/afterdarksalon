@@ -15,6 +15,15 @@ type StatKind = 'age' | 'bust' | 'height' | 'weight' | 'tattoos';
 
 type Row = { kind: StatKind; labelKey: string; value: string | undefined };
 
+/** Icons in `public/girlsparam` (paths are case-sensitive on Linux). */
+const STAT_ICONS: Record<StatKind, string> = {
+  age: '/girlsparam/age.png',
+  bust: '/girlsparam/tits.png',
+  height: '/girlsparam/Height.png',
+  weight: '/girlsparam/Weight.png',
+  tattoos: '/girlsparam/Tattoos.png',
+};
+
 function displayValue(kind: StatKind, raw: string): string {
   if (kind === 'tattoos') {
     const v = raw.trim().toLowerCase();
@@ -33,43 +42,77 @@ const rows: Row[] = [
 ];
 
 const visible = rows.filter((r) => r.value && String(r.value).trim().length > 0);
+const lastIdx = visible.length - 1;
 ---
 
 {
   visible.length > 0 && (
-    <div
-      class:list={[
-        'flex flex-wrap items-start',
-        compact ? 'gap-x-4 gap-y-2.5' : 'gap-x-6 gap-y-3',
-      ]}
-      role="list"
-    >
-      {visible.map((row) => (
-        <div
-          class:list={[
-            'min-w-0',
-            compact ? 'min-w-[4.75rem]' : 'min-w-[5.25rem] sm:min-w-[5.75rem]',
-          ]}
-          role="listitem"
-        >
-          <p
-            class:list={[
-              'font-medium uppercase tracking-wider text-stone-500',
-              compact ? 'text-[8px] leading-tight' : 'text-[9px] sm:text-[10px] leading-tight',
-            ]}
+    <>
+      {
+        compact ? (
+          <div class="flex flex-wrap items-start gap-x-3 gap-y-2.5" role="list">
+            {visible.map((row) => (
+              <div
+                class="flex min-w-0 max-w-[5.5rem] items-center gap-2 sm:max-w-[6rem]"
+                role="listitem"
+              >
+                <img
+                  src={STAT_ICONS[row.kind]}
+                  alt=""
+                  width="20"
+                  height="20"
+                  class="size-5 shrink-0 object-contain opacity-90 [filter:drop-shadow(0_0_4px_rgba(34,211,238,0.12))]"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="min-w-0 flex-1">
+                  <p class="text-[8px] font-medium uppercase leading-tight tracking-wider text-stone-500">
+                    {t(lang, row.labelKey)}
+                  </p>
+                  <p class="mt-0.5 text-sm font-semibold tabular-nums leading-snug text-stone-100">
+                    {displayValue(row.kind, String(row.value))}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            class="grid grid-cols-2 gap-x-5 gap-y-5 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-4"
+            role="list"
           >
-            {t(lang, row.labelKey)}
-          </p>
-          <p
-            class:list={[
-              'font-semibold text-stone-100 tabular-nums',
-              compact ? 'text-xs mt-0.5' : 'text-sm mt-0.5',
-            ]}
-          >
-            {displayValue(row.kind, String(row.value))}
-          </p>
-        </div>
-      ))}
-    </div>
+            {visible.map((row, i) => (
+              <div
+                class:list={[
+                  'flex min-w-0 items-center gap-3',
+                  visible.length === 5 && i === lastIdx
+                    ? 'col-span-2 justify-center sm:col-span-1 sm:col-start-2 sm:justify-center'
+                    : '',
+                ]}
+                role="listitem"
+              >
+                <img
+                  src={STAT_ICONS[row.kind]}
+                  alt=""
+                  width="40"
+                  height="40"
+                  class="size-9 shrink-0 object-contain opacity-90 sm:size-10 [filter:drop-shadow(0_0_5px_rgba(34,211,238,0.14))]"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="min-w-0 text-start">
+                  <p class="text-[10px] font-medium uppercase leading-tight tracking-wider text-stone-500 sm:text-[11px]">
+                    {t(lang, row.labelKey)}
+                  </p>
+                  <p class="mt-0.5 text-sm font-semibold tabular-nums leading-snug text-stone-100 sm:text-base">
+                    {displayValue(row.kind, String(row.value))}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )
+      }
+    </>
   )
 }

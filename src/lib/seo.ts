@@ -14,17 +14,17 @@ export function absoluteUrl(origin: string, pathOrUrl: string): string {
 
 export function massageMetaDescription(lang: Lang, title: string): string {
   if (lang === 'cs') {
-    return `${title} — erotická masáž v nočním salónu ${SITE_NAME}, Praha 1. Diskrétní vstup, rezervace online nebo telefonicky. Čt–So 23:00–04:00.`;
+    return `${title} - erotická masáž v nočním salónu ${SITE_NAME}, Praha 1. Diskrétní vstup, rezervace online nebo telefonicky. Čt–So 23:00–04:00.`;
   }
-  return `${title} — erotic massage at ${SITE_NAME} night salon, Prague 1. Discreet entry, book online or by phone. Thu–Sat 11pm–4am.`;
+  return `${title} - erotic massage at ${SITE_NAME} night salon, Prague 1. Discreet entry, book online or by phone. Thu–Sat 11pm–4am.`;
 }
 
 export function masseuseMetaDescription(lang: Lang, name: string, vibe?: string): string {
   const extra = vibe ? (lang === 'cs' ? ` ${vibe}.` : ` ${vibe}.`) : '';
   if (lang === 'cs') {
-    return `${name} — masérka ${SITE_NAME}, Praha 1.${extra} Noční směny, služby, rezervace online. Erotická masáž v Praze.`;
+    return `${name} - masérka ${SITE_NAME}, Praha 1.${extra} Noční směny, služby, rezervace online. Erotická masáž v Praze.`;
   }
-  return `${name} — masseuse at ${SITE_NAME}, Prague 1.${extra} Night shifts, services, book online. Erotic massage in Prague.`;
+  return `${name} - masseuse at ${SITE_NAME}, Prague 1.${extra} Night shifts, services, book online. Erotic massage in Prague.`;
 }
 
 export function stripHtml(html: string, maxLen = 320): string {

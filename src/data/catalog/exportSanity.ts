@@ -15,7 +15,11 @@ export function buildSanityExportBundle(): {
   const services = MASSAGE_SERVICE_CATALOG.map((d) => ({ ...d }));
   const hosts = MASSEUSE_CATALOG.map((m) => ({
     ...m,
-    serviceSlugs: [...m.serviceSlugs],
+    offerings: {
+      massageSlugs: [...m.offerings.massageSlugs],
+      extraSlugs: [...m.offerings.extraSlugs],
+    },
+    physical: { ...m.physical },
     galleryUrls: [...m.galleryUrls],
     schedule: m.schedule.map((d) => ({ ...d })),
   }));
@@ -46,7 +50,7 @@ export function buildSanityExportBundle(): {
       version: 1,
       exportedAt: new Date().toISOString(),
       note:
-        'Import: define Sanity types massageService, masseuse, priceBlock, extraService, salonGallery; map serviceSlugs to references; upload images.',
+        'Import: define Sanity types massageService, masseuse, priceBlock, extraService, salonGallery; masseuse.offerings.massageServices + extraServices as multi-references; physical as structured object; upload images.',
     },
     documents: [...services, ...hosts, ...priceBlocks, ...extras, salonGallery],
   };

@@ -54,37 +54,33 @@ const navItems = [
   class="fixed top-0 left-0 right-0 z-40 border-b border-cyan-500/25 bg-void/90 pt-[env(safe-area-inset-top,0px)] backdrop-blur-md shadow-[0_0_24px_rgba(0,240,255,0.08)]"
 >
   <div
-    class="max-w-7xl mx-auto flex min-h-[2.5rem] flex-wrap items-center justify-between gap-x-3 gap-y-2 px-[max(1rem,env(safe-area-inset-left,0px))] py-1.5 pe-[max(1rem,env(safe-area-inset-right,0px))]"
+    class="max-w-7xl mx-auto flex min-h-[2.5rem] flex-wrap items-center justify-end gap-x-2 gap-y-2 px-[max(1rem,env(safe-area-inset-left,0px))] py-1.5 pe-[max(1rem,env(safe-area-inset-right,0px))] sm:gap-x-4"
   >
-    <div class="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
-      <a
-        href={pathBook(lang)}
-        class="inline-flex min-h-10 shrink-0 items-center justify-center btn-neon-primary !py-2 !px-3 sm:!px-4 !text-[10px] !tracking-[0.2em] touch-manipulation"
-      >
-        {t(lang, 'header.reserve')}
-      </a>
-    </div>
-    <div class="flex min-w-0 flex-1 items-center justify-end gap-2 sm:gap-4 sm:flex-none sm:justify-start">
-      <a
-        href={`tel:${contact.phoneTel}`}
-        class="inline-flex min-h-10 max-w-full items-center font-display text-[11px] font-semibold tabular-nums text-cyan-300 transition-colors hover:text-cyan-100 touch-manipulation sm:text-xs"
-      >
-        <span class="truncate">{contact.phoneDisplay}</span>
-      </a>
-      <a
-        href={switchHref}
-        class="inline-flex min-h-10 min-w-10 shrink-0 items-center justify-center gap-1.5 rounded-md border border-white/10 px-3 py-2 text-xs font-display uppercase tracking-wider text-stone-400 transition-colors hover:border-fuchsia-500/30 hover:text-fuchsia-400 touch-manipulation sm:min-h-0 sm:min-w-0 sm:justify-start"
-        hreflang={otherLang === 'cs' ? 'cs-CZ' : 'en-GB'}
-        rel="alternate"
-      >
-        {t(lang, 'header.altLangShort')}
-      </a>
-    </div>
+    <a
+      href={`tel:${contact.phoneTel}`}
+      class="inline-flex min-h-10 max-w-full min-w-0 items-center font-display text-[11px] font-semibold tabular-nums text-cyan-300 transition-colors hover:text-cyan-100 touch-manipulation sm:text-xs"
+    >
+      <span class="truncate">{contact.phoneDisplay}</span>
+    </a>
+    <a
+      href={pathBook(lang)}
+      class="inline-flex min-h-10 shrink-0 items-center justify-center btn-neon-primary !py-2 !px-3 !text-xs !tracking-wider sm:min-h-0 sm:!px-4 touch-manipulation"
+    >
+      {t(lang, 'header.reserve')}
+    </a>
+    <a
+      href={switchHref}
+      class="inline-flex min-h-10 min-w-10 shrink-0 items-center justify-center gap-1.5 rounded-md border border-white/10 px-3 py-2 text-xs font-display uppercase tracking-wider text-stone-400 transition-colors hover:border-fuchsia-500/30 hover:text-fuchsia-400 touch-manipulation sm:min-h-0 sm:min-w-0 sm:justify-start"
+      hreflang={otherLang === 'cs' ? 'cs-CZ' : 'en-GB'}
+      rel="alternate"
+    >
+      {t(lang, 'header.altLangShort')}
+    </a>
   </div>
 </div>
 
 <header
-  class="sticky z-30 top-[calc(2.75rem+env(safe-area-inset-top,0px))] border-b border-fuchsia-500/20 bg-abyss/85 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+  class="sticky z-30 mt-[calc(2.75rem+env(safe-area-inset-top,0px))] top-[calc(2.75rem+env(safe-area-inset-top,0px))] border-b border-fuchsia-500/20 bg-abyss/85 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
 >
   <nav
     class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 px-[max(1rem,env(safe-area-inset-left,0px))] py-2 pe-[max(1rem,env(safe-area-inset-right,0px))] sm:py-2"
@@ -101,10 +97,11 @@ const navItems = [
         />
       </div>
       <div class="hidden sm:flex flex-col border-l border-cyan-500/30 pl-2.5 sm:pl-3 min-w-0">
-        <span class="font-display text-[9px] font-bold uppercase tracking-[0.2em] text-cyan-400/90">
-          {t(lang, 'header.nightSalon')}
+        <span
+          class="font-display text-[9px] sm:text-[10px] font-semibold leading-snug text-cyan-400/90 [overflow-wrap:anywhere]"
+        >
+          {t(lang, 'header.logoSubline')}
         </span>
-        <span class="text-[10px] text-stone-500 uppercase tracking-widest">{t(lang, 'header.prague1')}</span>
       </div>
       <span class="sr-only">{t(lang, 'nav.home')}</span>
     </a>
@@ -128,7 +125,7 @@ const navItems = [
 
     <div
       id="site-nav"
-      class="flex w-full max-lg:max-h-[min(72dvh,calc(100dvh-9rem))] max-lg:overflow-y-auto max-lg:overscroll-contain flex-col gap-0.5 pb-4 max-lg:hidden lg:flex lg:basis-auto lg:flex-row lg:items-center lg:gap-1 xl:gap-2 lg:w-auto lg:max-h-none lg:overflow-visible lg:pb-0"
+      class="flex w-full max-lg:max-h-[min(72dvh,calc(100dvh-9rem))] max-lg:overflow-y-auto max-lg:overscroll-y-contain flex-col gap-0.5 pb-4 max-lg:hidden lg:flex lg:basis-auto lg:flex-row lg:items-center lg:gap-1 xl:gap-2 lg:w-auto lg:max-h-none lg:overflow-visible lg:pb-0"
       data-mobile-nav-panel
     >
       {
@@ -148,34 +145,6 @@ const navItems = [
           </a>
         ))
       }
-      <details class="relative lg:ml-2 border-t border-white/5 lg:border-0 pt-2 lg:pt-0">
-        <summary
-          class="list-none flex min-h-11 cursor-pointer items-center gap-1 rounded-md px-3 py-2 font-display text-[11px] font-semibold uppercase tracking-wider text-cyan-400 hover:bg-white/5 lg:min-h-0 lg:py-2 [&::-webkit-details-marker]:hidden touch-manipulation"
-        >
-          {t(lang, 'header.call')}
-          <span class="text-stone-600 text-xs">▾</span>
-        </summary>
-        <ul
-          class="lg:absolute lg:right-0 lg:mt-1 lg:min-w-[11rem] rounded-lg border border-cyan-500/25 bg-void/98 py-1 text-sm shadow-[0_0_24px_rgba(0,0,0,0.5)] backdrop-blur-md"
-        >
-          <li>
-            <a
-              href={`tel:${contact.phoneTel}`}
-              class="block min-h-11 px-4 py-3 text-stone-200 leading-snug hover:bg-fuchsia-500/10 hover:text-fuchsia-200 touch-manipulation sm:min-h-0 sm:py-2.5"
-            >
-              {contact.phoneDisplay}
-            </a>
-          </li>
-          <li>
-            <a
-              href={pathContacts(lang)}
-              class="block min-h-11 px-4 py-3 text-stone-200 leading-snug hover:bg-cyan-500/10 hover:text-cyan-200 touch-manipulation sm:min-h-0 sm:py-2.5"
-            >
-              {t(lang, 'header.messageMap')}
-            </a>
-          </li>
-        </ul>
-      </details>
     </div>
   </nav>
 </header>

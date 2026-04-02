@@ -15,6 +15,9 @@ export const contact = {
   mapsUrl: googleMapsPlaceUrl,
 } as const;
 
+/** WhatsApp chat (`wa.me` expects country code + number, digits only). Header/footer keep `tel:` - use this elsewhere. */
+export const contactWhatsAppUrl = `https://wa.me/${contact.phoneTel.replace(/\D/g, '')}`;
+
 /** Keep in sync with the linked Google Maps listing (rating + review count). */
 export const googleReviews = {
   url: googleMapsPlaceUrl,

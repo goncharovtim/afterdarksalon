@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import MasseuseScheduleGrid from '../../components/MasseuseScheduleGrid.astro';
+import PageHero from '../../components/PageHero.astro';
 import { t } from '../../i18n/t';
 import { pathBook } from '../../i18n/paths';
 import { graphLd, webPageJsonLd } from '../../lib/seo';
@@ -21,22 +22,27 @@ const jsonLd = graphLd(
 ---
 
 <Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
-  <section class="border-b border-cyan-500/15 bg-surface/20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-5 pt-3 pb-5 md:pt-4 md:pb-7 text-center">
-      <p class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-cyan-400 mb-1.5">
-        {t(lang, 'meta.brand')}
-      </p>
-      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon mb-3">
-        {t(lang, 'scheduleGrid.title')}
-      </h1>
-      <p class="text-stone-500 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+  <PageHero>
+    <p
+      slot="eyebrow"
+      class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-cyan-400"
+    >
+      {t(lang, 'meta.brand')}
+    </p>
+    <h1
+      slot="title"
+      class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon"
+    >
+      {t(lang, 'scheduleGrid.title')}
+    </h1>
+    <div class="flex w-full max-w-2xl flex-col items-center gap-3 md:gap-3.5">
+      <p class="text-stone-500 text-sm sm:text-base leading-relaxed">
         {t(lang, 'scheduleGrid.lead')}
       </p>
-      <p class="text-stone-600 text-xs mt-4 max-w-xl mx-auto">{t(lang, 'scheduleGrid.noteClientDates')}</p>
     </div>
-  </section>
+  </PageHero>
 
-  <section class="max-w-7xl mx-auto px-4 sm:px-5 py-5 md:py-7">
+  <section class="page-content">
     <div class="-mx-4 sm:mx-0">
       <MasseuseScheduleGrid lang={lang} />
     </div>

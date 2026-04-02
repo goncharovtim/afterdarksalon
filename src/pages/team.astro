@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
 import { t } from '../i18n/t';
 import { graphLd, webPageJsonLd } from '../lib/seo';
 
@@ -19,19 +20,31 @@ const jsonLd = graphLd(
 ---
 
 <Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
-  <div class="max-w-3xl mx-auto px-4 sm:px-5 py-6 md:py-10 text-center space-y-5 md:space-y-6">
-    <p class="font-display text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-400">{t(lang, 'team.eyebrow')}</p>
-    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon">{t(lang, 'team.title')}</h1>
-    <p class="text-stone-400 leading-relaxed whitespace-pre-line text-sm sm:text-base">
-      {t(lang, 'team.body')}
-    </p>
-    <a
-      href={t(lang, 'team.scheduleUrl')}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="btn-neon-primary min-h-12 touch-manipulation"
+  <PageHero>
+    <p
+      slot="eyebrow"
+      class="font-display text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-400"
     >
-      {t(lang, 'team.cta')}
-    </a>
-  </div>
+      {t(lang, 'team.eyebrow')}
+    </p>
+    <h1
+      slot="title"
+      class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon"
+    >
+      {t(lang, 'team.title')}
+    </h1>
+    <div class="flex w-full max-w-3xl flex-col items-center gap-5 md:gap-6">
+      <p class="text-stone-400 leading-relaxed whitespace-pre-line text-sm sm:text-base text-center">
+        {t(lang, 'team.body')}
+      </p>
+      <a
+        href={t(lang, 'team.scheduleUrl')}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-neon-primary min-h-12 touch-manipulation"
+      >
+        {t(lang, 'team.cta')}
+      </a>
+    </div>
+  </PageHero>
 </Layout>

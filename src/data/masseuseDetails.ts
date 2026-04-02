@@ -6,4 +6,4 @@ export type {
 } from './catalog/sanityTypes';
 
 export { defaultNightSchedule } from './catalog/nightSchedule';
-export { masseuseDetails, getMasseuseDetail } from './catalog/adapters';
+export { masseuseDetails, getMasseuseDetail, hostSearchIndex } from './catalog/adapters';

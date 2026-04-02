@@ -120,7 +120,7 @@ const payloadJson = JSON.stringify(payload);
       if (!parts.length) return '';
       return (
         '<div class="mt-2 text-[9px] leading-snug text-stone-500/90 tabular-nums">' +
-        escHtml(parts.join(' · ')) +
+        escAttr(parts.join(' · ')) +
         '</div>'
       );
     }
@@ -142,7 +142,10 @@ const payloadJson = JSON.stringify(payload);
     days.forEach(function (d) {
       var wd = d.toLocaleDateString(locale, { weekday: 'short' });
       var dm = d.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
-      var todayMark = isoLocal(d) === todayIso ? '<span class="text-fuchsia-400">' + L.today + '</span>' : '';
+      var todayMark =
+        isoLocal(d) === todayIso
+          ? '<span class="text-fuchsia-400">' + L.today + '</span>'
+          : '<span class="text-transparent select-none pointer-events-none" aria-hidden="true">' + L.today + '</span>';
       var th = document.createElement('th');
       th.scope = 'col';
       th.className =
@@ -155,7 +158,9 @@ const payloadJson = JSON.stringify(payload);
         '<div class="text-[11px] text-stone-500 mt-1 leading-tight">' +
         escAttr(dm) +
         '</div>' +
-        (todayMark ? '<div class="text-[9px] mt-1 uppercase tracking-wider leading-tight">' + todayMark + '</div>' : '') +
+        '<div class="text-[9px] mt-1 min-h-[1.25rem] uppercase tracking-wider leading-tight">' +
+        todayMark +
+        '</div>' +
         '</div>';
       headRow.appendChild(th);
     });
