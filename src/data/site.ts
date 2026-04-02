@@ -15,10 +15,11 @@ export const contact = {
   mapsUrl: googleMapsPlaceUrl,
 } as const;
 
+/** Keep in sync with the linked Google Maps listing (rating + review count). */
 export const googleReviews = {
   url: googleMapsPlaceUrl,
-  rating: 4.9,
-  reviewCount: 127,
+  rating: 4.5,
+  reviewCount: 56,
 } as const;
 
 export const homeHero = {

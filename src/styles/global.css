@@ -26,6 +26,9 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body.cyber-root {
@@ -34,6 +37,8 @@
     color: #e8e4f0;
     position: relative;
     min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: clip;
   }
 
   body.cyber-root::before {
@@ -212,7 +217,7 @@
   @apply text-cyan-400 underline-offset-2 hover:text-fuchsia-400;
 }
 .prose-wp img {
-  @apply max-w-full h-auto rounded-lg border border-cyan-500/20;
+  @apply max-w-full min-w-0 h-auto rounded-lg border border-cyan-500/20;
 }
 .prose-wp h1,
 .prose-wp h2,
@@ -221,7 +226,7 @@
 }
 
 .prose-wp--detail {
-  @apply text-[15px] sm:text-base leading-[1.65] sm:leading-relaxed;
+  @apply min-w-0 text-[15px] leading-[1.65] sm:text-base sm:leading-relaxed;
 }
 .prose-wp--detail p {
   @apply mb-4 sm:mb-5 text-stone-300/95;
@@ -239,6 +244,28 @@
 .prose-wp--detail h2,
 .prose-wp--detail h3 {
   @apply mt-8 sm:mt-10 mb-3 text-[13px] sm:text-sm;
+}
+
+/* WP Unyson: two-column row (image sidebar + copy) → stack and center image in Zážitek */
+.prose-wp--detail .fw-container > .fw-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+.prose-wp--detail .fw-container > .fw-row > [class*='fw-col-sm-'] {
+  width: 100% !important;
+  max-width: 42rem;
+  float: none !important;
+}
+.prose-wp--detail .fw-col-inner[style*='padding'] {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.prose-wp--detail .fw-single-image img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .prose-wp--profile p:first-of-type {

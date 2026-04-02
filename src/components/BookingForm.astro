@@ -25,7 +25,7 @@ const selectHostLabel = t(lang, 'book.selectHost');
   id="booking-form"
   class:list={[
     'card-cyber neon-border space-y-6',
-    compact ? 'p-5 md:p-6' : 'p-6 md:p-8',
+    compact ? 'p-4 sm:p-5 md:p-6' : 'p-4 sm:p-6 md:p-8',
   ]}
   data-default-masseuse={defaultMasseuseSlug}
 >
@@ -86,7 +86,7 @@ const selectHostLabel = t(lang, 'book.selectHost');
       <select
         name="service"
         id="book-service"
-        class="w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-sm text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500"
+        class="min-h-12 w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-base text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 sm:text-sm"
         required
       >
         <option value="">{t(lang, 'book.selectRitual')}</option>
@@ -103,7 +103,7 @@ const selectHostLabel = t(lang, 'book.selectHost');
       <select
         name="date"
         id="book-date"
-        class="w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-sm text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500"
+        class="min-h-12 w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-base text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 sm:text-sm"
         required
       >
         <option value="">{t(lang, 'book.pickDate')}</option>
@@ -122,7 +122,7 @@ const selectHostLabel = t(lang, 'book.selectHost');
       <select
         name="time"
         id="book-time"
-        class="w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-sm text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500"
+        class="min-h-12 w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-base text-stone-100 outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 sm:text-sm"
         required
       >
         <option value="">{t(lang, 'book.time')}</option>
@@ -142,7 +142,7 @@ const selectHostLabel = t(lang, 'book.selectHost');
         type="text"
         name="name"
         autocomplete="name"
-        class="w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-sm text-stone-100 outline-none focus:border-fuchsia-500"
+        class="min-h-12 w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-base text-stone-100 outline-none focus:border-fuchsia-500 sm:text-sm"
         required
       />
     </label>
@@ -154,7 +154,7 @@ const selectHostLabel = t(lang, 'book.selectHost');
         type="tel"
         name="phone"
         autocomplete="tel"
-        class="w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-sm text-stone-100 outline-none focus:border-fuchsia-500"
+        class="min-h-12 w-full rounded-lg border border-cyan-500/30 bg-black/50 px-4 py-3 text-base text-stone-100 outline-none focus:border-fuchsia-500 sm:text-sm"
         required
       />
     </label>
@@ -171,9 +171,11 @@ const selectHostLabel = t(lang, 'book.selectHost');
     </label>
   </div>
 
-  <div class="flex flex-wrap items-center gap-4">
-    <button type="submit" class="btn-neon-primary">{t(lang, 'book.submit')}</button>
-    <p id="booking-status" class="hidden text-sm text-cyan-300" role="status"></p>
+  <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+    <button type="submit" class="btn-neon-primary order-1 min-h-12 w-full touch-manipulation sm:w-auto">
+      {t(lang, 'book.submit')}
+    </button>
+    <p id="booking-status" class="order-2 hidden text-sm text-cyan-300" role="status"></p>
   </div>
   <p class:list={['text-[11px] leading-relaxed text-stone-500', compact && 'hidden']}>
     {t(lang, 'book.demoNote')}
@@ -203,14 +205,21 @@ const selectHostLabel = t(lang, 'book.selectHost');
       hidden.dispatchEvent(new Event('change', { bubbles: true }));
     }
 
+    function setChevronOpen(open) {
+      var chev = trigger.querySelector('[data-chev]');
+      if (chev) chev.classList.toggle('rotate-180', open);
+    }
+
     function closeList() {
       list.hidden = true;
       trigger.setAttribute('aria-expanded', 'false');
+      setChevronOpen(false);
     }
 
     function openList() {
       list.hidden = false;
       trigger.setAttribute('aria-expanded', 'true');
+      setChevronOpen(true);
     }
 
     function syncTrigger() {
@@ -243,7 +252,7 @@ const selectHostLabel = t(lang, 'book.selectHost');
       '' +
       '<button type="button" id="' +
       triggerId +
-      '" class="book-ms-trigger flex w-full min-h-[3rem] items-center gap-3 rounded-lg border border-cyan-500/30 bg-black/50 px-3 py-2.5 text-left text-sm text-stone-100 outline-none hover:border-cyan-500/45 focus-visible:border-fuchsia-500 focus-visible:ring-1 focus-visible:ring-fuchsia-500 touch-manipulation" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="book-masseuse-label ' +
+      '" class="book-ms-trigger flex w-full min-h-[3rem] items-center gap-2 rounded-lg border border-cyan-500/30 bg-black/50 py-2.5 ps-3 pe-2 text-left text-sm text-stone-100 outline-none hover:border-cyan-500/45 focus-visible:border-fuchsia-500 focus-visible:ring-1 focus-visible:ring-fuchsia-500 touch-manipulation sm:gap-3 sm:pe-2.5" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="book-masseuse-label ' +
       triggerId +
       '" aria-controls="' +
       listId +
@@ -251,14 +260,16 @@ const selectHostLabel = t(lang, 'book.selectHost');
       '<span data-thumb-wrap class="relative hidden size-11 shrink-0 overflow-hidden rounded-lg border border-white/15 bg-black/40">' +
       '<img data-thumb alt="" class="size-full object-cover object-top" width="44" height="44" loading="lazy" decoding="async" />' +
       '</span>' +
-      '<span data-label class="min-w-0 flex-1 truncate font-medium text-stone-200">' +
+      '<span data-label class="min-w-0 flex-1 truncate pe-1 font-medium text-stone-200">' +
       ph +
       '</span>' +
-      '<span data-chev class="shrink-0 text-stone-500" aria-hidden="true">▾</span>' +
+      '<span data-chev class="pointer-events-none flex size-10 shrink-0 items-center justify-center text-cyan-400 transition-transform duration-200 ease-out" aria-hidden="true">' +
+      '<svg class="size-[1.35rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>' +
+      '</span>' +
       '</button>' +
       '<ul id="' +
       listId +
-      '" role="listbox" tabindex="-1" hidden class="absolute left-0 right-0 top-full z-30 mt-1 max-h-[min(22rem,calc(100vh-8rem))] overflow-y-auto overscroll-contain rounded-xl border border-cyan-500/25 bg-[#0a0a0c]/98 py-1 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.9)] backdrop-blur-xl ring-1 ring-white/[0.06]"></ul>';
+      '" role="listbox" tabindex="-1" hidden class="scrollbar-cyber absolute left-0 right-0 top-full z-30 mt-1 max-h-[min(22rem,calc(100vh-8rem))] overflow-y-auto overscroll-contain rounded-xl border border-cyan-500/25 bg-[#0a0a0c]/98 py-1 pe-0.5 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.9)] backdrop-blur-xl ring-1 ring-white/[0.06] [scrollbar-gutter:stable]"></ul>';
 
     var trigger = document.getElementById(triggerId);
     var list = document.getElementById(listId);

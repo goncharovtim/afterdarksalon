@@ -1,28 +1,30 @@
 ---
 import type { PriceRow } from '../data/pricing';
+import type { Lang } from '../i18n/types';
+import { t } from '../i18n/t';
 
-type Props = { rows: PriceRow[] };
+type Props = { rows: PriceRow[]; lang: Lang };
 
-const { rows } = Astro.props;
+const { rows, lang } = Astro.props;
 ---
 
-<div class="overflow-x-auto rounded-lg border border-cyan-500/20">
-  <table class="w-full min-w-[320px] text-sm text-left">
-    <thead class="bg-black/50 font-display text-cyan-400 text-[10px] uppercase tracking-widest">
+<div class="overflow-x-auto rounded-lg border border-cyan-500/20 scrollbar-cyber -mx-0.5 px-0.5 sm:mx-0 sm:px-0">
+  <table class="w-full min-w-[280px] text-left text-xs sm:text-sm">
+    <thead class="bg-black/50 font-display text-[9px] uppercase tracking-widest text-cyan-400 sm:text-[10px]">
       <tr>
-        <th class="px-3 py-2 font-bold" scope="col">Duration</th>
-        <th class="px-3 py-2 font-bold" scope="col">CZK</th>
-        <th class="px-3 py-2 font-bold" scope="col">EUR</th>
-        <th class="px-3 py-2 font-bold" scope="col">USD</th>
+        <th class="px-2 py-2 font-bold sm:px-3" scope="col">{t(lang, 'price.colDuration')}</th>
+        <th class="px-2 py-2 font-bold sm:px-3" scope="col">{t(lang, 'price.colCzk')}</th>
+        <th class="px-2 py-2 font-bold sm:px-3" scope="col">{t(lang, 'price.colEur')}</th>
+        <th class="px-2 py-2 font-bold sm:px-3" scope="col">{t(lang, 'price.colUsd')}</th>
       </tr>
     </thead>
     <tbody class="divide-y divide-white/10">
       {rows.map((row) => (
         <tr class="hover:bg-fuchsia-500/5">
-          <td class="px-3 py-2 text-stone-200">{row.duration}</td>
-          <td class="px-3 py-2 text-stone-400">{row.czk}</td>
-          <td class="px-3 py-2 text-stone-400">{row.eur}</td>
-          <td class="px-3 py-2 text-fuchsia-300/90">{row.usd}</td>
+          <td class="px-2 py-2 text-stone-200 sm:px-3">{row.duration}</td>
+          <td class="px-2 py-2 text-stone-400 sm:px-3">{row.czk}</td>
+          <td class="px-2 py-2 text-stone-400 sm:px-3">{row.eur}</td>
+          <td class="px-2 py-2 text-fuchsia-300/90 sm:px-3">{row.usd}</td>
         </tr>
       ))}
     </tbody>

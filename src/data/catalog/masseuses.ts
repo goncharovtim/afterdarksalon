@@ -8,6 +8,10 @@ export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
     slug: 'alina',
     name: 'Alina',
     vibe: { en: 'Tantra · Nuru', cs: 'Tantra · nuru' },
+    personalIntro: {
+      en: 'Alina is a calm, intuitive masseuse in her mid-twenties with a gift for tantra and nuru. Her presence is warm and grounding — she loves slow, mindful touch and helping guests let go completely. After work she unwinds with yoga and quiet evenings with a good film.',
+      cs: 'Alina je klidná a intuitivní masérka s citem pro tantrické a nuru masáže. Působí teple a uklidňující — ráda pracuje pomalu a s rozvahou a hosté u ní rychle povolí. Po směnách ji baví jóga a klidné večery u dobrého filmu.',
+    },
     cardImageUrl: '/team/alina/IMG_9665.jpg',
     galleryUrls: [
       '/team/alina/IMG_9665.jpg',
@@ -26,6 +30,10 @@ export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
     slug: 'angie-2',
     name: 'Angie',
     vibe: { en: 'Sensual · Mix', cs: 'Smyslná masáž · mix' },
+    personalIntro: {
+      en: 'Angie is a gentle blonde who genuinely loves her work. She has a playful, light-hearted nature and a knack for making the room feel easy and flirty. When she is not at the salon she enjoys getting lost in a novel and sketching in her notebook.',
+      cs: 'Angie je něžná blondýnka, která svou práci opravdu miluje. Má hravou povahu a dokáže hned navodit uvolněnou, lehce flirtující atmosféru. Ve volném čase ráda čte a kreslí do svého notesu.',
+    },
     cardImageUrl: '/team/angie-2/2026-03-27-13.52.46.jpg',
     galleryUrls: [
       '/team/angie-2/2026-03-27-13.52.46.jpg',
@@ -43,6 +51,10 @@ export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
     slug: 'alice',
     name: 'Alice',
     vibe: { en: 'Four hands · Duo', cs: 'Čtyři ruce · duo' },
+    personalIntro: {
+      en: 'Alice is outgoing and tuned in — perfect for duo and four-hands rituals where chemistry matters. At twenty-five she combines warmth with precision, and she enjoys the energy of shared sessions. She likes meeting new people and trying new cafés around Prague.',
+      cs: 'Alice je společenská a citlivá — skvěle se hodí na rituály ve dvojici a masáž čtyřma rukama, kde záleží na souhře. V pětadvaceti spojuje vlídnost s pečlivostí a baví ji energie společných seancí. Ráda poznává nové lidi a zkouší kavárny po Praze.',
+    },
     cardImageUrl: '/team/alice/IMG_9664.jpg',
     galleryUrls: [
       '/team/alice/IMG_9664.jpg',
@@ -61,6 +73,10 @@ export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
     slug: 'tina',
     name: 'Tina',
     vibe: { en: 'Classic · Deep', cs: 'Klasická · hluboká' },
+    personalIntro: {
+      en: 'Tina brings depth and focus to every session — her style is sensual but grounded, with attention to detail. A dark-haired masseuse in her late twenties, she appreciates guests who enjoy a slower build and a real sense of connection. After work she recharges with long walks and electronic music.',
+      cs: 'Tina přináší do každé masáže hloubku a soustředění — její styl je smyslný, ale díky klidu a pečlivosti i velmi uzemňující. Je tmavovláska, sedmadvacetiletá, a ocení hosty, kteří mají rádi pomalejší rozjezd a opravdický kontakt. Po práci ji dobíjí dlouhé procházky a elektronická hudba.',
+    },
     cardImageUrl: '/team/tina/tina-2.jpg',
     galleryUrls: ['/team/tina/tina-2.jpg', '/team/tina/tina-3.jpg'],
     stats: { age: '27', height: '172 cm', weight: '55 kg', bust: '3', tattoos: 'yes' },
@@ -74,6 +90,10 @@ export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
     slug: 'lola',
     name: 'Lola',
     vibe: { en: 'Playful · Nuru', cs: 'Hravá · nuru' },
+    personalIntro: {
+      en: 'Lola is petite, light-haired and sunshine-bright — a natural at nuru and playful body-to-body flow. At twenty-three she smiles easily and takes real pleasure in seeing you relax. She fills her days with dance playlists, dessert experiments and short trips out of the city.',
+      cs: 'Lola je drobná, světlovlasá a pořád usměvavá — v nuru i hravém tělo na tělo má přirozený talent. Ve třiadvaceti snadno rozesměje a opravdu ji těší, když vidí, jak se host uvolňuje. Svůj čas tráví playlisty k tanci, experimenty s dezerty a výlety mimo město.',
+    },
     cardImageUrl: '/team/lola/IMG_9612.jpg',
     galleryUrls: ['/team/lola/IMG_9612.jpg', '/team/lola/IMG_9613.jpg', '/team/lola/IMG_9615.jpg'],
     stats: { age: '23', height: '163 cm', weight: '48 kg', bust: '2', tattoos: 'no' },
@@ -87,6 +107,10 @@ export const MASSEUSE_CATALOG: CatalogMasseuse[] = [
     slug: 'nika',
     name: 'Nika',
     vibe: { en: 'Night owl · VIP', cs: 'Noční typ · VIP' },
+    personalIntro: {
+      en: 'Nika is statuesque, self-assured and a true night owl — ideal if you want polish and intensity. At twenty-eight and 175 cm tall she moves with quiet confidence; her massage feels immersive and a touch VIP. She follows fashion, late gallery openings and strong espresso.',
+      cs: 'Nika je statná, sebevědomá a opravdový noční typ — hodí se pro hosty, kteří chtějí špetku glamouru a intenzity. V osmadvaceti a s výškou 175 cm působí klidně sebejistě; její masáž je ponořující a lehce VIP. Sleduje módu, pozdní vernisáže a silné espresso.',
+    },
     cardImageUrl: '/team/nika/nika-15.jpg',
     galleryUrls: ['/team/nika/nika-15.jpg', '/team/nika/nika-17.jpg', '/team/nika/nika-18.jpg'],
     stats: { age: '28', height: '175 cm', weight: '56 kg', bust: '4', tattoos: 'yes' },

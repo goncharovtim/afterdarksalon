@@ -22,16 +22,22 @@ const payload = {
     shiftHours: t(lang, 'scheduleGrid.shiftHours'),
     bookSlot: t(lang, 'scheduleGrid.bookSlot'),
     profile: t(lang, 'scheduleGrid.profile'),
+    hostCol: t(lang, 'scheduleGrid.hostCol'),
   },
   hosts: featuredMasseuses.map((m) => {
     const d = getMasseuseDetail(m.slug);
     const open = d?.schedule.map((x) => x.open) ?? [false, false, false, false, false, false, false];
+    const st = d?.stats;
     return {
       slug: m.slug,
       name: m.name,
       image: m.image,
       profileHref: pathMasseuse(lang, m.slug),
       openByWeekday: open,
+      stats:
+        st && (st.age || st.height || st.weight)
+          ? { age: st.age ?? '', height: st.height ?? '', weight: st.weight ?? '' }
+          : null,
     };
   }),
 };
@@ -44,15 +50,20 @@ const payloadJson = JSON.stringify(payload);
   data-masseuse-schedule-root
 >
   <div class="overflow-x-auto scrollbar-cyber">
-    <table class="w-full min-w-[56rem] text-left border-collapse">
+    <table class="w-full min-w-[72rem] table-fixed border-collapse text-left">
+      <colgroup>
+        <col style="width: 17rem" />
+        <col /><col /><col /><col /><col /><col /><col />
+      </colgroup>
       <thead>
-        <tr class="border-b border-white/[0.08] bg-black/40">
+        <tr id="msch-head-row" class="border-b border-white/[0.08]">
           <th
-            class="sticky left-0 z-20 w-[10.5rem] min-w-[10.5rem] bg-void/95 backdrop-blur-md px-3 py-3 text-[10px] font-display uppercase tracking-[0.2em] text-stone-500 border-r border-white/[0.06]"
+            scope="col"
+            class="sticky left-0 z-30 border-b border-white/[0.08] border-r border-white/[0.06] bg-void/95 px-3 py-3 text-left align-top backdrop-blur-md"
           >
-          </th>
-          <th colspan="7" class="px-2 py-3">
-            <div class="grid grid-cols-7 gap-1.5" id="msch-head-cells"></div>
+            <span class="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500">
+              {t(lang, 'scheduleGrid.hostCol')}
+            </span>
           </th>
         </tr>
       </thead>
@@ -68,6 +79,13 @@ const payloadJson = JSON.stringify(payload);
     var hosts = payload.hosts;
     var bookBase = payload.bookBase;
     var locale = payload.locale;
+
+    function escAttr(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;');
+    }
 
     function isoLocal(d) {
       var y = d.getFullYear();
@@ -92,9 +110,24 @@ const payloadJson = JSON.stringify(payload);
       return 'shift';
     }
 
-    var headEl = document.getElementById('msch-head-cells');
+    function statsHtml(h) {
+      var s = h.stats;
+      if (!s) return '';
+      var parts = [];
+      if (s.age) parts.push(s.age);
+      if (s.height) parts.push(s.height);
+      if (s.weight) parts.push(s.weight);
+      if (!parts.length) return '';
+      return (
+        '<div class="mt-2 text-[9px] leading-snug text-stone-500/90 tabular-nums">' +
+        escHtml(parts.join(' · ')) +
+        '</div>'
+      );
+    }
+
+    var headRow = document.getElementById('msch-head-row');
     var bodyEl = document.getElementById('msch-body');
-    if (!headEl || !bodyEl) return;
+    if (!headRow || !bodyEl) return;
 
     var anchor = new Date();
     anchor.setHours(12, 0, 0, 0);
@@ -106,24 +139,26 @@ const payloadJson = JSON.stringify(payload);
       days.push(x);
     }
 
-    headEl.innerHTML = days
-      .map(function (d) {
-        var wd = d.toLocaleDateString(locale, { weekday: 'short' });
-        var dm = d.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
-        var todayMark = isoLocal(d) === todayIso ? '<span class="text-fuchsia-400">' + L.today + '</span>' : '';
-        return (
-          '<div class="rounded-lg border border-white/[0.08] bg-black/50 px-2 py-2 text-center">' +
-          '<div class="font-display text-[10px] font-bold uppercase tracking-wider text-stone-300">' +
-          wd +
-          '</div>' +
-          '<div class="text-[11px] text-stone-500 mt-0.5">' +
-          dm +
-          '</div>' +
-          (todayMark ? '<div class="text-[9px] mt-1 uppercase tracking-wider">' + todayMark + '</div>' : '') +
-          '</div>'
-        );
-      })
-      .join('');
+    days.forEach(function (d) {
+      var wd = d.toLocaleDateString(locale, { weekday: 'short' });
+      var dm = d.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
+      var todayMark = isoLocal(d) === todayIso ? '<span class="text-fuchsia-400">' + L.today + '</span>' : '';
+      var th = document.createElement('th');
+      th.scope = 'col';
+      th.className =
+        'border-b border-white/[0.08] bg-black/40 px-2 py-2.5 text-center align-top min-w-0';
+      th.innerHTML =
+        '<div class="rounded-lg border border-white/[0.08] bg-black/50 px-1.5 py-2 min-h-[4.25rem] flex flex-col justify-center">' +
+        '<div class="font-display text-[10px] font-bold uppercase tracking-wider text-stone-300 leading-tight">' +
+        escAttr(wd) +
+        '</div>' +
+        '<div class="text-[11px] text-stone-500 mt-1 leading-tight">' +
+        escAttr(dm) +
+        '</div>' +
+        (todayMark ? '<div class="text-[9px] mt-1 uppercase tracking-wider leading-tight">' + todayMark + '</div>' : '') +
+        '</div>';
+      headRow.appendChild(th);
+    });
 
     function barHtml(kind) {
       if (kind === 'shift') {
@@ -184,18 +219,16 @@ const payloadJson = JSON.stringify(payload);
       if (kind === 'shift' && bookUrl) {
         return (
           '<a href="' +
-          bookUrl +
-          '" class="block min-h-[6.5rem] rounded-xl border border-white/[0.08] bg-black/35 p-3 transition-all hover:border-cyan-500/45 hover:bg-cyan-500/[0.06] hover:shadow-[0_0_20px_rgba(0,240,255,0.12)] touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500/50" title="' +
-          name +
-          ' · ' +
-          dateStr +
+          escAttr(bookUrl) +
+          '" class="block min-h-[8rem] rounded-xl border border-white/[0.08] bg-black/35 p-3 transition-all hover:border-cyan-500/45 hover:bg-cyan-500/[0.06] hover:shadow-[0_0_20px_rgba(0,240,255,0.12)] touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500/50" title="' +
+          escAttr(name + ' · ' + dateStr) +
           '">' +
           inner +
           '</a>'
         );
       }
       return (
-        '<div class="min-h-[6.5rem] rounded-xl border border-white/[0.05] bg-black/20 p-3 opacity-75">' + inner + '</div>'
+        '<div class="min-h-[8rem] rounded-xl border border-white/[0.05] bg-black/20 p-3 opacity-75">' + inner + '</div>'
       );
     }
 
@@ -206,30 +239,29 @@ const payloadJson = JSON.stringify(payload);
             var kind = cellKind(d, h.openByWeekday);
             var iso = isoLocal(d);
             var url = kind === 'shift' ? bookBase + '?host=' + encodeURIComponent(h.slug) + '&date=' + iso : '';
-            return (
-              '<td class="p-1.5 align-top w-[1%]">' + cellInner(kind, url, h.name, iso) + '</td>'
-            );
+            return '<td class="p-2 align-top">' + cellInner(kind, url, h.name, iso) + '</td>';
           })
           .join('');
 
         return (
           '<tr class="hover:bg-white/[0.02]">' +
-          '<th scope="row" class="sticky left-0 z-10 w-[10.5rem] min-w-[10.5rem] bg-void/95 backdrop-blur-md border-r border-white/[0.06] p-2 text-left align-top">' +
+          '<th scope="row" class="sticky left-0 z-20 w-[17rem] min-w-[17rem] max-w-[17rem] border-r border-white/[0.06] bg-void/95 p-2.5 text-left align-top backdrop-blur-md">' +
           '<a href="' +
-          h.profileHref +
-          '" class="flex items-center gap-2.5 rounded-xl p-1.5 -m-1.5 hover:bg-white/[0.04] transition-colors touch-manipulation group/row">' +
-          '<span class="relative size-12 shrink-0 overflow-hidden rounded-lg border border-white/10">' +
+          escAttr(h.profileHref) +
+          '" class="group/host flex items-start gap-3 rounded-xl p-1.5 -m-1 transition-colors hover:bg-white/[0.04] touch-manipulation">' +
+          '<span class="relative h-[5.25rem] w-[3.85rem] shrink-0 overflow-hidden rounded-xl border border-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.5)]">' +
           '<img src="' +
-          h.image +
-          '" alt="" class="size-full object-cover object-top" width="48" height="64" loading="lazy" />' +
+          escAttr(h.image) +
+          '" alt="" class="size-full object-cover object-top" width="62" height="84" loading="lazy" />' +
           '</span>' +
-          '<span class="min-w-0">' +
-          '<span class="font-display text-xs font-bold uppercase tracking-wide text-white group-hover/row:text-cyan-200 transition-colors block truncate">' +
-          h.name +
+          '<span class="min-w-0 flex-1 pt-0.5">' +
+          '<span class="font-display text-[11px] font-bold uppercase tracking-[0.12em] text-white transition-colors group-hover/host:text-cyan-200 [overflow-wrap:anywhere]">' +
+          escAttr(h.name) +
           '</span>' +
-          '<span class="text-[9px] uppercase tracking-wider text-stone-600">' +
+          statsHtml(h) +
+          '<span class="mt-2 block font-display text-[9px] uppercase tracking-[0.18em] text-cyan-500/75 transition-colors group-hover/host:text-fuchsia-400/90">' +
           L.profile +
-          '</span>' +
+          ' →</span>' +
           '</span>' +
           '</a>' +
           '</th>' +

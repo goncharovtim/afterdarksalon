@@ -3,10 +3,12 @@ import Layout from '../../../layouts/Layout.astro';
 import MassageServicePage from '../../../templates/MassageServicePage.astro';
 import { massageGrid } from '../../../data/site';
 import { getMassageServiceBySlug } from '../../../data/catalog/massageServices';
+import { rewriteWpOutboundLinks } from '../../../lib/rewriteWpOutboundLinks';
+import { stripWpEmbeddedSalonPricing } from '../../../lib/stripWpMassagePricing';
 import { fetchWpPageBySlug, wpPageSlugForMassage } from '../../../lib/wp';
 import { decodeHtmlEntities } from '../../../lib/htmlEntities';
 import { t } from '../../../i18n/t';
-import { bookWithQuery, pathMassage, pathMassages } from '../../../i18n/paths';
+import { bookWithQuery, pathContacts, pathMassage, pathMassages } from '../../../i18n/paths';
 import { massageTitle } from '../../../i18n/massages';
 import {
   breadcrumbJsonLd,
@@ -23,7 +25,18 @@ export async function getStaticPaths() {
 const lang = 'en' as const;
 const slug = Astro.params.slug!;
 const item = massageGrid.find((m) => m.slug === slug);
-const page = await fetchWpPageBySlug(wpPageSlugForMassage(item, lang));
+const massageBookHref = bookWithQuery(lang, { service: slug });
+const rawPage = await fetchWpPageBySlug(wpPageSlugForMassage(item, lang));
+const page = rawPage
+  ? {
+      title: rawPage.title,
+      html: rewriteWpOutboundLinks(
+        stripWpEmbeddedSalonPricing(rawPage.html),
+        massageBookHref,
+        pathContacts(lang),
+      ),
+    }
+  : null;
 const label = item ? massageTitle(lang, item.slug) : slug;
 const heading = page?.title ?? label;
 const catalogRow = getMassageServiceBySlug(slug);
@@ -70,7 +83,7 @@ const jsonLd = graphLd(
     slug={slug}
     item={item}
     page={page}
-    bookHref={bookWithQuery(lang, { service: slug })}
+    bookHref={massageBookHref}
     massagesIndexHref={pathMassages(lang)}
   />
 </Layout>

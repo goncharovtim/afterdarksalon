@@ -7,4 +7,4 @@ type Props = {
 const { html, class: className = '' } = Astro.props;
 ---
 
-<section class:list={['prose-wp max-w-none', className]} set:html={html} />
+<section class:list={['prose-wp max-w-none min-w-0', className]} set:html={html} />

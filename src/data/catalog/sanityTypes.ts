@@ -22,6 +22,7 @@ export type MasseuseServiceRef = { title: string; slug: string };
 export type MasseuseDetail = {
   slug: string;
   vibe: LocalePair;
+  personalIntro: LocalePair;
   services: MasseuseServiceRef[];
   schedule: DaySchedule[];
   stats?: MasseuseStats;
@@ -46,6 +47,8 @@ export type CatalogMasseuse = {
   slug: string;
   name: string;
   vibe: LocalePair;
+  /** Short profile copy — age, look & personality (shown on profile page). */
+  personalIntro: LocalePair;
   cardImageUrl: string;
   galleryUrls: readonly string[];
   stats?: MasseuseStats;

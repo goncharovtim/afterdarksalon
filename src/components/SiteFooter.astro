@@ -14,7 +14,9 @@ const { lang } = Astro.props;
   class="relative z-10 mt-12 sm:mt-16 border-t border-cyan-500/20 bg-abyss/90 text-stone-400 shadow-[0_-12px_40px_rgba(0,0,0,0.35)]"
 >
   <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-fuchsia-500/50 to-transparent" />
-  <div class="max-w-7xl mx-auto px-4 py-10 sm:py-12">
+  <div
+    class="max-w-7xl mx-auto px-[max(1rem,env(safe-area-inset-left,0px))] py-10 pe-[max(1rem,env(safe-area-inset-right,0px))] sm:py-12"
+  >
     <div class="mb-6 sm:mb-8 flex justify-center">
       <GoogleRatingBanner lang={lang} variant="footer" />
     </div>
@@ -52,7 +54,7 @@ const { lang } = Astro.props;
         <p class="text-sm text-stone-500 leading-relaxed">
           {t(lang, 'footer.nightAccessBody')}
         </p>
-        <a href={pathBook(lang)} class="btn-neon-ghost mt-4 inline-flex justify-center">
+        <a href={pathBook(lang)} class="btn-neon-ghost mt-4 inline-flex min-h-11 justify-center touch-manipulation px-6">
           {t(lang, 'footer.reserveSlot')}
         </a>
       </div>

@@ -34,7 +34,9 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
   >
   </div>
 
-  <div class="relative max-w-7xl mx-auto px-4 pt-1 pb-10 sm:pt-3 sm:pb-12 md:pt-4 md:pb-14 w-full">
+  <div
+    class="relative mx-auto w-full max-w-7xl px-[max(1rem,env(safe-area-inset-left,0px))] pb-10 pe-[max(1rem,env(safe-area-inset-right,0px))] pt-1 sm:px-4 sm:pt-3 sm:pb-12 md:pt-4 md:pb-14"
+  >
     <div class="max-w-4xl mx-auto text-center space-y-5 md:space-y-6">
       <p
         class="font-display text-[10px] sm:text-xs font-bold uppercase tracking-[0.4em] text-cyan-400 glow-pulse inline-block"
@@ -56,7 +58,7 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
         <a href={pathMasseuses(lang)} class="btn-neon-ghost">{t(lang, 'home.browseHosts')}</a>
         <a
           href={`tel:${contact.phoneTel}`}
-          class="text-sm text-cyan-400/90 hover:text-cyan-300 font-display uppercase tracking-wider"
+          class="inline-flex min-h-11 items-center justify-center px-3 text-sm font-display uppercase tracking-wider text-cyan-400/90 transition-colors hover:text-cyan-300 touch-manipulation"
         >
           {contact.phoneDisplay}
         </a>
@@ -122,7 +124,7 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
       {homeMassageTiles.map((item) => (
         <a
           href={pathMassage(lang, item.slug)}
-          class="flex gap-4 items-center rounded-xl border border-white/10 bg-surface/40 p-4 hover:border-fuchsia-500/35 transition-all group"
+          class="group flex min-h-[4.5rem] items-center gap-4 rounded-xl border border-white/10 bg-surface/40 p-4 transition-all hover:border-fuchsia-500/35 touch-manipulation"
         >
           <div class="size-16 shrink-0 rounded-lg overflow-hidden border border-cyan-500/20">
             <img src={item.image} alt="" class="size-full object-cover group-hover:scale-110 transition-transform" loading="lazy" />

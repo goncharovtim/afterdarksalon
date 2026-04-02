@@ -11,6 +11,7 @@ function toMasseuseDetail(c: (typeof MASSEUSE_CATALOG)[number]): MasseuseDetail 
   return {
     slug: c.slug,
     vibe: c.vibe,
+    personalIntro: c.personalIntro,
     services: c.serviceSlugs.map(serviceRefFromSlug),
     schedule: c.schedule.map((d) => ({ ...d })),
     stats: c.stats,
@@ -42,4 +43,13 @@ export const masseuseDetails: Record<string, MasseuseDetail> = Object.fromEntrie
 
 export function getMasseuseDetail(slug: string): MasseuseDetail | undefined {
   return masseuseDetails[slug];
+}
+
+export type MasseuseCardForService = { name: string; slug: string; image: string };
+
+export function getMasseusesForService(serviceSlug: string): MasseuseCardForService[] {
+  return [...MASSEUSE_CATALOG]
+    .filter((m) => m.serviceSlugs.includes(serviceSlug))
+    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .map((d) => ({ name: d.name, slug: d.slug, image: d.cardImageUrl }));
 }

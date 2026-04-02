@@ -40,7 +40,9 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
 <article
   class="pb-24 md:pb-10 bg-[radial-gradient(ellipse_90%_50%_at_50%_-8%,rgba(191,95,255,0.07),transparent_58%)]"
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-3 sm:pt-5">
+  <div
+    class="mx-auto max-w-7xl px-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] pt-3 sm:px-6 sm:pt-5"
+  >
     <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
       <nav
         class="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-black/35 px-3.5 py-2 text-[10px] font-display uppercase tracking-[0.2em] text-stone-500 backdrop-blur-md max-w-full"
@@ -61,7 +63,9 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
     </div>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+  <div
+    class="mx-auto max-w-7xl px-[max(1rem,env(safe-area-inset-left,0px))] py-6 pe-[max(1rem,env(safe-area-inset-right,0px))] sm:px-6 sm:py-10"
+  >
     <div
       class="grid gap-6 lg:gap-8 xl:gap-10 items-start lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]"
     >
@@ -211,6 +215,24 @@ const galleryCounterTpl = t(lang, 'home.galleryCounter');
       </aside>
 
       <div class="min-w-0 flex flex-col gap-8 lg:gap-10">
+        {
+          detail && (
+            <section
+              class:list={[softPanel, 'flex flex-col gap-3']}
+              aria-labelledby="host-bio-heading"
+            >
+              <h2
+                id="host-bio-heading"
+                class="font-display text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.26em] text-fuchsia-400/90"
+              >
+                {t(lang, 'masseuses.bioTitle')}
+              </h2>
+              <p class="text-[15px] sm:text-base text-stone-200/95 leading-relaxed [text-wrap:pretty]">
+                {pickLocale(lang, detail.personalIntro)}
+              </p>
+            </section>
+          )
+        }
         {
           detail && (
             <div class="grid gap-6 lg:grid-cols-2 lg:items-stretch">

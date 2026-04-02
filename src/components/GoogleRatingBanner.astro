@@ -32,7 +32,7 @@ function starFill(i: number): number {
   rel="noopener noreferrer"
   aria-label={`${t(lang, 'googleRating.ratedOnGoogle')}: ${ratingStr} · ${reviewCount} ${t(lang, 'googleRating.reviewsCount')}. ${t(lang, 'googleRating.seeOnMaps')}`}
   class:list={[
-    'group flex flex-wrap items-center justify-center gap-3 rounded-xl border transition-all',
+    'group flex min-h-11 w-full max-w-xl flex-wrap items-center justify-center gap-3 rounded-xl border transition-all touch-manipulation sm:w-auto sm:max-w-none',
     variant === 'hero' &&
       'border-cyan-500/25 bg-void/60 px-4 py-3 hover:border-cyan-500/45 hover:bg-void/80 hover:shadow-[0_0_28px_rgba(0,240,255,0.12)]',
     variant === 'footer' &&
@@ -56,8 +56,16 @@ function starFill(i: number): number {
                 <path d={starPath} class="opacity-35" />
               </svg>
               {fill > 0 && (
-                <span class="absolute inset-0 overflow-hidden" style={`width: ${fill * 100}%`}>
-                  <svg class="size-[1.125rem] text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.45)]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <span
+                  class="absolute left-0 top-0 h-full overflow-hidden"
+                  style={`width: ${Math.round(fill * 1000) / 10}%`}
+                >
+                  <svg
+                    class="size-[1.125rem] shrink-0 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.45)]"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
                     <path d={starPath} />
                   </svg>
                 </span>
