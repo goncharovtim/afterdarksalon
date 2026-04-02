@@ -35,16 +35,16 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
   </div>
 
   <div
-    class="relative mx-auto w-full max-w-7xl px-[max(1rem,env(safe-area-inset-left,0px))] pb-10 pe-[max(1rem,env(safe-area-inset-right,0px))] pt-0 sm:px-4 sm:pt-1 sm:pb-12 md:pt-2 md:pb-14"
+    class="relative mx-auto w-full max-w-7xl px-[max(1rem,env(safe-area-inset-left,0px))] pb-14 pe-[max(1rem,env(safe-area-inset-right,0px))] pt-6 sm:px-4 sm:pt-7 sm:pb-16 md:pt-8 md:pb-20"
   >
-    <div class="max-w-4xl mx-auto text-center space-y-5 md:space-y-6">
+    <div class="max-w-4xl mx-auto text-center space-y-7 md:space-y-8">
       <p
         class="font-display text-[10px] sm:text-xs font-bold uppercase tracking-[0.4em] text-cyan-400 glow-pulse inline-block"
       >
         {t(lang, 'home.tagline')}
       </p>
       <h1
-        class="font-display flex flex-col items-center gap-1 font-black uppercase leading-[1.1] tracking-tight animate-float md:gap-2"
+        class="font-display flex flex-col items-center gap-2 font-black uppercase leading-[1.1] tracking-tight animate-float md:gap-3"
       >
         <span
           class="block min-w-0 max-w-full text-center whitespace-nowrap text-gradient-neon text-[clamp(0.7rem,3.85vw,2.625rem)] sm:text-[clamp(0.8rem,3.15vw,3rem)] md:text-[clamp(0.95rem,2.65vw,3.75rem)] lg:text-[clamp(1.05rem,2.35vw,4.25rem)]"
@@ -57,12 +57,12 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
           {t(lang, 'home.heroTitleBrand')}
         </span>
       </h1>
-      <div class="space-y-3 text-sm md:text-base text-stone-400 leading-relaxed max-w-2xl mx-auto">
+      <div class="space-y-4 text-sm md:text-base text-stone-400 leading-relaxed max-w-2xl mx-auto px-1 sm:px-0">
         {intro.map((line) => (
           <p>{line}</p>
         ))}
       </div>
-      <div class="flex flex-col sm:flex-row flex-wrap items-stretch justify-center gap-4 pt-2 md:pt-3">
+      <div class="flex flex-col sm:flex-row flex-wrap items-stretch justify-center gap-5 pt-5 sm:gap-4 sm:pt-6 md:pt-8">
         <a
           href={pathBook(lang)}
           class="btn-neon-primary min-h-12 flex-1 min-w-0 justify-center text-center sm:flex-[1_1_0]"
@@ -80,9 +80,9 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
   </div>
 </section>
 
-<section class="py-10 md:py-14 ps-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))]">
+<section class="py-12 md:py-16 ps-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))]">
   <div class="max-w-7xl mx-auto">
-    <div class="text-center mb-14 space-y-3">
+    <div class="text-center mb-12 space-y-4 md:mb-16 md:space-y-5">
       <h2 class="font-display text-2xl md:text-3xl font-bold uppercase tracking-[0.15em] text-gradient-neon">
         {t(lang, 'home.teamTitle')}
       </h2>
@@ -91,7 +91,7 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
       </p>
       <p class="text-stone-500 max-w-2xl mx-auto">{t(lang, 'home.teamBlurb')}</p>
     </div>
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-7 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
       {featuredMasseuses.map((m) => {
         const d = getMasseuseDetail(m.slug);
         return (
@@ -135,12 +135,12 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
   </div>
 </section>
 
-<section class="py-10 md:py-14 ps-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] border-t border-cyan-500/10 bg-black/20">
+<section class="py-12 md:py-16 ps-[max(1rem,env(safe-area-inset-left,0px))] pe-[max(1rem,env(safe-area-inset-right,0px))] border-t border-cyan-500/10 bg-black/20">
   <div class="max-w-7xl mx-auto">
-    <h2 class="font-display text-center text-xl md:text-2xl font-bold uppercase tracking-[0.2em] text-cyan-300 mb-10">
+    <h2 class="font-display text-center text-xl md:text-2xl font-bold uppercase tracking-[0.2em] text-cyan-300 mb-11 md:mb-14">
       {t(lang, 'home.protocolsTitle')}
     </h2>
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
       {homeMassageTiles.map((item) => (
         <a
           href={pathMassage(lang, item.slug)}
@@ -161,7 +161,7 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
   </div>
 </section>
 
-<section class="py-8 md:py-10 px-4 border-t border-cyan-500/10 bg-black/15">
+<section class="py-10 md:py-12 px-4 border-t border-cyan-500/10 bg-black/15">
   <div class="max-w-7xl mx-auto flex justify-center">
     <GoogleRatingBanner lang={lang} variant="footer" />
   </div>
@@ -169,7 +169,7 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
 
 <SalonGallery lang={lang} items={SALON_GALLERY_ITEMS} />
 
-<section class="relative py-12 md:py-16 px-4 overflow-hidden">
+<section class="relative py-14 md:py-20 px-4 overflow-hidden">
   <div
     class="absolute inset-0 bg-cover bg-center opacity-25"
     style={`background-image: url(${homeCta.background})`}
@@ -177,16 +177,16 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
   >
   </div>
   <div class="absolute inset-0 bg-gradient-to-t from-void via-abyss/95 to-void" aria-hidden="true"></div>
-  <div class="relative max-w-4xl mx-auto text-center space-y-8">
+  <div class="relative max-w-4xl mx-auto text-center space-y-9 md:space-y-10">
     <h2 class="font-display text-2xl md:text-4xl font-bold uppercase tracking-tight text-gradient-neon">
       {t(lang, 'home.ctaTitle')}
     </h2>
-    <div class="space-y-5 text-stone-400 text-sm md:text-base leading-relaxed font-medium">
+    <div class="space-y-6 text-stone-400 text-sm md:text-base leading-relaxed font-medium md:space-y-5">
       {ctaPs.map((p) => (
         <p>{p}</p>
       ))}
     </div>
-    <div class="flex flex-wrap justify-center gap-4">
+    <div class="flex flex-wrap justify-center gap-4 pt-2 max-sm:flex-col max-sm:items-stretch max-sm:gap-5 sm:pt-0">
       <a href={pathBook(lang)} class="btn-neon-primary">{t(lang, 'home.ctaQueue')}</a>
       <a href={pathPrice(lang)} class="btn-neon-ghost">{t(lang, 'home.ctaPrice')}</a>
     </div>

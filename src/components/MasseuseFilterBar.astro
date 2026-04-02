@@ -63,14 +63,14 @@ const facetsRecord: Record<
 );
 
 const dropPanel =
-  'filter-dropdown-scroll absolute start-0 z-40 mt-2 min-w-[14rem] max-w-[min(100vw-2rem,20rem)] max-h-64 overflow-y-auto rounded-xl border border-white/10 bg-zinc-950/98 p-3 shadow-[0_12px_40px_rgba(0,0,0,0.65)] backdrop-blur-md';
+  'filter-dropdown-scroll absolute left-0 z-40 mt-2 max-h-[min(16rem,50dvh)] min-w-[14rem] max-w-[min(calc(100vw-2rem),20rem)] overflow-y-auto rounded-xl border border-white/10 bg-zinc-950/98 p-3 shadow-[0_12px_40px_rgba(0,0,0,0.65)] backdrop-blur-md max-sm:left-1/2 max-sm:max-w-[min(calc(100vw-1.5rem),20rem)] max-sm:-translate-x-1/2';
 const summaryBtn =
-  'flex min-h-10 w-full min-w-[9rem] cursor-pointer list-none items-center justify-between gap-2 rounded-lg border border-cyan-500/25 bg-black/50 px-3 py-2 text-left font-display text-[10px] font-medium uppercase tracking-wider text-stone-200 outline-none transition-colors hover:border-fuchsia-500/35 hover:text-fuchsia-200 focus-visible:border-fuchsia-500 focus-visible:ring-1 focus-visible:ring-fuchsia-500 touch-manipulation [&::-webkit-details-marker]:hidden';
+  'flex min-h-11 w-full min-w-[9rem] cursor-pointer list-none items-center justify-between gap-2 rounded-lg border border-cyan-500/25 bg-black/50 px-3 py-2 text-left font-display text-[10px] font-medium uppercase tracking-wider text-stone-200 outline-none transition-colors hover:border-fuchsia-500/35 hover:text-fuchsia-200 focus-visible:border-fuchsia-500 focus-visible:ring-1 focus-visible:ring-fuchsia-500 touch-manipulation [&::-webkit-details-marker]:hidden';
 ---
 
 <div
   id="masseuse-filter-bar"
-  class="mb-6 flex w-full min-w-0 flex-nowrap items-end justify-center gap-3 overflow-x-auto rounded-xl border border-white/[0.08] bg-black/35 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:gap-4 md:flex-wrap md:overflow-visible"
+  class="mb-6 flex w-full min-w-0 flex-nowrap items-end justify-center gap-3 overflow-x-auto overscroll-x-contain rounded-xl border border-white/[0.08] bg-black/35 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] [-webkit-overflow-scrolling:touch] sm:gap-4 sm:p-4 md:flex-wrap md:overflow-visible"
   aria-label={t(lang, 'masseuses.filterBarAria')}
 >
   <div class="shrink-0 pe-0.5 sm:pe-1" aria-hidden="true">
@@ -98,7 +98,7 @@ const summaryBtn =
       min={minAge}
       max={maxAge}
       value={minAge}
-      class="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-cyan-400"
+      class="filter-range w-full"
     />
     <span
       id="filter-age-min-val"
@@ -120,7 +120,7 @@ const summaryBtn =
       min={minAge}
       max={maxAge}
       value={maxAge}
-      class="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-fuchsia-400"
+      class="filter-range w-full"
     />
     <span
       id="filter-age-max-val"
@@ -142,7 +142,7 @@ const summaryBtn =
       min={minWeight}
       max={maxWeight}
       value={maxWeight}
-      class="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-cyan-400"
+      class="filter-range w-full"
     />
     <span
       id="filter-weight-val"
@@ -161,12 +161,12 @@ const summaryBtn =
         {
           bustOptions.map((b) => (
             <li>
-              <label class="flex cursor-pointer items-center gap-2.5 text-sm text-stone-200 touch-manipulation">
+              <label class="flex min-h-11 cursor-pointer items-center gap-3 py-1 text-sm text-stone-200 touch-manipulation">
                 <input
                   type="checkbox"
                   name="filter-bust"
                   value={b}
-                  class="size-4 shrink-0 rounded border-white/20 bg-black/60 text-fuchsia-500 accent-fuchsia-500 focus:ring-fuchsia-500/40"
+                  class="size-5 shrink-0 rounded border-white/20 bg-black/60 text-fuchsia-500 accent-fuchsia-500 focus:ring-fuchsia-500/40"
                 />
                 <span class="tabular-nums">{b}</span>
               </label>
@@ -192,13 +192,13 @@ const summaryBtn =
             <ul class="flex flex-col gap-2">
               {massageOpts.map((o) => (
                 <li>
-                  <label class="flex cursor-pointer items-start gap-2.5 text-sm text-stone-200 touch-manipulation">
+                  <label class="flex min-h-11 cursor-pointer items-start gap-3 py-1 text-sm text-stone-200 touch-manipulation">
                     <input
                       type="checkbox"
                       name="filter-service"
                       value={o.slug}
                       data-kind="massage"
-                      class="mt-0.5 size-4 shrink-0 rounded border-white/20 bg-black/60 text-cyan-500 accent-cyan-500 focus:ring-cyan-500/40"
+                      class="mt-0.5 size-5 shrink-0 rounded border-white/20 bg-black/60 text-cyan-500 accent-cyan-500 focus:ring-cyan-500/40"
                     />
                     <span>{o.label}</span>
                   </label>
@@ -217,13 +217,13 @@ const summaryBtn =
             <ul class="flex flex-col gap-2">
               {extraOpts.map((o) => (
                 <li>
-                  <label class="flex cursor-pointer items-start gap-2.5 text-sm text-stone-200 touch-manipulation">
+                  <label class="flex min-h-11 cursor-pointer items-start gap-3 py-1 text-sm text-stone-200 touch-manipulation">
                     <input
                       type="checkbox"
                       name="filter-service"
                       value={o.slug}
                       data-kind="extra"
-                      class="mt-0.5 size-4 shrink-0 rounded border-white/20 bg-black/60 text-fuchsia-500 accent-fuchsia-500 focus:ring-fuchsia-500/40"
+                      class="mt-0.5 size-5 shrink-0 rounded border-white/20 bg-black/60 text-fuchsia-500 accent-fuchsia-500 focus:ring-fuchsia-500/40"
                     />
                     <span>{o.label}</span>
                   </label>
@@ -239,7 +239,7 @@ const summaryBtn =
   <button
     type="button"
     id="filter-reset"
-    class="inline-flex shrink-0 items-center justify-center rounded-lg border border-white/10 bg-transparent px-3 py-2 font-display text-[10px] uppercase tracking-wider text-stone-500 transition-colors hover:border-cyan-500/30 hover:text-cyan-400 touch-manipulation min-h-10"
+    class="inline-flex min-h-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-transparent px-3 py-2 font-display text-[10px] uppercase tracking-wider text-stone-500 transition-colors hover:border-cyan-500/30 hover:text-cyan-400 touch-manipulation"
   >
     {t(lang, 'masseuses.filterReset')}
   </button>

@@ -153,18 +153,43 @@ const navItems = [
   const btn = document.querySelector('[data-mobile-nav-toggle]');
   const panel = document.querySelector('[data-mobile-nav-panel]');
   if (btn && panel instanceof HTMLElement) {
+    const isMobileNav = () => window.matchMedia('(max-width: 1023px)').matches;
+
     const setOpen = (open: boolean) => {
       panel.classList.toggle('max-lg:hidden', !open);
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     };
+
     btn.addEventListener('click', () => {
       const open = panel.classList.contains('max-lg:hidden');
       setOpen(open);
     });
+
     panel.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
-        if (window.matchMedia('(max-width: 1023px)').matches) setOpen(false);
+        if (isMobileNav()) setOpen(false);
       });
+    });
+
+    document.addEventListener(
+      'pointerdown',
+      (e) => {
+        if (!isMobileNav()) return;
+        if (panel.classList.contains('max-lg:hidden')) return;
+        const t = e.target;
+        if (!(t instanceof Node)) return;
+        if (btn.contains(t) || panel.contains(t)) return;
+        setOpen(false);
+      },
+      true,
+    );
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (!isMobileNav()) return;
+      if (panel.classList.contains('max-lg:hidden')) return;
+      setOpen(false);
+      if (btn instanceof HTMLElement) btn.focus();
     });
   }
 </script>
