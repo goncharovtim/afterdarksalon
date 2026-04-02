@@ -13,7 +13,6 @@ export const contact = {
   email: 'info@erotic-massage-prague.com',
   addressLine: 'Maiselova 12, Praha 1',
   mapsUrl: googleMapsPlaceUrl,
-  instagram: 'https://www.instagram.com/nirvana_massage_prague/',
 } as const;
 
 export const googleReviews = {

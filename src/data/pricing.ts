@@ -22,6 +22,16 @@ export function getPriceBlocks(lang: Lang): PriceBlock[] {
   }));
 }
 
+export function getSalonPriceBlock(lang: Lang): PriceBlock {
+  const blocks = getPriceBlocks(lang);
+  const first = blocks[0];
+  if (first) return first;
+  return {
+    title: t(lang, 'price.blockSalon'),
+    tabs: [{ label: '', rows: [] }],
+  };
+}
+
 export const extraServices = EXTRA_SERVICES_CATALOG.map((e) => ({
   name: e.name,
   price: e.price,

@@ -47,6 +47,9 @@ const en = {
     dayTeam: 'Day team',
     contacts: 'Contacts',
   },
+  a11y: {
+    scrollToTop: 'Back to top',
+  },
   header: {
     reserve: 'Reserve',
     menu: 'Menu',
@@ -205,6 +208,9 @@ const en = {
     ctaStickyBook: 'Book',
     ctaStickyMore: 'All massages',
     trustLine: 'Discreet entry · Prague 1 · Thu–Sat nights',
+    reserveSectionTitle: 'Reserve',
+    reserveSectionLead: 'Pick a masseuse and time — we’ll confirm by phone the same evening.',
+    viewFullPriceList: 'Full price list',
   },
   contacts: {
     eyebrow: 'Contact',
@@ -328,6 +334,9 @@ const cs = {
     price: 'Ceník',
     dayTeam: 'Denní tým',
     contacts: 'Kontakty',
+  },
+  a11y: {
+    scrollToTop: 'Zpět nahoru',
   },
   header: {
     reserve: 'Rezervovat',
@@ -486,6 +495,9 @@ const cs = {
     ctaStickyBook: 'Rezervovat',
     ctaStickyMore: 'Všechny masáže',
     trustLine: 'Diskrétní vstup · Praha 1 · čt–so v noci',
+    reserveSectionTitle: 'Rezervace',
+    reserveSectionLead: 'Vyberte masérku a čas — termín potvrdíme telefonicky ještě tentýž večer.',
+    viewFullPriceList: 'Kompletní ceník',
   },
   contacts: {
     eyebrow: 'Kontakt',

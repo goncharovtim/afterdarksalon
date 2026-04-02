@@ -24,14 +24,14 @@ const blocksForLang = getPriceBlocks(lang);
 
 <Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
   <section class="border-b border-cyan-500/15 bg-surface/20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-5 py-12 text-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-5 pt-3 pb-5 md:pt-4 md:pb-6 text-center">
       <p class="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-cyan-400 mb-2">
         {t(lang, 'price.eyebrow')}
       </p>
       <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-gradient-neon">{t(lang, 'price.title')}</h1>
     </div>
   </section>
-  <div class="max-w-7xl mx-auto px-4 sm:px-5 py-14 md:py-20 space-y-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-5 py-6 md:py-8 space-y-8">
     <div class="grid gap-8 lg:grid-cols-2">
       {blocksForLang.map((block, index) => (
         <PriceBlockTabs block={block} index={index} lang={lang} />

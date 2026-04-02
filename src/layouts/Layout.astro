@@ -4,6 +4,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import AgeGate from '../components/AgeGate.astro';
 import CookieBar from '../components/CookieBar.astro';
+import ScrollToTop from '../components/ScrollToTop.astro';
 import { faviconUrl } from '../data/site';
 import type { Lang } from '../i18n/types';
 import { switchLangPath } from '../i18n/paths';
@@ -81,10 +82,11 @@ const ldJson = jsonLd ? JSON.stringify(jsonLd) : null;
   <body class="cyber-root min-h-screen flex flex-col pb-[env(safe-area-inset-bottom)]">
     <AgeGate lang={lang} />
     <SiteHeader lang={lang} pathname={pathname} />
-    <main id="main-content" class="relative z-10 flex-1 pt-[8.75rem] md:pt-[10rem] lg:pt-[10.25rem]">
+    <main id="main-content" class="relative z-10 flex-1 pt-[7.5rem] md:pt-[8.25rem] lg:pt-[8.75rem] xl:pt-[9rem]">
       <slot />
     </main>
     <SiteFooter lang={lang} />
     <CookieBar lang={lang} />
+    <ScrollToTop lang={lang} />
   </body>
 </html>

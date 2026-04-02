@@ -22,11 +22,11 @@ const jsonLd = graphLd(
 <Layout lang={lang} title={title} description={description} jsonLd={jsonLd}>
   <section class="relative border-b border-cyan-500/15 overflow-hidden">
     <div class="absolute inset-0 cyber-grid-bg opacity-40 pointer-events-none" aria-hidden="true"></div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-5 py-12 md:py-16 text-center">
-      <p class="font-display text-[10px] md:text-xs font-bold uppercase tracking-[0.35em] text-fuchsia-400 mb-3">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-5 pt-3 pb-5 md:pt-4 md:pb-7 text-center">
+      <p class="font-display text-[10px] md:text-xs font-bold uppercase tracking-[0.35em] text-fuchsia-400 mb-2">
         {t(lang, 'book.pageEyebrow')}
       </p>
-      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight text-gradient-neon mb-4">
+      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight text-gradient-neon mb-3">
         {t(lang, 'book.pageTitle')}
       </h1>
       <p class="max-w-2xl mx-auto text-stone-400 text-sm sm:text-base leading-relaxed">
@@ -35,7 +35,7 @@ const jsonLd = graphLd(
     </div>
   </section>
 
-  <section class="max-w-3xl mx-auto px-4 sm:px-5 py-12 md:py-16">
+  <section class="max-w-3xl mx-auto px-4 sm:px-5 py-6 md:py-8">
     <BookingForm lang={lang} />
   </section>
 </Layout>
