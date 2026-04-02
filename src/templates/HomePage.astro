@@ -95,7 +95,11 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
       {featuredMasseuses.map((m) => {
         const d = getMasseuseDetail(m.slug);
         return (
-          <a href={pathMasseuse(lang, m.slug)} class="card-cyber group block overflow-hidden">
+          <div class="host-card-neon-shell h-full min-w-0">
+            <a
+              href={pathMasseuse(lang, m.slug)}
+              class="card-cyber group flex h-full min-h-0 flex-col overflow-hidden"
+            >
             <div class="relative aspect-[7/10] overflow-hidden bg-black">
               <MasseuseCardImage
                 lang={lang}
@@ -124,6 +128,7 @@ const homeMassageTiles = massageGrid.filter((item) => item.homeFeature !== false
               </span>
             </div>
           </a>
+          </div>
         );
       })}
     </div>

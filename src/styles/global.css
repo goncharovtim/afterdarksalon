@@ -152,6 +152,86 @@
   }
 
   /**
+   * Host / masseuse listing cards: outer shell carries neon glow (inner .card-cyber uses overflow-hidden,
+   * which would clip box-shadow on the same element).
+   */
+  .host-card-neon-shell {
+    border-radius: 0.75rem;
+    box-shadow:
+      0 0 0 1px rgba(0, 240, 255, 0.28),
+      0 0 20px rgba(0, 240, 255, 0.16),
+      0 0 42px rgba(255, 45, 106, 0.11),
+      0 16px 48px rgba(0, 0, 0, 0.55);
+    transition: box-shadow 0.4s ease;
+  }
+
+  .host-card-neon-shell:hover {
+    box-shadow:
+      0 0 0 1px rgba(0, 240, 255, 0.55),
+      0 0 32px rgba(0, 240, 255, 0.28),
+      0 0 56px rgba(255, 45, 106, 0.2),
+      0 18px 52px rgba(0, 0, 0, 0.58);
+  }
+
+  .host-card-neon-shell .card-cyber {
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .host-card-neon-shell:hover .card-cyber {
+    border-color: rgba(0, 240, 255, 0.42);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.4),
+      inset 0 0 28px rgba(0, 240, 255, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .host-card-neon-shell {
+      transition: none;
+    }
+  }
+
+  /** Masseuse filter dropdowns — thin neon scrollbar (replaces heavy OS default). */
+  .filter-dropdown-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 240, 255, 0.45) rgba(255, 255, 255, 0.05);
+  }
+
+  .filter-dropdown-scroll::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .filter-dropdown-scroll::-webkit-scrollbar-track {
+    margin: 6px 0;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 9999px;
+  }
+
+  .filter-dropdown-scroll::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 240, 255, 0.55),
+      rgba(255, 45, 106, 0.45)
+    );
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.25);
+  }
+
+  .filter-dropdown-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 240, 255, 0.8),
+      rgba(255, 45, 106, 0.65)
+    );
+  }
+
+  .filter-dropdown-scroll::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /**
    * Host card photo: set inline --host-card-zoom (e.g. 1.5) and optional --host-zoom-origin
    * to crop JPEG letterboxing. Parent must be .group for hover zoom.
    */

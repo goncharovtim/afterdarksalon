@@ -10,6 +10,7 @@ import { graphLd, webPageJsonLd } from '../../../lib/seo';
 import MasseuseCardImage from '../../../components/MasseuseCardImage.astro';
 import PageHero from '../../../components/PageHero.astro';
 import MasseuseGridShuffle from '../../../components/MasseuseGridShuffle.astro';
+import MasseuseFilterBar from '../../../components/MasseuseFilterBar.astro';
 
 const lang = 'en' as const;
 const origin = Astro.site?.origin ?? Astro.url.origin;
@@ -46,11 +47,13 @@ const jsonLd = graphLd(
   </PageHero>
 
   <div class="page-content">
+    <MasseuseFilterBar lang={lang} />
     <div id="masseuses-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {featuredMasseuses.map((m) => {
         const d = getMasseuseDetail(m.slug);
         return (
-          <article class="card-cyber overflow-hidden flex flex-col" data-masseuse-slug={m.slug}>
+          <div class="host-card-neon-shell h-full min-w-0" data-masseuse-slug={m.slug}>
+            <article class="card-cyber flex h-full min-h-0 flex-col overflow-hidden">
             <a
               href={pathMasseuse(lang, m.slug)}
               class="relative aspect-[7/10] overflow-hidden bg-black group block touch-manipulation"
@@ -93,9 +96,13 @@ const jsonLd = graphLd(
               </div>
             </div>
           </article>
+          </div>
         );
       })}
     </div>
+    <p id="masseuses-filter-empty" class="hidden py-10 text-center text-sm text-stone-500" role="status">
+      {t(lang, 'masseuses.filterNoResults')}
+    </p>
   </div>
   <MasseuseGridShuffle />
 </Layout>

@@ -1,0 +1,456 @@
+---
+import type { Lang } from '../i18n/types';
+import { hostSearchIndex } from '../data/masseuseDetails';
+import { t } from '../i18n/t';
+import { massageTitle } from '../i18n/massages';
+import { EXTRA_SERVICES_CATALOG } from '../data/catalog/pricingCatalog';
+
+type Props = { lang: Lang };
+
+const { lang } = Astro.props;
+
+const ages = hostSearchIndex.map((h) => h.ageYears);
+const weights = hostSearchIndex.map((h) => h.weightKg);
+const minAge = Math.min(...ages);
+const maxAge = Math.max(...ages);
+const minWeight = Math.min(...weights);
+const maxWeight = Math.max(...weights);
+
+const bustSet = new Set<string>();
+for (const h of hostSearchIndex) {
+  if (h.bustLabel) bustSet.add(h.bustLabel);
+}
+const bustOptions = [...bustSet].sort((a, b) => {
+  const na = parseInt(a, 10);
+  const nb = parseInt(b, 10);
+  if (!Number.isNaN(na) && !Number.isNaN(nb) && String(na) === a && String(nb) === b) return na - nb;
+  return a.localeCompare(b, lang);
+});
+
+const usedMassage = new Set<string>();
+const usedExtra = new Set<string>();
+for (const h of hostSearchIndex) {
+  for (const s of h.massageSlugs) usedMassage.add(s);
+  for (const s of h.extraSlugs) usedExtra.add(s);
+}
+
+const massageOpts = [...usedMassage]
+  .map((slug) => ({ slug, kind: 'massage' as const, label: massageTitle(lang, slug) }))
+  .sort((a, b) => a.label.localeCompare(b.label, lang));
+
+const extraOpts = [...usedExtra]
+  .map((slug) => {
+    const row = EXTRA_SERVICES_CATALOG.find((e) => e.slug === slug);
+    return { slug, kind: 'extra' as const, label: row?.title[lang] ?? slug };
+  })
+  .sort((a, b) => a.label.localeCompare(b.label, lang));
+
+/** Serializable for client filter logic */
+const facetsRecord: Record<
+  string,
+  { age: number; weight: number; bust: string; massages: string[]; extras: string[] }
+> = Object.fromEntries(
+  hostSearchIndex.map((h) => [
+    h.slug,
+    {
+      age: h.ageYears,
+      weight: h.weightKg,
+      bust: h.bustLabel ?? '',
+      massages: [...h.massageSlugs],
+      extras: [...h.extraSlugs],
+    },
+  ]),
+);
+
+const dropPanel =
+  'filter-dropdown-scroll absolute start-0 z-40 mt-2 min-w-[14rem] max-w-[min(100vw-2rem,20rem)] max-h-64 overflow-y-auto rounded-xl border border-white/10 bg-zinc-950/98 p-3 shadow-[0_12px_40px_rgba(0,0,0,0.65)] backdrop-blur-md';
+const summaryBtn =
+  'flex min-h-10 w-full min-w-[9rem] cursor-pointer list-none items-center justify-between gap-2 rounded-lg border border-cyan-500/25 bg-black/50 px-3 py-2 text-left font-display text-[10px] font-medium uppercase tracking-wider text-stone-200 outline-none transition-colors hover:border-fuchsia-500/35 hover:text-fuchsia-200 focus-visible:border-fuchsia-500 focus-visible:ring-1 focus-visible:ring-fuchsia-500 touch-manipulation [&::-webkit-details-marker]:hidden';
+---
+
+<div
+  id="masseuse-filter-bar"
+  class="mb-6 flex w-full min-w-0 flex-nowrap items-end justify-center gap-3 overflow-x-auto rounded-xl border border-white/[0.08] bg-black/35 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:gap-4 md:flex-wrap md:overflow-visible"
+  aria-label={t(lang, 'masseuses.filterBarAria')}
+>
+  <div class="shrink-0 pe-0.5 sm:pe-1" aria-hidden="true">
+    <img
+      src="/AI.png"
+      alt=""
+      width="44"
+      height="44"
+      class="size-9 object-contain opacity-95 sm:size-11 [filter:drop-shadow(0_0_14px_rgba(0,240,255,0.35))]"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <div class="flex shrink-0 flex-col gap-1.5 w-[7.5rem] sm:w-28">
+    <label
+      for="filter-age-min"
+      class="font-display text-[9px] font-medium uppercase tracking-wider text-stone-500"
+    >
+      {t(lang, 'masseuses.filterAgeFrom')}
+    </label>
+    <input
+      type="range"
+      id="filter-age-min"
+      name="filter-age-min"
+      min={minAge}
+      max={maxAge}
+      value={minAge}
+      class="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-cyan-400"
+    />
+    <span
+      id="filter-age-min-val"
+      class="font-display text-xs tabular-nums text-cyan-400/90"
+      >{minAge}</span
+    >
+  </div>
+  <div class="flex shrink-0 flex-col gap-1.5 w-[7.5rem] sm:w-28">
+    <label
+      for="filter-age-max"
+      class="font-display text-[9px] font-medium uppercase tracking-wider text-stone-500"
+    >
+      {t(lang, 'masseuses.filterAgeTo')}
+    </label>
+    <input
+      type="range"
+      id="filter-age-max"
+      name="filter-age-max"
+      min={minAge}
+      max={maxAge}
+      value={maxAge}
+      class="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-fuchsia-400"
+    />
+    <span
+      id="filter-age-max-val"
+      class="font-display text-xs tabular-nums text-fuchsia-400/90"
+      >{maxAge}</span
+    >
+  </div>
+  <div class="flex shrink-0 flex-col gap-1.5 w-[7.5rem] sm:w-32">
+    <label
+      for="filter-weight-max"
+      class="font-display text-[9px] font-medium uppercase tracking-wider text-stone-500"
+    >
+      {t(lang, 'masseuses.filterWeight')}
+    </label>
+    <input
+      type="range"
+      id="filter-weight-max"
+      name="filter-weight-max"
+      min={minWeight}
+      max={maxWeight}
+      value={maxWeight}
+      class="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-cyan-400"
+    />
+    <span
+      id="filter-weight-val"
+      class="font-display text-xs tabular-nums text-cyan-400/90"
+      >{t(lang, 'masseuses.filterWeightUpTo').replace('{n}', String(maxWeight))}</span
+    >
+  </div>
+
+  <details id="filter-bust-details" class="group relative shrink-0">
+    <summary class={summaryBtn}>
+      <span id="filter-bust-summary">{t(lang, 'masseuses.filterBust')}</span>
+      <span class="text-stone-500 group-open:rotate-180 transition-transform">▾</span>
+    </summary>
+    <div class={dropPanel}>
+      <ul class="flex flex-col gap-2">
+        {
+          bustOptions.map((b) => (
+            <li>
+              <label class="flex cursor-pointer items-center gap-2.5 text-sm text-stone-200 touch-manipulation">
+                <input
+                  type="checkbox"
+                  name="filter-bust"
+                  value={b}
+                  class="size-4 shrink-0 rounded border-white/20 bg-black/60 text-fuchsia-500 accent-fuchsia-500 focus:ring-fuchsia-500/40"
+                />
+                <span class="tabular-nums">{b}</span>
+              </label>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </details>
+
+  <details id="filter-services-details" class="group relative shrink-0">
+    <summary class={summaryBtn}>
+      <span id="filter-services-summary">{t(lang, 'masseuses.filterServices')}</span>
+      <span class="text-stone-500 group-open:rotate-180 transition-transform">▾</span>
+    </summary>
+    <div class={dropPanel}>
+      {
+        massageOpts.length > 0 && (
+          <div class="mb-3">
+            <p class="mb-2 font-display text-[9px] font-bold uppercase tracking-wider text-stone-500">
+              {t(lang, 'masseuses.filterMassagesGroup')}
+            </p>
+            <ul class="flex flex-col gap-2">
+              {massageOpts.map((o) => (
+                <li>
+                  <label class="flex cursor-pointer items-start gap-2.5 text-sm text-stone-200 touch-manipulation">
+                    <input
+                      type="checkbox"
+                      name="filter-service"
+                      value={o.slug}
+                      data-kind="massage"
+                      class="mt-0.5 size-4 shrink-0 rounded border-white/20 bg-black/60 text-cyan-500 accent-cyan-500 focus:ring-cyan-500/40"
+                    />
+                    <span>{o.label}</span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+      {
+        extraOpts.length > 0 && (
+          <div>
+            <p class="mb-2 font-display text-[9px] font-bold uppercase tracking-wider text-stone-500">
+              {t(lang, 'masseuses.filterExtrasGroup')}
+            </p>
+            <ul class="flex flex-col gap-2">
+              {extraOpts.map((o) => (
+                <li>
+                  <label class="flex cursor-pointer items-start gap-2.5 text-sm text-stone-200 touch-manipulation">
+                    <input
+                      type="checkbox"
+                      name="filter-service"
+                      value={o.slug}
+                      data-kind="extra"
+                      class="mt-0.5 size-4 shrink-0 rounded border-white/20 bg-black/60 text-fuchsia-500 accent-fuchsia-500 focus:ring-fuchsia-500/40"
+                    />
+                    <span>{o.label}</span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </details>
+
+  <button
+    type="button"
+    id="filter-reset"
+    class="inline-flex shrink-0 items-center justify-center rounded-lg border border-white/10 bg-transparent px-3 py-2 font-display text-[10px] uppercase tracking-wider text-stone-500 transition-colors hover:border-cyan-500/30 hover:text-cyan-400 touch-manipulation min-h-10"
+  >
+    {t(lang, 'masseuses.filterReset')}
+  </button>
+</div>
+
+<script
+  define:vars={{
+    facetsRecord,
+    minAge,
+    maxAge,
+    minWeight,
+    maxWeight,
+    weightUpToTpl: t(lang, 'masseuses.filterWeightUpTo'),
+  }}
+>
+  (function () {
+    /**
+     * This script is emitted before `#masseuses-grid` in the page (filter bar is above the grid).
+     * Sync lookup returns null and must not short-circuit listener setup — wait for DOMContentLoaded.
+     */
+    function init() {
+    var grid = document.getElementById('masseuses-grid');
+    if (!grid) return;
+
+    var ageMinEl = document.getElementById('filter-age-min');
+    var ageMaxEl = document.getElementById('filter-age-max');
+    var wMaxEl = document.getElementById('filter-weight-max');
+    var ageMinVal = document.getElementById('filter-age-min-val');
+    var ageMaxVal = document.getElementById('filter-age-max-val');
+    var wVal = document.getElementById('filter-weight-val');
+    var bustSummary = document.getElementById('filter-bust-summary');
+    var svcSummary = document.getElementById('filter-services-summary');
+    var resetBtn = document.getElementById('filter-reset');
+    var emptyEl = document.getElementById('masseuses-filter-empty');
+    var bustDetails = document.getElementById('filter-bust-details');
+    var svcDetails = document.getElementById('filter-services-details');
+
+    var bustLabelBase = bustSummary ? bustSummary.textContent || '' : '';
+    var svcLabelBase = svcSummary ? svcSummary.textContent || '' : '';
+
+    function parseAgeMin() {
+      return parseInt(ageMinEl && 'value' in ageMinEl ? ageMinEl.value : String(minAge), 10);
+    }
+    function parseAgeMax() {
+      return parseInt(ageMaxEl && 'value' in ageMaxEl ? ageMaxEl.value : String(maxAge), 10);
+    }
+    function parseWMax() {
+      return parseInt(wMaxEl && 'value' in wMaxEl ? wMaxEl.value : String(maxWeight), 10);
+    }
+
+    function syncAgeSliders(changed) {
+      if (!ageMinEl || !ageMaxEl) return;
+      var a = parseAgeMin();
+      var b = parseAgeMax();
+      if (a > b) {
+        if (changed === 'min') ageMaxEl.value = String(a);
+        else ageMinEl.value = String(b);
+      }
+    }
+
+    function selectedBusts() {
+      var boxes = document.querySelectorAll('input[name="filter-bust"]:checked');
+      var s = [];
+      for (var i = 0; i < boxes.length; i++) {
+        var v = boxes[i].value;
+        if (v) s.push(v);
+      }
+      return s;
+    }
+
+    function selectedServices() {
+      var boxes = document.querySelectorAll('input[name="filter-service"]:checked');
+      var s = [];
+      for (var i = 0; i < boxes.length; i++) {
+        var v = boxes[i].value;
+        if (v) s.push(v);
+      }
+      return s;
+    }
+
+    function applyFilter() {
+      var aMin = parseAgeMin();
+      var aMax = parseAgeMax();
+      var wMax = parseWMax();
+      var busts = selectedBusts();
+      var svcs = selectedServices();
+      var bustSet = busts.length ? busts : null;
+      var svcNeed = svcs.length ? svcs : null;
+
+      if (ageMinVal) ageMinVal.textContent = String(aMin);
+      if (ageMaxVal) ageMaxVal.textContent = String(aMax);
+      if (wVal) wVal.textContent = weightUpToTpl.replace('{n}', String(wMax));
+
+      if (bustSummary) {
+        bustSummary.textContent =
+          bustLabelBase + (bustSet ? ' (' + bustSet.length + ')' : '');
+      }
+      if (svcSummary) {
+        svcSummary.textContent =
+          svcLabelBase + (svcNeed ? ' (' + svcNeed.length + ')' : '');
+      }
+
+      var articles = grid.querySelectorAll('[data-masseuse-slug]');
+      var visible = 0;
+      for (var i = 0; i < articles.length; i++) {
+        var el = articles[i];
+        var slug = el.getAttribute('data-masseuse-slug');
+        var f = slug ? facetsRecord[slug] : null;
+        var show = true;
+        if (f) {
+          if (f.age < aMin || f.age > aMax) show = false;
+          if (show && f.weight > wMax) show = false;
+          if (show && bustSet) {
+            if (!f.bust || bustSet.indexOf(f.bust) < 0) show = false;
+          }
+          if (show && svcNeed) {
+            var hit = false;
+            for (var j = 0; j < svcNeed.length; j++) {
+              var key = svcNeed[j];
+              if (f.massages.indexOf(key) >= 0 || f.extras.indexOf(key) >= 0) {
+                hit = true;
+                break;
+              }
+            }
+            if (!hit) show = false;
+          }
+        }
+        if (show) {
+          el.classList.remove('hidden');
+          visible++;
+        } else {
+          el.classList.add('hidden');
+        }
+      }
+      if (emptyEl) {
+        if (visible === 0) emptyEl.classList.remove('hidden');
+        else emptyEl.classList.add('hidden');
+      }
+    }
+
+    function resetFilters() {
+      if (ageMinEl) ageMinEl.value = String(minAge);
+      if (ageMaxEl) ageMaxEl.value = String(maxAge);
+      if (wMaxEl) wMaxEl.value = String(maxWeight);
+      var b = document.querySelectorAll('input[name="filter-bust"]');
+      for (var i = 0; i < b.length; i++) b[i].checked = false;
+      var s = document.querySelectorAll('input[name="filter-service"]');
+      for (var j = 0; j < s.length; j++) s[j].checked = false;
+      if (bustDetails) bustDetails.open = false;
+      if (svcDetails) svcDetails.open = false;
+      applyFilter();
+    }
+
+    function runAfterShuffle() {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(applyFilter);
+      });
+    }
+
+    if (ageMinEl) {
+      ageMinEl.addEventListener('input', function () {
+        syncAgeSliders('min');
+        applyFilter();
+      });
+    }
+    if (ageMaxEl) {
+      ageMaxEl.addEventListener('input', function () {
+        syncAgeSliders('max');
+        applyFilter();
+      });
+    }
+    if (wMaxEl) wMaxEl.addEventListener('input', applyFilter);
+
+    document.querySelectorAll('input[name="filter-bust"]').forEach(function (el) {
+      el.addEventListener('change', applyFilter);
+    });
+    document.querySelectorAll('input[name="filter-service"]').forEach(function (el) {
+      el.addEventListener('change', applyFilter);
+    });
+
+    if (resetBtn) resetBtn.addEventListener('click', resetFilters);
+
+    document.addEventListener(
+      'pointerdown',
+      function (ev) {
+        var t = ev.target;
+        if (!(t instanceof Node)) return;
+        var inBust = bustDetails && bustDetails.contains(t);
+        var inSvc = svcDetails && svcDetails.contains(t);
+        if (inBust) {
+          if (svcDetails) svcDetails.open = false;
+          return;
+        }
+        if (inSvc) {
+          if (bustDetails) bustDetails.open = false;
+          return;
+        }
+        if (bustDetails) bustDetails.open = false;
+        if (svcDetails) svcDetails.open = false;
+      },
+      true,
+    );
+
+    /* init runs after DOM is parsed; rAF lets MasseuseGridShuffle (same tick) reorder first */
+    runAfterShuffle();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
